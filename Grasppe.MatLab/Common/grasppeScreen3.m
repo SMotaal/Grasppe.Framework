@@ -295,6 +295,10 @@ function [ Output ] = grasppeScreen3( imagePath, ppi, spi, lpi, angle, printing,
     
     Screen = mq;
     
+    s = warning('off', 'all');
+    mkdir(outpath(''));
+    s = warning(s);
+    
     while exist(outpath(filename),'file') > 0
       fileno = fileno+1;
       filename = [prefix int2str(fileno) suffix];

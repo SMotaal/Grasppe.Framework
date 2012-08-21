@@ -145,12 +145,13 @@ classdef ProcessTask < Grasppe.Core.Prototype
     function CHECK(obj, varargin)
       %if ~obj.isvalid
       %s = warning('off', 'all');
+      s = warning('off', 'all');
       try
         obj.progressCheck(varargin{:});
       catch err
         try evalin('caller','return'); end
       end
-      %warning(s);
+      warning(s);
     end
     
     function SEAL(obj)
