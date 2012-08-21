@@ -1,0 +1,114 @@
+
+<!DOCTYPE html
+  PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html><head>
+      <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+   <!--
+This HTML was auto-generated from MATLAB code.
+To make changes, update the MATLAB code and republish this document.
+      --><title>epsfontalias</title><meta name="generator" content="MATLAB 7.11"><link rel="schema.DC" href="http://purl.org/dc/elements/1.1/"><meta name="DC.date" content="2012-05-07"><meta name="DC.source" content="doc_epsfontalias.m"><style type="text/css">
+
+body {
+  background-color: white;
+  margin:10px;
+}
+
+h1 {
+  color: #990000; 
+  font-size: x-large;
+}
+
+h2 {
+  color: #990000;
+  font-size: medium;
+}
+
+/* Make the text shrink to fit narrow windows, but not stretch too far in 
+wide windows. */ 
+p,h1,h2,div.content div {
+  max-width: 600px;
+  /* Hack for IE6 */
+  width: auto !important; width: 600px;
+}
+
+pre.codeinput {
+  background: #EEEEEE;
+  padding: 10px;
+}
+@media print {
+  pre.codeinput {word-wrap:break-word; width:100%;}
+} 
+
+span.keyword {color: #0000FF}
+span.comment {color: #228B22}
+span.string {color: #A020F0}
+span.untermstring {color: #B20000}
+span.syscmd {color: #B28C00}
+
+pre.codeoutput {
+  color: #666666;
+  padding: 10px;
+}
+
+pre.error {
+  color: red;
+}
+
+p.footer {
+  text-align: right;
+  font-size: xx-small;
+  font-weight: lighter;
+  font-style: italic;
+  color: gray;
+}
+
+  </style></head><body><div class="content"><h1>epsfontalias</h1><!--introduction--><p>Get/set Type 1 font aliases</p><!--/introduction--><h2>Contents</h2><div><ul><li><a href="#1">Syntax</a></li><li><a href="#2">Description</a></li><li><a href="#3">See Also</a></li></ul></div><h2>Syntax<a name="1"></a></h2><pre>epsfontalias
+epsfontalias(alias, actual)
+epsfontalias(alias, '--Remove')
+epsfontalias(fontmap)</pre><h2>Description<a name="2"></a></h2><p><tt>epsfontalias</tt>, by itself, prettyprints the search path for Type 1 fonts used by EPS Utility Toolbox.</p><p><tt>alias = epsfontalias</tt> returns a 2-column cell string matrix, each row containing the alias font name (1st column) and its actual name (2nd column).</p><p><tt>epsfontalias(alias, actual)</tt> either adds a new alias or changes the existing alias, specified by the string <tt>alias</tt>, to be associated with an actual font, specified by the string <tt>actual</tt>. Both <tt>alias</tt> and <tt>actual</tt> must begin with '/'. If the actual font does not exist, no changes will occur.</p><p><tt>epsfontalias(alias, '--Remove')</tt> removes the existing alias specified by the string <tt>alias</tt>.</p><p><tt>epsfontalias(fontmap)</tt> reads a font map file specified by string <tt>fontmap</tt>. A font map file is a text file with rows specifying the font aliases. For example, a fontmap file containing the text</p><pre>/AvantGarde-Demi /URWGothicL-Demi;</pre><p>assigns the actual font <tt>/URWGothicL-Demi</tt> to be used for Adobe standard <tt>/AvantGarde-Demi</tt>. In other words, the fontmap file specifies <tt>/AvantGarde-Demi</tt> to be an alias for <tt>/URWGothicL-Demi</tt>. The line must be terminated by a semicolon and all white space characters are ignored.</p><h2>See Also<a name="3"></a></h2><p><a href="doc_epsfontpath.html"><tt>epsfontpath</tt></a>, <a href="doc_epssetup.html"><tt>epssetup</tt></a>.</p><p>Copyright 2012. Takeshi Ikuma. All rights reserved.</p><p class="footer"><br>
+      Published with MATLAB&reg; 7.11<br></p></div><!--
+##### SOURCE BEGIN #####
+%% epsfontalias
+% Get/set Type 1 font aliases
+%
+%% Syntax
+%  epsfontalias
+%  epsfontalias(alias, actual)
+%  epsfontalias(alias, 'REPLACE_WITH_DASH_DASHRemove')
+%  epsfontalias(fontmap)
+%
+%% Description
+% |epsfontalias|, by itself, prettyprints the search path for Type 1
+% fonts used by EPS Utility Toolbox.
+%
+% |alias = epsfontalias| returns a 2-column cell string matrix, each row
+% containing the alias font name (1st column) and its actual name (2nd
+% column).
+%
+% |epsfontalias(alias, actual)| either adds a new alias or changes the
+% existing alias, specified by the string |alias|, to be associated with an
+% actual font, specified by the string |actual|. Both |alias| and |actual|
+% must begin with '/'. If the actual font does not exist, no changes will
+% occur.
+%
+% |epsfontalias(alias, 'REPLACE_WITH_DASH_DASHRemove')| removes the existing alias specified by
+% the string |alias|.
+%
+% |epsfontalias(fontmap)| reads a font map file specified by string
+% |fontmap|. A font map file is a text file with rows specifying the font
+% aliases. For example, a fontmap file containing the text
+%
+%  /AvantGarde-Demi /URWGothicL-Demi;
+%
+% assigns the actual font |/URWGothicL-Demi| to be used for Adobe standard
+% |/AvantGarde-Demi|. In other words, the fontmap file specifies
+% |/AvantGarde-Demi| to be an alias for |/URWGothicL-Demi|. The line must
+% be terminated by a semicolon and all white space characters are ignored.
+%
+%% See Also 
+% <doc_epsfontpath.html |epsfontpath|>, <doc_epssetup.html |epssetup|>.
+%
+% Copyright 2012. Takeshi Ikuma. All rights reserved.
+
+##### SOURCE END #####
+--></body></html>

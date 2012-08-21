@@ -1,0 +1,47 @@
+% Aliases font map for Adobe base 35 using GNU URW fonts
+%
+% Instructions to use GNU URW Base 35 font pack as the default fonts
+% 1. Download GNU URW fonts from http://mirror.ctan.org/fonts/urw/base35.zip
+% 2. Extract PFB font files in one of EPS Font Search Path (see epsfontpath)
+% 3. Run epsfontalias urwbase35_fontmap
+%
+% Copyright 2012 Takeshi Ikuma
+% History:
+% rev. - : (03-18-2012) original release
+
+% Alias Name                  Actual Name
+/AvantGarde-Demi                /URWGothicL-Demi;
+/AvantGarde-DemiOblique       /URWGothicL-DemiObli;
+/AvantGarde-Book              /URWGothicL-Book;
+/AvantGarde-BookOblique       /URWGothicL-BookObli       ;
+/Bookman-Demi                 /URWBookmanL-DemiBold      ;
+/Bookman-DemiItalic           /URWBookmanL-DemiBoldItal  ;
+/Bookman-Light                /URWBookmanL-Ligh          ;
+/Bookman-LightItalic          /URWBookmanL-LighItal      ;
+/Courier-Bold                 /NimbusMonL-Bold           ;
+/Courier-BoldOblique          /NimbusMonL-BoldObli       ;
+/Courier                      /NimbusMonL-Regu           ;
+/Courier-Oblique              /NimbusMonL-ReguObli       ;
+/Helvetica-Bold               /NimbusSanL-Bold           ;
+/Helvetica-Narrow-Bold        /NimbusSanL-BoldCond       ;
+/Helvetica-BoldOblique        /NimbusSanL-BoldItal       ;
+/Helvetica-Narrow-BoldOblique /NimbusSanL-BoldCondItal   ;
+/Helvetica                    /NimbusSanL-Regu           ;
+/Helvetica-Narrow             /NimbusSanL-ReguCond       ;
+/Helvetica-Oblique            /NimbusSanL-ReguItal       ;
+/Helvetica-Narrow-Oblique     /NimbusSanL-ReguCondItal   ;
+/NewCenturySchlbk-Bold        /CenturySchL-Bold          ;
+/NewCenturySchlbk-BoldItalic  /CenturySchL-BoldItal      ;
+/NewCenturySchlbk-Roman       /CenturySchL-Roma          ;
+/NewCenturySchlbk-Italic      /CenturySchL-Ital          ;
+/Palatino-Bold                /URWPalladioL-Bold         ;
+/Palatino-BoldItalic          /URWPalladioL-BoldItal     ;
+/Palatino-Roman               /URWPalladioL-Roma         ;
+/Palatino-Italic              /URWPalladioL-Ital         ;
+/Symbol                        /StandardSymL              ;
+/Times-Bold                   /NimbusRomNo9L-Medi        ;
+/Times-BoldItalic             /NimbusRomNo9L-MediItal    ;
+/Times-Roman                  /NimbusRomNo9L-Regu        ;
+/Times-Italic                 /NimbusRomNo9L-ReguItal    ;
+/ZapfChancery-MediumItalic    /URWChanceryL-MediItal     ;
+/ZapfDingbats                  /Dingbats                  ;

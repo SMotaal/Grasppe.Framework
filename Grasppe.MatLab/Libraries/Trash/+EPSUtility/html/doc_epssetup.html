@@ -1,0 +1,92 @@
+
+<!DOCTYPE html
+  PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html><head>
+      <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+   <!--
+This HTML was auto-generated from MATLAB code.
+To make changes, update the MATLAB code and republish this document.
+      --><title>epssetup</title><meta name="generator" content="MATLAB 7.11"><link rel="schema.DC" href="http://purl.org/dc/elements/1.1/"><meta name="DC.date" content="2012-05-07"><meta name="DC.source" content="doc_epssetup.m"><style type="text/css">
+
+body {
+  background-color: white;
+  margin:10px;
+}
+
+h1 {
+  color: #990000; 
+  font-size: x-large;
+}
+
+h2 {
+  color: #990000;
+  font-size: medium;
+}
+
+/* Make the text shrink to fit narrow windows, but not stretch too far in 
+wide windows. */ 
+p,h1,h2,div.content div {
+  max-width: 600px;
+  /* Hack for IE6 */
+  width: auto !important; width: 600px;
+}
+
+pre.codeinput {
+  background: #EEEEEE;
+  padding: 10px;
+}
+@media print {
+  pre.codeinput {word-wrap:break-word; width:100%;}
+} 
+
+span.keyword {color: #0000FF}
+span.comment {color: #228B22}
+span.string {color: #A020F0}
+span.untermstring {color: #B20000}
+span.syscmd {color: #B28C00}
+
+pre.codeoutput {
+  color: #666666;
+  padding: 10px;
+}
+
+pre.error {
+  color: red;
+}
+
+p.footer {
+  text-align: right;
+  font-size: xx-small;
+  font-weight: lighter;
+  font-style: italic;
+  color: gray;
+}
+
+  </style></head><body><div class="content"><h1>epssetup</h1><!--introduction--><p>Set up EPS Utility Toolbox</p><!--/introduction--><h2>Contents</h2><div><ul><li><a href="#1">Syntax</a></li><li><a href="#2">Description</a></li><li><a href="#3">See Also</a></li></ul></div><h2>Syntax<a name="1"></a></h2><pre>epssetup</pre><h2>Description<a name="2"></a></h2><p>Run <tt>epssetup</tt> before using EPS Utility Toolbox for the first time. The folder containing EPS Utility Toolbox must be writable at the time of running <tt>epssetup</tt>. This setup script performs the following tasks:</p><div><ol><li>Adding EPS Utility Toolbox to MATLAB path</li><li>Builds MEX functions</li><li>Links to Ghostscript executable</li><li>Sets up Type 1 font search path and builds Type 1 font alias table</li></ol></div><p>User will be prompted during the setup process.</p><h2>See Also<a name="3"></a></h2><p><a href="doc_epsfontpath.html"><tt>epsfontpath</tt></a>, <a href="doc_epsfontalias.html"><tt>epsfontalias</tt></a>.</p><p>Copyright 2012. Takeshi Ikuma. All rights reserved.</p><p class="footer"><br>
+      Published with MATLAB&reg; 7.11<br></p></div><!--
+##### SOURCE BEGIN #####
+%% epssetup
+% Set up EPS Utility Toolbox
+%
+%% Syntax
+%  epssetup
+%
+%% Description
+% Run |epssetup| before using EPS Utility Toolbox for the first time. The
+% folder containing EPS Utility Toolbox must be writable at the time of
+% running |epssetup|. This setup script performs the following tasks:
+%
+% # Adding EPS Utility Toolbox to MATLAB path
+% # Builds MEX functions
+% # Links to Ghostscript executable
+% # Sets up Type 1 font search path and builds Type 1 font alias table
+%
+% User will be prompted during the setup process.
+%
+%% See Also
+% <doc_epsfontpath.html |epsfontpath|>, <doc_epsfontalias.html |epsfontalias|>.
+%
+% Copyright 2012. Takeshi Ikuma. All rights reserved.
+
+##### SOURCE END #####
+--></body></html>

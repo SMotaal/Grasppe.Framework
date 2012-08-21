@@ -1,0 +1,198 @@
+
+<!DOCTYPE html
+  PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html><head>
+      <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+   <!--
+This HTML was auto-generated from MATLAB code.
+To make changes, update the MATLAB code and republish this document.
+      --><title>epssetbbox</title><meta name="generator" content="MATLAB 7.11"><link rel="schema.DC" href="http://purl.org/dc/elements/1.1/"><meta name="DC.date" content="2012-05-07"><meta name="DC.source" content="doc_epssetbbox.m"><style type="text/css">
+
+body {
+  background-color: white;
+  margin:10px;
+}
+
+h1 {
+  color: #990000; 
+  font-size: x-large;
+}
+
+h2 {
+  color: #990000;
+  font-size: medium;
+}
+
+/* Make the text shrink to fit narrow windows, but not stretch too far in 
+wide windows. */ 
+p,h1,h2,div.content div {
+  max-width: 600px;
+  /* Hack for IE6 */
+  width: auto !important; width: 600px;
+}
+
+pre.codeinput {
+  background: #EEEEEE;
+  padding: 10px;
+}
+@media print {
+  pre.codeinput {word-wrap:break-word; width:100%;}
+} 
+
+span.keyword {color: #0000FF}
+span.comment {color: #228B22}
+span.string {color: #A020F0}
+span.untermstring {color: #B20000}
+span.syscmd {color: #B28C00}
+
+pre.codeoutput {
+  color: #666666;
+  padding: 10px;
+}
+
+pre.error {
+  color: red;
+}
+
+p.footer {
+  text-align: right;
+  font-size: xx-small;
+  font-weight: lighter;
+  font-style: italic;
+  color: gray;
+}
+
+  </style></head><body><div class="content"><h1>epssetbbox</h1><!--introduction--><p>Adjust EPS bounding box.</p><!--/introduction--><h2>Contents</h2><div><ul><li><a href="#1">Syntax</a></li><li><a href="#2">Description</a></li><li><a href="#3">Parameters</a></li><li><a href="#4">See Also</a></li></ul></div><h2>Syntax<a name="1"></a></h2><pre>epssetbbox(epsfile)
+epssetbbox(epsfile, outfile)
+epssetbbox(..., Param1, Value1, Param2, Value2,...)</pre><h2>Description<a name="2"></a></h2><p><tt>epssetbbox(epsfile)</tt> modifies the bounding box (as a 4-element vector <tt>[left bottom right top]</tt>) of the EPS file specified by the file name <tt>epsfile</tt> to the tightest possible according to Ghostscript.</p><p>Note: This function removes the embedded preview image (TIFF or WMF).</p><p><tt>epssetbbox(epsfile, outfile)</tt> saves the modified EPS data to a file specified by the string <tt>outfile</tt>.</p><p>|epssetbbox(..., 'Param1', Value1, 'Param2', Value2,...) sets any of the following option parameters.</p><h2>Parameters<a name="3"></a></h2><p>The following table lists the available optional parameters.</p><p>
+<table cellspacing="0" class="body" cellpadding="4" % border="2">
+<colgroup>
+<col width="20%">
+<col width="40%">
+<col width="40%">
+</colgroup>
+<thead>
+<tr valign="top">
+<th bgcolor="#B2B2B2"><p>Option</p></th>
+<th bgcolor="#B2B2B2"><p>Value</p></th>
+<th bgcolor="#B2B2B2"><p>Description</p></th>
+</tr>
+</thead>
+<tbody>
+<tr valign="top">
+<td bgcolor="#F2F2F2"><p><tt>HorizontalAlignment</tt></p></td>
+<td bgcolor="#F2F2F2"><p>'left | {'center'} | 'right'</p></td>
+<td bgcolor="#F2F2F2"><p>Horizontal alignment of the new bounding box with
+        respect to Ghostscripts tight bounding box.</p></td>
+</tr>
+<tr valign="top">
+<td bgcolor="#F2F2F2"><p><tt>Padding</tt></p></td>
+<td bgcolor="#F2F2F2"><p>4-element vector {<tt>[0 0 0 0]</tt>}</p></td>
+<td bgcolor="#F2F2F2"><p><tt>[left bottom right top]</tt>
+        Padding around Ghostscript tight bound. Negative value crops the bound.</p></td>
+</tr>
+<tr valign="top">
+<td bgcolor="#F2F2F2"><p><tt>Size</tt></p></td>
+<td bgcolor="#F2F2F2"><p>2-element positive vector</p></td>
+<td bgcolor="#F2F2F2"><p><tt>[W H]</tt>
+        Specifies the size (width in |W| and height in |H|)
+        of bounding box. The default is the tightest bound set by Ghostscript.</p></td>
+</tr>
+<tr valign="top">
+<td bgcolor="#F2F2F2"><p><tt>Units</tt></p></td>
+<td bgcolor="#F2F2F2"><p>{<tt>'color'</tt>} | <tt>'gray'</tt> | <tt>'mono'</tt></p></td>
+<td bgcolor="#F2F2F2"><p>Axes position units. The units used to interpret
+        the Size and Padding options.</p></td>
+</tr>
+<tr valign="top">
+<td bgcolor="#F2F2F2"><p><tt>VerticalAlignment</tt></p></td>
+<td bgcolor="#F2F2F2"><p>'top' | {'middle'} | 'bottom'</p></td>
+<td bgcolor="#F2F2F2"><p>Vertical alignment of the new bounding box with
+        respect to Ghostscripts tight bounding box.</p></td>
+</tr>
+</tbody>
+</table>
+</p><h2>See Also<a name="4"></a></h2><p><a href="doc_epswrite.html"><tt>epswrite</tt></a>, <a href="doc_epsgetbbox.html"><tt>epsgetbbox</tt></a>.</p><p>Copyright 2012. Takeshi Ikuma. All rights reserved.</p><p class="footer"><br>
+      Published with MATLAB&reg; 7.11<br></p></div><!--
+##### SOURCE BEGIN #####
+%% epssetbbox
+% Adjust EPS bounding box.
+%
+%% Syntax
+%  epssetbbox(epsfile)
+%  epssetbbox(epsfile, outfile)
+%  epssetbbox(..., Param1, Value1, Param2, Value2,...)
+%
+%% Description
+% |epssetbbox(epsfile)| modifies the bounding box (as a 4-element vector
+% |[left bottom right top]|) of the EPS file specified by the file name
+% |epsfile| to the tightest possible according to Ghostscript.
+%
+% Note: This function removes the embedded preview image (TIFF or WMF).
+%
+% |epssetbbox(epsfile, outfile)| saves the modified EPS data to a file
+% specified by the string |outfile|.
+%
+% |epssetbbox(..., 'Param1', Value1, 'Param2', Value2,...) sets any of the
+% following option parameters.
+%
+%% Parameters
+% The following table lists the available optional parameters.
+%
+% <html>
+% <table cellspacing="0" class="body" cellpadding="4" % border="2">
+% <colgroup>
+% <col width="20%">
+% <col width="40%">
+% <col width="40%">
+% </colgroup>
+% <thead>
+% <tr valign="top">
+% <th bgcolor="#B2B2B2"><p>Option</p></th>
+% <th bgcolor="#B2B2B2"><p>Value</p></th>
+% <th bgcolor="#B2B2B2"><p>Description</p></th>
+% </tr>
+% </thead>
+% <tbody>
+% <tr valign="top">
+% <td bgcolor="#F2F2F2"><p><tt>HorizontalAlignment</tt></p></td>
+% <td bgcolor="#F2F2F2"><p>'left | {'center'} | 'right'</p></td>
+% <td bgcolor="#F2F2F2"><p>Horizontal alignment of the new bounding box with
+%         respect to Ghostscripts tight bounding box.</p></td>
+% </tr>
+% <tr valign="top">
+% <td bgcolor="#F2F2F2"><p><tt>Padding</tt></p></td>
+% <td bgcolor="#F2F2F2"><p>4-element vector {<tt>[0 0 0 0]</tt>}</p></td>
+% <td bgcolor="#F2F2F2"><p><tt>[left bottom right top]</tt>
+%         Padding around Ghostscript tight bound. Negative value crops the bound.</p></td>
+% </tr>
+% <tr valign="top">
+% <td bgcolor="#F2F2F2"><p><tt>Size</tt></p></td>
+% <td bgcolor="#F2F2F2"><p>2-element positive vector</p></td>
+% <td bgcolor="#F2F2F2"><p><tt>[W H]</tt>
+%         Specifies the size (width in |W| and height in |H|)
+%         of bounding box. The default is the tightest bound set by Ghostscript.</p></td>
+% </tr>
+% <tr valign="top">
+% <td bgcolor="#F2F2F2"><p><tt>Units</tt></p></td>
+% <td bgcolor="#F2F2F2"><p>{<tt>'color'</tt>} | <tt>'gray'</tt> | <tt>'mono'</tt></p></td>
+% <td bgcolor="#F2F2F2"><p>Axes position units. The units used to interpret
+%         the Size and Padding options.</p></td>
+% </tr>
+% <tr valign="top">
+% <td bgcolor="#F2F2F2"><p><tt>VerticalAlignment</tt></p></td>
+% <td bgcolor="#F2F2F2"><p>'top' | {'middle'} | 'bottom'</p></td>
+% <td bgcolor="#F2F2F2"><p>Vertical alignment of the new bounding box with
+%         respect to Ghostscripts tight bounding box.</p></td>
+% </tr>
+% </tbody>
+% </table>
+% </html>
+%
+%% See Also
+% <doc_epswrite.html |epswrite|>, <doc_epsgetbbox.html |epsgetbbox|>.
+%
+% Copyright 2012. Takeshi Ikuma. All rights reserved.
+
+##### SOURCE END #####
+--></body></html>

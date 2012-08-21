@@ -1,0 +1,104 @@
+
+<!DOCTYPE html
+  PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html><head>
+      <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+   <!--
+This HTML was auto-generated from MATLAB code.
+To make changes, update the MATLAB code and republish this document.
+      --><title>epsfontpath</title><meta name="generator" content="MATLAB 7.11"><link rel="schema.DC" href="http://purl.org/dc/elements/1.1/"><meta name="DC.date" content="2012-05-07"><meta name="DC.source" content="doc_epsfontpath.m"><style type="text/css">
+
+body {
+  background-color: white;
+  margin:10px;
+}
+
+h1 {
+  color: #990000; 
+  font-size: x-large;
+}
+
+h2 {
+  color: #990000;
+  font-size: medium;
+}
+
+/* Make the text shrink to fit narrow windows, but not stretch too far in 
+wide windows. */ 
+p,h1,h2,div.content div {
+  max-width: 600px;
+  /* Hack for IE6 */
+  width: auto !important; width: 600px;
+}
+
+pre.codeinput {
+  background: #EEEEEE;
+  padding: 10px;
+}
+@media print {
+  pre.codeinput {word-wrap:break-word; width:100%;}
+} 
+
+span.keyword {color: #0000FF}
+span.comment {color: #228B22}
+span.string {color: #A020F0}
+span.untermstring {color: #B20000}
+span.syscmd {color: #B28C00}
+
+pre.codeoutput {
+  color: #666666;
+  padding: 10px;
+}
+
+pre.error {
+  color: red;
+}
+
+p.footer {
+  text-align: right;
+  font-size: xx-small;
+  font-weight: lighter;
+  font-style: italic;
+  color: gray;
+}
+
+  </style></head><body><div class="content"><h1>epsfontpath</h1><!--introduction--><p>Get/set PFB font search path.</p><!--/introduction--><h2>Contents</h2><div><ul><li><a href="#1">Syntax</a></li><li><a href="#2">Description</a></li><li><a href="#3">See Also</a></li></ul></div><h2>Syntax<a name="1"></a></h2><pre>epsfontpath()
+P = epsfontpath()
+epsfontpath(P)
+epsfontpath(P1, P2)</pre><h2>Description<a name="2"></a></h2><p><tt>epsfontpath</tt>, by itself, prettyprints the Type-1 font search path of EPS Utility Toolbox.</p><p><tt>P = epsfontpath</tt> returns a string containing the path in <tt>P</tt>.</p><p><tt>epsfontpath(P)</tt> changes the path to <tt>P</tt>. Like MATLAB's search path, multiple directories may be registered by concatenating them with path separator given by <tt>pathsep</tt>.</p><p><tt>epsfontpath(P1,P2)</tt> changes the path to the concatenation of the two path strings <tt>P1</tt> and <tt>P2</tt>. Thus, <tt>epsfontpath(epsfontpath, P)</tt> appends a new directory to the current path and <tt>epsfontpath(P, epsfontpath)</tt> prepends a new directory. If <tt>P</tt> is already on the path, then <tt>epsfontpath(epsfontpath, P)</tt> moves <tt>P</tt> to the end of the path, and similarly, <tt>epsfontpath(P, epsfontpath)</tt> moves P to the beginning of the path.</p><h2>See Also<a name="3"></a></h2><p><a href="doc_epsfontalias.html">epsfontalias</a>, <a href="doc_epssetup.html">epssetup</a>.</p><p>Copyright 2012. Takeshi Ikuma. All rights reserved.</p><p class="footer"><br>
+      Published with MATLAB&reg; 7.11<br></p></div><!--
+##### SOURCE BEGIN #####
+%% epsfontpath
+% Get/set PFB font search path.
+%
+%% Syntax
+%  epsfontpath()
+%  P = epsfontpath()
+%  epsfontpath(P)
+%  epsfontpath(P1, P2)
+%
+%% Description
+% |epsfontpath|, by itself, prettyprints the Type-1 font search path of EPS
+% Utility Toolbox.
+%
+% |P = epsfontpath| returns a string containing the path in |P|.
+%
+% |epsfontpath(P)| changes the path to |P|. Like MATLAB's search path,
+% multiple directories may be registered by concatenating them with path
+% separator given by |pathsep|.
+%
+% |epsfontpath(P1,P2)| changes the path to the concatenation of the two
+% path strings |P1| and |P2|. Thus, |epsfontpath(epsfontpath, P)| appends a
+% new directory to the current path and |epsfontpath(P, epsfontpath)|
+% prepends a new directory. If |P| is already on the path, then
+% |epsfontpath(epsfontpath, P)| moves |P| to the end of the path, and
+% similarly, |epsfontpath(P, epsfontpath)| moves P to the beginning of the
+% path.
+%
+%% See Also 
+% <doc_epsfontalias.html epsfontalias>, <doc_epssetup.html epssetup>.
+%
+% Copyright 2012. Takeshi Ikuma. All rights reserved.
+
+##### SOURCE END #####
+--></body></html>

@@ -1,0 +1,57 @@
+<?xml version='1.0' encoding="utf-8"?>
+
+<toc version="2.0">
+<!-- First tocitem specifies top level in Help browser Contents pane -->
+<!-- This can be a roadmap page, as shown below, or a content page -->
+<tocitem target="epsutil_functions_by_cat.html">EPS Utility Toolbox
+    <tocitem target="epsutil_functions_by_cat.html" image="HelpIcon.FUNCTION">Functions
+        <tocitem target="epsutil_functions_by_cat.html#1">
+            Toolbox Setup and Configuration
+            <tocitem target="doc_epssetup.html">epssetup
+            </tocitem>
+            <tocitem target="doc_epsfontpath.html">epsfontpath
+            </tocitem>
+            <tocitem target="doc_epsfontalias.html">epsfontalias
+            </tocitem>
+            <tocitem target="doc_epsfontlist.html">epsfontlist
+            </tocitem>
+        </tocitem>
+
+        <tocitem target="epsutil_functions_by_cat.html#2">
+            EPS File Generation and Conversion
+            <tocitem target="doc_epswrite.html">epswrite
+            </tocitem>
+            <tocitem target="doc_eps2raster.html">eps2raster
+            </tocitem>
+        </tocitem>
+
+        <tocitem target="epsutil_functions_by_cat.html#3">
+            EPS File Manipulation
+            <tocitem target="doc_epsembedfont.html">epsembedfont
+            </tocitem>
+            <tocitem target="doc_epspreview.html">epspreview
+            </tocitem>
+            <tocitem target="doc_epssetbbox.html">epssetbbox
+            </tocitem>
+            <tocitem target="doc_epssetbgcolor.html">epssetbgcolor
+            </tocitem>
+            <tocitem target="doc_epssetlinestyle.html">epssetlinestyle
+            </tocitem>
+        </tocitem>
+
+        <tocitem target="epsutil_functions_by_cat.html#4">
+            EPS File Information
+            <tocitem target="doc_epsgetbbox.html">epsgetbbox
+            </tocitem>
+            <tocitem target="doc_epsgetfonts.html">epsgetfont
+            </tocitem>
+        </tocitem>
+
+        <!-- Optional link or links to your or other Web sites -->
+        <tocitem target="http://www.mathworks.com/matlabcentral/fileexchange/35429-eps-utility-toolbox" 
+                 image="$toolbox/matlab/icons/webicon.gif">
+        EPS Utility Toolbox on MATLAB File Exchange
+        </tocitem>
+    </tocitem>
+</tocitem>
+</toc>

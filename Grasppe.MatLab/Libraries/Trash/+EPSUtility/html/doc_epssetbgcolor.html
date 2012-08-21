@@ -1,0 +1,91 @@
+
+<!DOCTYPE html
+  PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html><head>
+      <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+   <!--
+This HTML was auto-generated from MATLAB code.
+To make changes, update the MATLAB code and republish this document.
+      --><title>epssetbgcolor</title><meta name="generator" content="MATLAB 7.11"><link rel="schema.DC" href="http://purl.org/dc/elements/1.1/"><meta name="DC.date" content="2012-05-07"><meta name="DC.source" content="doc_epssetbgcolor.m"><style type="text/css">
+
+body {
+  background-color: white;
+  margin:10px;
+}
+
+h1 {
+  color: #990000; 
+  font-size: x-large;
+}
+
+h2 {
+  color: #990000;
+  font-size: medium;
+}
+
+/* Make the text shrink to fit narrow windows, but not stretch too far in 
+wide windows. */ 
+p,h1,h2,div.content div {
+  max-width: 600px;
+  /* Hack for IE6 */
+  width: auto !important; width: 600px;
+}
+
+pre.codeinput {
+  background: #EEEEEE;
+  padding: 10px;
+}
+@media print {
+  pre.codeinput {word-wrap:break-word; width:100%;}
+} 
+
+span.keyword {color: #0000FF}
+span.comment {color: #228B22}
+span.string {color: #A020F0}
+span.untermstring {color: #B20000}
+span.syscmd {color: #B28C00}
+
+pre.codeoutput {
+  color: #666666;
+  padding: 10px;
+}
+
+pre.error {
+  color: red;
+}
+
+p.footer {
+  text-align: right;
+  font-size: xx-small;
+  font-weight: lighter;
+  font-style: italic;
+  color: gray;
+}
+
+  </style></head><body><div class="content"><h1>epssetbgcolor</h1><!--introduction--><p>Customize background color of MATLAB-generated EPS file.</p><!--/introduction--><h2>Contents</h2><div><ul><li><a href="#1">Syntax</a></li><li><a href="#2">Description</a></li><li><a href="#3">See Also</a></li></ul></div><h2>Syntax<a name="1"></a></h2><pre>epssetbgcolor(epsfile, colorspec)
+epssetbgcolor(epsfile, outfile, colorspec)</pre><h2>Description<a name="2"></a></h2><p><tt>epssetbgcolor(epsfile, colorspec)</tt> modifies the background color of the MATLAB-generated EPS file specified by <tt>epsfile</tt> to the 3-element <tt>colorspec</tt> vector of RGB values. Alternatively, <tt>colorspec</tt> may be set to 'none' to have transparent background.</p><p><tt>epssetbgcolor(epsfile, outfile, colorspec) saves the modified EPS data to a file specified by the string |outfile</tt>.</p><h2>See Also<a name="3"></a></h2><p><a href="doc_epswrite.html"><tt>epswrite</tt></a>.</p><p>Copyright 2012. Takeshi Ikuma. All rights reserved.</p><p class="footer"><br>
+      Published with MATLAB&reg; 7.11<br></p></div><!--
+##### SOURCE BEGIN #####
+%% epssetbgcolor
+% Customize background color of MATLAB-generated EPS file.
+%
+%% Syntax
+%  epssetbgcolor(epsfile, colorspec)
+%  epssetbgcolor(epsfile, outfile, colorspec)
+%
+%% Description
+% |epssetbgcolor(epsfile, colorspec)| modifies the background color of the
+% MATLAB-generated EPS file specified by |epsfile| to the 3-element
+% |colorspec| vector of RGB values. Alternatively, |colorspec| may be set
+% to 'none' to have transparent background.
+%
+% |epssetbgcolor(epsfile, outfile, colorspec) saves the modified EPS data to
+% a file specified by the string |outfile|.
+%
+%% See Also
+% <doc_epswrite.html |epswrite|>.
+%
+% Copyright 2012. Takeshi Ikuma. All rights reserved.
+
+##### SOURCE END #####
+--></body></html>

@@ -1,0 +1,40 @@
+GetJFrame - Retrieves a figure's underlying Java frame
+by Yair Altman
+ 
+04 Aug 2007 (Updated 13 Aug 2007)
+Enable multiple window callbacks and properties not exposed by Matlab
+
+Description	
+Syntax: 
+  jframe = getjframe(hFig)
+
+Description: 
+GETJFRAME retrieves the current figure (gcf)'s underlying Java frame, thus enabling access to all 35 figure callbacks that are not exposed by Matlab's figure.
+
+Notable callbacks include: FocusGainedCallback, FocusLostCallback, KeyPressedCallback, KeyReleasedCallback, MouseEnteredCallback, MouseExitedCallback, MousePressedCallback, MouseReleasedCallback, WindowActivatedCallback, WindowClosedCallback, WindowClosingCallback, WindowOpenedCallback, WindowStateChangedCallback and 22 others.
+
+The returned jframe object also allows access to other useful window features: 'AlwaysOnTop', 'CloseOnEscapeEnabled', 'Resizable', 'Enabled', 'HWnd' (for those interested in Windows integration) etc. Type "get(jframe)" to see the full list of properties.
+
+GETJFRAME(hFig) retrieves a specific figure's underlying Java frame. hFig is a Matlab handle, or a list of handles (not necesarily figure handle(s) - the handles' containing figure is used).
+
+Examples: 
+get(getjframe,'ListOfCallbacks'); %display list of supported callbacks 
+set(getjframe,'WindowStateChangedCallback','disp(''Window min/maxed'')') 
+set(getjframe,'WindowDeiconifiedCallback',@winMaximizedCallback) 
+set(getjframe,'WindowIconifiedCallback',{@winMinimizedCallback,mydata}) 
+set(getjframe,'CloseOnEscapeEnabled','on') 
+jframes = getjframe([gcf,hButton]); % get 2 java frames, from 2 figures
+
+Bugs and suggestions: 
+Please send to Yair Altman (altmany at gmail dot com)
+
+Acknowledgements	
+The author wishes to acknowledge the following in the creation of this submission:
+FindJObj - find java handles of Matlab graphic objects 
+This submission has inspired the following:
+getHWnd - retrieve the underlying Windows handle for Matlab figure(s), enable/disable figure, blurFigure - blurs and prevents interaction on a figure window
+
+MATLAB release	 MATLAB 7.4 (R2007a)
+Other requirements	Java should be enabled (which it is normally)
+
+http://www.mathworks.com/matlabcentral/fileexchange/15830-getjframe-retrieves-a-figures-underlying-java-frame

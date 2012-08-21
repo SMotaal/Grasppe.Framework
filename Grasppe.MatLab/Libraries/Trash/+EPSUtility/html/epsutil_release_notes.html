@@ -1,0 +1,139 @@
+
+<!DOCTYPE html
+  PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html><head>
+      <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+   <!--
+This HTML was auto-generated from MATLAB code.
+To make changes, update the MATLAB code and republish this document.
+      --><title>Upslope Area Toolbox Release Notes</title><meta name="generator" content="MATLAB 7.11"><link rel="schema.DC" href="http://purl.org/dc/elements/1.1/"><meta name="DC.date" content="2012-05-07"><meta name="DC.source" content="epsutil_release_notes.m"><style type="text/css">
+
+body {
+  background-color: white;
+  margin:10px;
+}
+
+h1 {
+  color: #990000; 
+  font-size: x-large;
+}
+
+h2 {
+  color: #990000;
+  font-size: medium;
+}
+
+/* Make the text shrink to fit narrow windows, but not stretch too far in 
+wide windows. */ 
+p,h1,h2,div.content div {
+  max-width: 600px;
+  /* Hack for IE6 */
+  width: auto !important; width: 600px;
+}
+
+pre.codeinput {
+  background: #EEEEEE;
+  padding: 10px;
+}
+@media print {
+  pre.codeinput {word-wrap:break-word; width:100%;}
+} 
+
+span.keyword {color: #0000FF}
+span.comment {color: #228B22}
+span.string {color: #A020F0}
+span.untermstring {color: #B20000}
+span.syscmd {color: #B28C00}
+
+pre.codeoutput {
+  color: #666666;
+  padding: 10px;
+}
+
+pre.error {
+  color: red;
+}
+
+p.footer {
+  text-align: right;
+  font-size: xx-small;
+  font-weight: lighter;
+  font-style: italic;
+  color: gray;
+}
+
+  </style></head><body><div class="content"><h1>Upslope Area Toolbox Release Notes</h1><!--introduction--><p>This example toolbox implements the Tarboton method for computing upslope area and related measurements on a digital elevation model (DEM).</p><p>The Upslope Area Toolbox requires Image Processing Toolbox&#8482;.</p><!--/introduction--><h2>Contents</h2><div><ul><li><a href="#1">References</a></li><li><a href="#2">Version 2.0, 09-Dec-2009</a></li><li><a href="#3">Version 1.4.2, 16-Sep-2009</a></li><li><a href="#4">Version 1.4.1, 10-Mar-2009</a></li><li><a href="#5">Version 1.4, 25-Sep-2008</a></li><li><a href="#6">Version 1.3, 14-Feb-2008</a></li><li><a href="#7">Version 1.2, 02-Oct-2007</a></li><li><a href="#8">Version 1.1, 06-Aug-2007</a></li><li><a href="#9">Version 1.0, 02-Aug-2007</a></li></ul></div><h2>References<a name="1"></a></h2><p>Algorithm: David G. Tarboton, "A new method for the determination of flow directions and upslope areas in grid digital elevation models," <i>Water Resources Research</i>, vol. 33, no. 2, pp. 309-319, February 1997. <a href="http://www.engineering.usu.edu/cee/faculty/dtarb/96wr03137.pdf">http://www.engineering.usu.edu/cee/faculty/dtarb/96wr03137.pdf</a></p><p>Reference: "Steve on Image Processing," upslope area algorithm development series. <a href="http://blogs.mathworks.com/steve/category/upslope-area/">http://blogs.mathworks.com/steve/category/upslope-area/</a></p><p>The latest version of this fully functional toolbox is available on <a href="http://www.mathworks.com/matlabcentral/fileexchange/15818">MATLAB Central File Exchange</a>.</p><h2>Version 2.0, 09-Dec-2009<a name="2"></a></h2><div><ul><li>Modify <tt>fillSinks</tt> to handle input DEMs containing border NaNs.</li><li>Modify <tt>visMap</tt> to accept two input arguments, in which case no starting or ending DEM locations are shown in blue.</li><li>Functions renamed to use camel-case instead of underscores.  (To use the original function names, put the folder version_1 on the MATLAB path.)</li><li>New documentation written and integrated into MATLAB Help Browser.</li></ul></div><h2>Version 1.4.2, 16-Sep-2009<a name="3"></a></h2><div><ul><li>Updated unit tests to use <tt>assertElementsAlmostEqual</tt>.</li></ul></div><h2>Version 1.4.1, 10-Mar-2009<a name="4"></a></h2><div><ul><li>Fixed help typo in <tt>dependence_map</tt>.</li><li>Allowed input matrix E to contain NaNs in <tt>postprocess_plateaus</tt>.</li><li>Added unit test directory.</li></ul></div><h2>Version 1.4, 25-Sep-2008<a name="5"></a></h2><div><ul><li>Modified <tt>fill_sinks</tt> to call <tt>imfill</tt> with 8-connectivity   instead of 4-connectivity.</li></ul></div><h2>Version 1.3, 14-Feb-2008<a name="6"></a></h2><div><ul><li>Improved handling of groups of NaNs that touch the DEM border   so that the <tt>dependence_map</tt> and <tt>influence_map</tt> calculations are   correct.  Now <tt>flow_matrix</tt> is computed so that border NaN pixels   have zero flow weights to and from all their neighbors.  As a   nice side effect of the change, <tt>flow_matrix</tt> is now faster   for datasets that have border NaN pixels.</li></ul></div><h2>Version 1.2, 02-Oct-2007<a name="7"></a></h2><div><ul><li>Changed handling of groups of NaNs that touch the DEM border.</li><li>Added <tt>border_nans</tt> function.</li></ul></div><h2>Version 1.1, 06-Aug-2007<a name="8"></a></h2><div><ul><li>Incompatible change made to <tt>upslope_area</tt>.  This function no longer   "flattens" the upslope areas computed for plateaus.</li><li>New function: <tt>postprocess_plateaus</tt>.  This function flattens the upslope   areas computed for plateaus.  This function was formerly a part of   <tt>upslope_area</tt>.</li></ul></div><h2>Version 1.0, 02-Aug-2007<a name="9"></a></h2><p>Initial release</p><p class="footer">Copyright 2007-2009 The MathWorks, Inc.<br>
+      Published with MATLAB&reg; 7.11<br></p></div><!--
+##### SOURCE BEGIN #####
+%% Upslope Area Toolbox Release Notes
+% This example toolbox implements the Tarboton method for computing upslope
+% area and related measurements on a digital elevation model (DEM).
+%
+% The Upslope Area Toolbox requires Image Processing Toolbox(TM).
+% 
+%% References
+% Algorithm: David G. Tarboton, "A new method for the
+% determination of flow directions and upslope areas in grid
+% digital elevation models," _Water Resources Research_, vol. 33,
+% no. 2, pp. 309-319, February 1997.
+% http://www.engineering.usu.edu/cee/faculty/dtarb/96wr03137.pdf
+%
+% Reference: "Steve on Image Processing," upslope area algorithm development
+% series. http://blogs.mathworks.com/steve/category/upslope-area/
+%
+% The latest version of this fully functional toolbox is available on
+% <http://www.mathworks.com/matlabcentral/fileexchange/15818 MATLAB Central File
+% Exchange>. 
+%
+%% Version 2.0, 09-Dec-2009
+%
+% * Modify |fillSinks| to handle input DEMs containing border NaNs.
+% * Modify |visMap| to accept two input arguments, in which case no starting or
+% ending DEM locations are shown in blue.
+% * Functions renamed to use camel-case instead of underscores.  (To use the
+% original function names, put the folder version_1 on the MATLAB path.)
+% * New documentation written and integrated into MATLAB Help Browser.
+%
+%% Version 1.4.2, 16-Sep-2009
+% 
+% * Updated unit tests to use |assertElementsAlmostEqual|.
+% 
+%% Version 1.4.1, 10-Mar-2009
+% 
+% * Fixed help typo in |dependence_map|. 
+% * Allowed input matrix E to contain NaNs in |postprocess_plateaus|. 
+% * Added unit test directory.
+% 
+%% Version 1.4, 25-Sep-2008
+% 
+% * Modified |fill_sinks| to call |imfill| with 8-connectivity
+%   instead of 4-connectivity.
+% 
+%% Version 1.3, 14-Feb-2008
+% 
+% * Improved handling of groups of NaNs that touch the DEM border
+%   so that the |dependence_map| and |influence_map| calculations are
+%   correct.  Now |flow_matrix| is computed so that border NaN pixels
+%   have zero flow weights to and from all their neighbors.  As a
+%   nice side effect of the change, |flow_matrix| is now faster
+%   for datasets that have border NaN pixels.
+% 
+%% Version 1.2, 02-Oct-2007
+% 
+% * Changed handling of groups of NaNs that touch the DEM border. 
+% * Added |border_nans| function.
+% 
+%% Version 1.1, 06-Aug-2007
+% 
+% * Incompatible change made to |upslope_area|.  This function no longer
+%   "flattens" the upslope areas computed for plateaus. 
+% * New function: |postprocess_plateaus|.  This function flattens the upslope
+%   areas computed for plateaus.  This function was formerly a part of
+%   |upslope_area|. 
+% 
+%% Version 1.0, 02-Aug-2007
+% Initial release
+%
+% Copyright 2007-2009 The MathWorks, Inc.
+##### SOURCE END #####
+--></body></html>

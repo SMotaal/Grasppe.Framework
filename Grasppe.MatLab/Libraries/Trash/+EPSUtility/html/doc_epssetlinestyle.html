@@ -1,0 +1,238 @@
+
+<!DOCTYPE html
+  PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html><head>
+      <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+   <!--
+This HTML was auto-generated from MATLAB code.
+To make changes, update the MATLAB code and republish this document.
+      --><title>epssetlinestyle</title><meta name="generator" content="MATLAB 7.11"><link rel="schema.DC" href="http://purl.org/dc/elements/1.1/"><meta name="DC.date" content="2012-05-07"><meta name="DC.source" content="doc_epssetlinestyle.m"><style type="text/css">
+
+body {
+  background-color: white;
+  margin:10px;
+}
+
+h1 {
+  color: #990000; 
+  font-size: x-large;
+}
+
+h2 {
+  color: #990000;
+  font-size: medium;
+}
+
+/* Make the text shrink to fit narrow windows, but not stretch too far in 
+wide windows. */ 
+p,h1,h2,div.content div {
+  max-width: 600px;
+  /* Hack for IE6 */
+  width: auto !important; width: 600px;
+}
+
+pre.codeinput {
+  background: #EEEEEE;
+  padding: 10px;
+}
+@media print {
+  pre.codeinput {word-wrap:break-word; width:100%;}
+} 
+
+span.keyword {color: #0000FF}
+span.comment {color: #228B22}
+span.string {color: #A020F0}
+span.untermstring {color: #B20000}
+span.syscmd {color: #B28C00}
+
+pre.codeoutput {
+  color: #666666;
+  padding: 10px;
+}
+
+pre.error {
+  color: red;
+}
+
+p.footer {
+  text-align: right;
+  font-size: xx-small;
+  font-weight: lighter;
+  font-style: italic;
+  color: gray;
+}
+
+  </style></head><body><div class="content"><h1>epssetlinestyle</h1><!--introduction--><p>Customize line styles in MATLAB-generated EPS files</p><!--/introduction--><h2>Contents</h2><div><ul><li><a href="#1">Syntax</a></li><li><a href="#2">Description</a></li><li><a href="#3">Parameters</a></li><li><a href="#4">Example</a></li><li><a href="#5">See Also</a></li></ul></div><h2>Syntax<a name="1"></a></h2><pre>epssetlinestyle(epsfile, 'Param1', Value1, 'Param2', Value2,...)
+epssetlinestyle(epfile, outfile, 'Param1', Value1, 'Param2', Value2,...)</pre><h2>Description<a name="2"></a></h2><p><tt>epssetlinestyle(epsfile)</tt> modifies the line style specification of the MATLAB-generated EPS file specified by <tt>epsfile</tt> as specified by the specified parameter-value pairs.</p><p><tt>epssetlinestyle(epsfile, outfile, 'Param1', Value1, 'Param2', Value2,...)</tt> saves the modified EPS data to a file specified by the string <tt>outfile</tt>.</p><p>All MATLAB line styles other than solid can be modified using this function. In addition, the grid line style is set independently if the EPS file is generated using <a href="doc_epswrite.html"><tt>epswrite</tt></a>.</p><p>For each line styles  The elements of the vectors specified for Pattern parameters alternately specify the length of a dash and the length of a gap between dashes, expressed in points. The EPS interpreter uses these elements cyclically; when it reaches the end of the vector, it starts again at the beginning.</p><p>The Offset parameters can be thought of as the &#8220;phase&#8221; of the dash pattern relative to the start of the path. It is interpreted as a distance into the dash pattern (measured in points) at which to start the pattern.</p><p>For more details on PostScript line styles, see setdash postscript operator in <a href="http://www.adobe.com/products/postscript/pdfs/PLRM.pdf">PostScript Language Reference Manual</a>.</p><h2>Parameters<a name="3"></a></h2><p>The following table lists the available option parameters.</p><p>
+<table cellspacing="0" class="body" cellpadding="4" % border="2">
+<colgroup>
+<col width="20%">
+<col width="40%">
+<col width="40%">
+</colgroup>
+<thead>
+<tr valign="top">
+<th bgcolor="#B2B2B2"><p>Option</p></th>
+<th bgcolor="#B2B2B2"><p>Value</p></th>
+<th bgcolor="#B2B2B2"><p>Description</p></th>
+</tr>
+</thead>
+<tbody>
+<tr valign="top">
+<td bgcolor="#F2F2F2"><p><tt>DotPattern</tt></p></td>
+<td bgcolor="#F2F2F2"><p>positive integer vector {<tt>[3]</tt>}</p></td>
+<td bgcolor="#F2F2F2"><p>The line pattern for dotted line</p></td>
+</tr>
+<tr valign="top">
+<td bgcolor="#F2F2F2"><p><tt>DotOffset</tt></p></td>
+<td bgcolor="#F2F2F2"><p>nonnegative integer {<tt>[0]</tt>}</p></td>
+<td bgcolor="#F2F2F2"><p>The offset of the dotted line pattern</p></td>
+</tr>
+<tr valign="top">
+<td bgcolor="#F2F2F2"><p><tt>DashPattern</tt></p></td>
+<td bgcolor="#F2F2F2"><p>positive integer vector {<tt>[6 2]</tt>}</p></td>
+<td bgcolor="#F2F2F2"><p>The line pattern for dashed line</p></td>
+</tr>
+<tr valign="top">
+<td bgcolor="#F2F2F2"><p><tt>DashOffset</tt></p></td>
+<td bgcolor="#F2F2F2"><p>nonnegative integer {<tt>[0]</tt>}</p></td>
+<td bgcolor="#F2F2F2"><p>The offset of the dashed line pattern</p></td>
+</tr>
+<tr valign="top">
+<td bgcolor="#F2F2F2"><p><tt>DashDotPattern</tt></p></td>
+<td bgcolor="#F2F2F2"><p>positive integer vector {<tt>[6 2 2 2]</tt>}</p></td>
+<td bgcolor="#F2F2F2"><p>The line pattern for dash-dot line</p></td>
+</tr>
+<tr valign="top">
+<td bgcolor="#F2F2F2"><p><tt>DashDotOffset</tt></p></td>
+<td bgcolor="#F2F2F2"><p>nonnegative integer {<tt>[0]</tt>}</p></td>
+<td bgcolor="#F2F2F2"><p>The offset of the dash-dot line pattern</p></td>
+</tr>
+<tr valign="top">
+<td bgcolor="#F2F2F2"><p><tt>GridPattern</tt></p></td>
+<td bgcolor="#F2F2F2"><p>positive integer vector {<tt>[3]</tt>}</p></td>
+<td bgcolor="#F2F2F2"><p>The line pattern for axes grid lines</p></td>
+</tr>
+<tr valign="top">
+<td bgcolor="#F2F2F2"><p><tt>GridOffset</tt></p></td>
+<td bgcolor="#F2F2F2"><p>nonnegative integer {<tt>[0]</tt>}</p></td>
+<td bgcolor="#F2F2F2"><p>The offset of the axes grid line pattern</p></td>
+</tr>
+</tbody>
+</table>
+</p><h2>Example<a name="4"></a></h2><p>To set line styles to <a href="http://www.mathworks.com/matlabcentral/fileexchange/17928">Jiro Doke's default</a> in the EPS file specified by <tt>epsfile</tt>:</p><pre>epssetlinestyle(epsfile, 'DotPattern', 3, 'DotOffset', 0, ...
+ 'DashPattern', 6, 'DashOffset', 0, 'DashDotPattern', [6 2 2 2], ...
+ 'DashDotOffset', 0, 'GridPattern', [3 2], 'GridOffset', 0);</pre><h2>See Also<a name="5"></a></h2><p><a href="doc_epswrite.html"><tt>epswrite</tt></a>.</p><p>Copyright 2012. Takeshi Ikuma. All rights reserved.</p><p class="footer"><br>
+      Published with MATLAB&reg; 7.11<br></p></div><!--
+##### SOURCE BEGIN #####
+%% epssetlinestyle
+% Customize line styles in MATLAB-generated EPS files
+%
+%% Syntax
+%  epssetlinestyle(epsfile, 'Param1', Value1, 'Param2', Value2,...)
+%  epssetlinestyle(epfile, outfile, 'Param1', Value1, 'Param2', Value2,...)
+%
+%% Description
+% |epssetlinestyle(epsfile)| modifies the line style specification of the
+% MATLAB-generated EPS file specified by |epsfile| as specified by the
+% specified parameter-value pairs.
+%
+% |epssetlinestyle(epsfile, outfile, 'Param1', Value1, 'Param2', Value2,...)|
+% saves the modified EPS data to a file specified by the string |outfile|.
+%
+% All MATLAB line styles other than solid can be modified using this
+% function. In addition, the grid line style is set independently if the
+% EPS file is generated using <doc_epswrite.html |epswrite|>.
+%
+% For each line styles  The elements of the vectors specified for Pattern
+% parameters alternately specify the length of a dash and the length of a
+% gap between dashes, expressed in points. The EPS interpreter uses these
+% elements cyclically; when it reaches the end of the vector, it starts
+% again at the beginning.
+%
+% The Offset parameters can be thought of as the “phase” of the dash
+% pattern relative to the start of the path. It is interpreted as a
+% distance into the dash pattern (measured in points) at which to start
+% the pattern.
+%
+% For more details on PostScript line styles, see setdash postscript operator in 
+% <http://www.adobe.com/products/postscript/pdfs/PLRM.pdf PostScript Language Reference Manual>.
+%
+%% Parameters
+% The following table lists the available option parameters.
+%
+% <html>
+% <table cellspacing="0" class="body" cellpadding="4" % border="2">
+% <colgroup>
+% <col width="20%">
+% <col width="40%">
+% <col width="40%">
+% </colgroup>
+% <thead>
+% <tr valign="top">
+% <th bgcolor="#B2B2B2"><p>Option</p></th>
+% <th bgcolor="#B2B2B2"><p>Value</p></th>
+% <th bgcolor="#B2B2B2"><p>Description</p></th>
+% </tr>
+% </thead>
+% <tbody>
+% <tr valign="top">
+% <td bgcolor="#F2F2F2"><p><tt>DotPattern</tt></p></td>
+% <td bgcolor="#F2F2F2"><p>positive integer vector {<tt>[3]</tt>}</p></td>
+% <td bgcolor="#F2F2F2"><p>The line pattern for dotted line</p></td>
+% </tr>
+% <tr valign="top">
+% <td bgcolor="#F2F2F2"><p><tt>DotOffset</tt></p></td>
+% <td bgcolor="#F2F2F2"><p>nonnegative integer {<tt>[0]</tt>}</p></td>
+% <td bgcolor="#F2F2F2"><p>The offset of the dotted line pattern</p></td>
+% </tr>
+% <tr valign="top">
+% <td bgcolor="#F2F2F2"><p><tt>DashPattern</tt></p></td>
+% <td bgcolor="#F2F2F2"><p>positive integer vector {<tt>[6 2]</tt>}</p></td>
+% <td bgcolor="#F2F2F2"><p>The line pattern for dashed line</p></td>
+% </tr>
+% <tr valign="top">
+% <td bgcolor="#F2F2F2"><p><tt>DashOffset</tt></p></td>
+% <td bgcolor="#F2F2F2"><p>nonnegative integer {<tt>[0]</tt>}</p></td>
+% <td bgcolor="#F2F2F2"><p>The offset of the dashed line pattern</p></td>
+% </tr>
+% <tr valign="top">
+% <td bgcolor="#F2F2F2"><p><tt>DashDotPattern</tt></p></td>
+% <td bgcolor="#F2F2F2"><p>positive integer vector {<tt>[6 2 2 2]</tt>}</p></td>
+% <td bgcolor="#F2F2F2"><p>The line pattern for dash-dot line</p></td>
+% </tr>
+% <tr valign="top">
+% <td bgcolor="#F2F2F2"><p><tt>DashDotOffset</tt></p></td>
+% <td bgcolor="#F2F2F2"><p>nonnegative integer {<tt>[0]</tt>}</p></td>
+% <td bgcolor="#F2F2F2"><p>The offset of the dash-dot line pattern</p></td>
+% </tr>
+% <tr valign="top">
+% <td bgcolor="#F2F2F2"><p><tt>GridPattern</tt></p></td>
+% <td bgcolor="#F2F2F2"><p>positive integer vector {<tt>[3]</tt>}</p></td>
+% <td bgcolor="#F2F2F2"><p>The line pattern for axes grid lines</p></td>
+% </tr>
+% <tr valign="top">
+% <td bgcolor="#F2F2F2"><p><tt>GridOffset</tt></p></td>
+% <td bgcolor="#F2F2F2"><p>nonnegative integer {<tt>[0]</tt>}</p></td>
+% <td bgcolor="#F2F2F2"><p>The offset of the axes grid line pattern</p></td>
+% </tr>
+% </tbody>
+% </table>
+% </html>
+%
+%% Example
+% To set line styles to
+% <http://www.mathworks.com/matlabcentral/fileexchange/17928 Jiro Doke's
+% default> in the EPS file specified by |epsfile|:
+%
+%  epssetlinestyle(epsfile, 'DotPattern', 3, 'DotOffset', 0, ...
+%   'DashPattern', 6, 'DashOffset', 0, 'DashDotPattern', [6 2 2 2], ...
+%   'DashDotOffset', 0, 'GridPattern', [3 2], 'GridOffset', 0);
+%
+%% See Also
+% <doc_epswrite.html |epswrite|>.
+%
+% Copyright 2012. Takeshi Ikuma. All rights reserved.
+
+##### SOURCE END #####
+--></body></html>

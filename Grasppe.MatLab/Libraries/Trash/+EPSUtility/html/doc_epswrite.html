@@ -1,0 +1,348 @@
+
+<!DOCTYPE html
+  PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html><head>
+      <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+   <!--
+This HTML was auto-generated from MATLAB code.
+To make changes, update the MATLAB code and republish this document.
+      --><title>epswrite</title><meta name="generator" content="MATLAB 7.11"><link rel="schema.DC" href="http://purl.org/dc/elements/1.1/"><meta name="DC.date" content="2012-05-07"><meta name="DC.source" content="doc_epswrite.m"><style type="text/css">
+
+body {
+  background-color: white;
+  margin:10px;
+}
+
+h1 {
+  color: #990000; 
+  font-size: x-large;
+}
+
+h2 {
+  color: #990000;
+  font-size: medium;
+}
+
+/* Make the text shrink to fit narrow windows, but not stretch too far in 
+wide windows. */ 
+p,h1,h2,div.content div {
+  max-width: 600px;
+  /* Hack for IE6 */
+  width: auto !important; width: 600px;
+}
+
+pre.codeinput {
+  background: #EEEEEE;
+  padding: 10px;
+}
+@media print {
+  pre.codeinput {word-wrap:break-word; width:100%;}
+} 
+
+span.keyword {color: #0000FF}
+span.comment {color: #228B22}
+span.string {color: #A020F0}
+span.untermstring {color: #B20000}
+span.syscmd {color: #B28C00}
+
+pre.codeoutput {
+  color: #666666;
+  padding: 10px;
+}
+
+pre.error {
+  color: red;
+}
+
+p.footer {
+  text-align: right;
+  font-size: xx-small;
+  font-weight: lighter;
+  font-style: italic;
+  color: gray;
+}
+
+  </style></head><body><div class="content"><h1>epswrite</h1><!--introduction--><p>Save figure as an EPS image</p><!--/introduction--><h2>Contents</h2><div><ul><li><a href="#1">Syntax</a></li><li><a href="#2">Description</a></li><li><a href="#3">Options</a></li><li><a href="#4">Example</a></li><li><a href="#5">See Also</a></li></ul></div><h2>Syntax<a name="1"></a></h2><pre>epswrite(filename)
+epswrite(H, filename)
+epsewrite(..., 'Param1', Value1, 'Param2', Value2,...)</pre><h2>Description<a name="2"></a></h2><p><tt>epswrite(filename)</tt> saves the current figure as a EPS image file specified by the string <tt>filename</tt>.</p><p><tt>epswrite(H, filename)</tt> outputs an EPS file of the figure specified by the handle <tt>H</tt>.</p><p><tt>epswrite(...,'Param1', Value1, 'Param2', Value2,...)</tt> creates an EPS file with the specific parameters (<tt>Param</tt>) have specified values. Any unspecified parameters are set to use the default value for that parameter.</p><h2>Options<a name="3"></a></h2><p>The following table lists the available option parameters.</p><p>
+<table cellspacing="0" class="body" cellpadding="4" % border="2">
+<colgroup>
+<col width="15%">
+<col width="20%">
+<col width="50%">
+<col width="15%">
+</colgroup>
+<thead>
+<tr valign="top">
+<th bgcolor="#B2B2B2"><p>Option</p></th>
+<th bgcolor="#B2B2B2"><p>Value</p></th>
+<th bgcolor="#B2B2B2"><p>Description</p></th>
+<th bgcolor="#B2B2B2"><p>Related <tt>print</tt> arguments</p></th>
+</tr>
+</thead>
+<tbody>
+<tr valign="top">
+<td bgcolor="#F2F2F2"><p><tt>Units</tt></p></td>
+<td bgcolor="#F2F2F2"><p><tt>'inches'</tt> | <tt>'centimeters'</tt> | <tt>'points'</tt></p></td>
+<td bgcolor="#F2F2F2"><p>Units for <tt>Size</tt> parameter. The figure's
+<tt>PaperUnits</tt> property is used as the default. </p></td>
+<td bgcolor="#F2F2F2"><p>n/a</p></td>
+</tr>
+<tr valign="top">
+<td bgcolor="#F2F2F2"><p><tt>Size</tt></p></td>
+<td bgcolor="#F2F2F2"><p><tt>[X Y]</tt> | <tt>'screen'</tt> | {<tt>'default'</tt>}</p></td>
+<td bgcolor="#F2F2F2"><p>The EPS image size. <tt>X</tt> and <tt>Y</tt>
+must be positive values, and <tt>Units</tt> property specifies the units
+of <tt>X</tt> and <tt>Y</tt>. <tt>'screen'</tt> prints the figure the
+same size as it appears on the computer screen. <tt>'default'</tt> uses
+the value from figure's <tt>PaperPosition</tt> property.</p></td>
+<td bgcolor="#F2F2F2"><p>n/a</p></td>
+</tr>
+<tr valign="top">
+<td bgcolor="#F2F2F2"><p><tt>Resolution</tt></p></td>
+<td bgcolor="#F2F2F2"><p>positive scalar</p></td>
+<td bgcolor="#F2F2F2"><p>Resolution in dots per inch. The default is
+<tt>864</tt> dpi if <tt>Renderer</tt> option is <tt>'painter'</tt>;
+otherwise, it is <tt>150</tt> dpi. If <tt>0</tt>, the resolution is set
+to MATLAB root's <tt>ScreenPixelsPerInch</tt> property. In
+<tt>Renderer</tt> is set to <tt>'painter'</tt>, <tt>Resolution</tt>
+changes the accuracy of object placement. For other <tt>Renderer</tt>
+options, it defines the raster dot resolution.</p></td>
+<td bgcolor="#F2F2F2"><p><tt>-r<i>number</i></tt></p></td>
+</tr>
+<tr valign="top">
+<td bgcolor="#F2F2F2"><p><tt>BgColor</tt></p></td>
+<td bgcolor="#F2F2F2"><p><tt>'figure'</tt> | <tt>'none'</tt> | 3-element RGB vector</p></td>
+<td bgcolor="#F2F2F2"><p>Figure background fill color. The default value
+is <tt>[1 1 1]</tt> (white). <tt>'figure'</tt> uses the figure's
+<tt>Color</tt> property value, and <tt>'none'</tt> removes the fill
+(i.e., transparent background). </p></td>
+<td bgcolor="#F2F2F2"><p>n/a</p></td>
+</tr>
+<tr valign="top">
+<td bgcolor="#F2F2F2"><p><tt>ColorSpace</tt></p></td>
+<td bgcolor="#F2F2F2"><p><tt>'mono'</tt> | {<tt>'rgb'</tt>} | <tt>'cmyk'</tt></p></td>
+<td bgcolor="#F2F2F2"><p>Output color space. <tt>'mono'</tt> prints in
+monochrome. <tt>'rgb'</tt> and <tt>'cmyk'</tt> both outputs color image,
+but in different color space: RGB (red-green-blue) vs. CMYK
+(cyan-magenta-yellow-black).
+</p></td>
+<td bgcolor="#F2F2F2"><p><tt>-deps</tt>, <tt>-depsc</tt>, <tt>-deps2</tt>, <tt>-depsc2</tt>, <tt>-cmyk</tt></p></td>
+</tr>
+<tr valign="top">
+<td bgcolor="#F2F2F2"><p><tt>PSDriver</tt></p></td>
+<td bgcolor="#F2F2F2"><p><tt>'level1'</tt> | {<tt>'level2'</tt>}</p></td>
+<td bgcolor="#F2F2F2"><p>PostScript level.
+</p></td>
+<td bgcolor="#F2F2F2"><p><tt>-deps</tt>, <tt>-depsc</tt>, <tt>-deps2</tt>, <tt>-depsc2</tt></p></td>
+</tr>
+<tr valign="top">
+<td bgcolor="#F2F2F2"><p><tt>TiffPreview</tt></p></td>
+<td bgcolor="#F2F2F2"><p><tt>'on'</tt> | {<tt>'off'</tt>}</p></td>
+<td bgcolor="#F2F2F2"><p><tt>'on'</tt> to add a 72-dpi TIFF preview. For
+different resolution, use <tt>epspreview</tt> function instead.
+</p></td>
+<td bgcolor="#F2F2F2"><p><tt>-tiff</tt></p></td>
+</tr>
+<tr valign="top">
+<td bgcolor="#F2F2F2"><p><tt>BoundingBox</tt></p></td>
+<td bgcolor="#F2F2F2"><p><tt>'tight'</tt> | {<tt>'loose'</tt>}</p></td>
+<td bgcolor="#F2F2F2"><p>Figure cropping mode. <tt>'loose'</tt> outputs
+the figure as is. <tt>'tight'</tt> crops the unused figure edge space.
+</p></td>
+<td bgcolor="#F2F2F2"><p><tt>-loose</tt></p></td>
+</tr>
+<tr valign="top">
+<td bgcolor="#F2F2F2"><p><tt>ShowUI</tt></p></td>
+<td bgcolor="#F2F2F2"><p>{<tt>'on'</tt>} | <tt>'off'</tt></p></td>
+<td bgcolor="#F2F2F2"><p>UI control display mode. <tt>'on'</tt> to
+display; <tt>'off'</tt> to hide.
+</p></td>
+<td bgcolor="#F2F2F2"><p><tt>-noui</tt></p></td>
+</tr>
+<tr valign="top">
+<td bgcolor="#F2F2F2"><p><tt>Renderer</tt></p></td>
+<td bgcolor="#F2F2F2"><p>{<tt>'painter'</tt>} | <tt>'opengl'</tt> | <tt>'zbuffer'</tt></p></td>
+<td bgcolor="#F2F2F2"><p>Output rendering mode. <tt>'painter'</tt>
+renders with Painter's algorihtm, <tt>opengl</tt> renders with OpenGL
+algorithm, and <tt>'zbuffer'</tt> renders with the Z-buffer algorithm.
+Only <tt>'painter'</tt> creates a vector image. Both <tt>opengl</tt> and
+<tt>zbuffer</tt> rasterizes the figure.
+</p></td>
+<td bgcolor="#F2F2F2"><p><tt>-painter</tt>, <tt>-opengl</tt>, <tt>-zbuffer</tt></p></td>
+</tr>
+<tr valign="top">
+<td bgcolor="#F2F2F2"><p><tt>EmbedFonts</tt></p></td>
+<td bgcolor="#F2F2F2"><p><tt>'none'</tt> | {<tt>'default'</tt>} | <tt>'addsymbol'</tt> | <tt>'all'</tt></p></td>
+<td bgcolor="#F2F2F2"><p>Font embedding mode. <tt>'none'</tt> de-embeds
+all fonts. <tt>'default'</tt> keeps the MATLAB default (only embeds
+LaTeX fonts). <tt>'addsymbol'</tt> also includes Symbol font.
+<tt>'all'</tt> embeds all the fonts. By default, embed fonts are
+subsetted with encryption. For alternate embedding scheme, use
+<tt>epsembedfont</tt>.
+</p></td>
+<td bgcolor="#F2F2F2"><p>n/a</p></td>
+</tr>
+</tbody>
+</table>
+</p><h2>Example<a name="4"></a></h2><h2>See Also<a name="5"></a></h2><p><a href="doc_eps2raster.html"><tt>eps2raster</tt></a>, <a href="doc_epsembedfont.html"><tt>epsembedfont</tt></a>, <a href="doc_epssetlinestyle.html"><tt>epssetlinestyle</tt></a>, <a href="doc_epsembedfont.html"><tt>epsembedfont</tt></a>, <a href="doc_epssetbbox.html"><tt>epssetbbox</tt></a>, <a href="doc_epssetbgcolor.html"><tt>epssetbgcolor</tt></a></p><p>Copyright 2012. Takeshi Ikuma. All rights reserved.</p><p class="footer"><br>
+      Published with MATLAB&reg; 7.11<br></p></div><!--
+##### SOURCE BEGIN #####
+%% epswrite
+% Save figure as an EPS image
+%
+%% Syntax
+%  epswrite(filename)
+%  epswrite(H, filename)
+%  epsewrite(..., 'Param1', Value1, 'Param2', Value2,...)
+%
+%% Description
+% |epswrite(filename)| saves the current figure as a EPS image file
+% specified by the string |filename|.
+%
+% |epswrite(H, filename)| outputs an EPS file of the figure specified by the
+% handle |H|.
+%
+% |epswrite(...,'Param1', Value1, 'Param2', Value2,...)| creates an EPS file
+% with the specific parameters (|Param|) have specified values. Any
+% unspecified parameters are set to use the default value for that
+% parameter.
+%
+%% Options
+% The following table lists the available option parameters.
+%
+% <html>
+% <table cellspacing="0" class="body" cellpadding="4" % border="2">
+% <colgroup>
+% <col width="15%">
+% <col width="20%">
+% <col width="50%">
+% <col width="15%">
+% </colgroup>
+% <thead>
+% <tr valign="top">
+% <th bgcolor="#B2B2B2"><p>Option</p></th>
+% <th bgcolor="#B2B2B2"><p>Value</p></th>
+% <th bgcolor="#B2B2B2"><p>Description</p></th>
+% <th bgcolor="#B2B2B2"><p>Related <tt>print</tt> arguments</p></th>
+% </tr>
+% </thead>
+% <tbody>
+% <tr valign="top">
+% <td bgcolor="#F2F2F2"><p><tt>Units</tt></p></td>
+% <td bgcolor="#F2F2F2"><p><tt>'inches'</tt> | <tt>'centimeters'</tt> | <tt>'points'</tt></p></td>
+% <td bgcolor="#F2F2F2"><p>Units for <tt>Size</tt> parameter. The figure's
+% <tt>PaperUnits</tt> property is used as the default. </p></td>
+% <td bgcolor="#F2F2F2"><p>n/a</p></td>
+% </tr>
+% <tr valign="top">
+% <td bgcolor="#F2F2F2"><p><tt>Size</tt></p></td>
+% <td bgcolor="#F2F2F2"><p><tt>[X Y]</tt> | <tt>'screen'</tt> | {<tt>'default'</tt>}</p></td>
+% <td bgcolor="#F2F2F2"><p>The EPS image size. <tt>X</tt> and <tt>Y</tt>
+% must be positive values, and <tt>Units</tt> property specifies the units
+% of <tt>X</tt> and <tt>Y</tt>. <tt>'screen'</tt> prints the figure the
+% same size as it appears on the computer screen. <tt>'default'</tt> uses
+% the value from figure's <tt>PaperPosition</tt> property.</p></td>
+% <td bgcolor="#F2F2F2"><p>n/a</p></td>
+% </tr>
+% <tr valign="top">
+% <td bgcolor="#F2F2F2"><p><tt>Resolution</tt></p></td>
+% <td bgcolor="#F2F2F2"><p>positive scalar</p></td>
+% <td bgcolor="#F2F2F2"><p>Resolution in dots per inch. The default is
+% <tt>864</tt> dpi if <tt>Renderer</tt> option is <tt>'painter'</tt>;
+% otherwise, it is <tt>150</tt> dpi. If <tt>0</tt>, the resolution is set
+% to MATLAB root's <tt>ScreenPixelsPerInch</tt> property. In
+% <tt>Renderer</tt> is set to <tt>'painter'</tt>, <tt>Resolution</tt>
+% changes the accuracy of object placement. For other <tt>Renderer</tt>
+% options, it defines the raster dot resolution.</p></td>
+% <td bgcolor="#F2F2F2"><p><tt>-r<i>number</i></tt></p></td>
+% </tr>
+% <tr valign="top">
+% <td bgcolor="#F2F2F2"><p><tt>BgColor</tt></p></td>
+% <td bgcolor="#F2F2F2"><p><tt>'figure'</tt> | <tt>'none'</tt> | 3-element RGB vector</p></td>
+% <td bgcolor="#F2F2F2"><p>Figure background fill color. The default value
+% is <tt>[1 1 1]</tt> (white). <tt>'figure'</tt> uses the figure's
+% <tt>Color</tt> property value, and <tt>'none'</tt> removes the fill
+% (i.e., transparent background). </p></td>
+% <td bgcolor="#F2F2F2"><p>n/a</p></td>
+% </tr>
+% <tr valign="top">
+% <td bgcolor="#F2F2F2"><p><tt>ColorSpace</tt></p></td>
+% <td bgcolor="#F2F2F2"><p><tt>'mono'</tt> | {<tt>'rgb'</tt>} | <tt>'cmyk'</tt></p></td>
+% <td bgcolor="#F2F2F2"><p>Output color space. <tt>'mono'</tt> prints in
+% monochrome. <tt>'rgb'</tt> and <tt>'cmyk'</tt> both outputs color image,
+% but in different color space: RGB (red-green-blue) vs. CMYK
+% (cyan-magenta-yellow-black).
+% </p></td>
+% <td bgcolor="#F2F2F2"><p><tt>-deps</tt>, <tt>-depsc</tt>, <tt>-deps2</tt>, <tt>-depsc2</tt>, <tt>-cmyk</tt></p></td>
+% </tr>
+% <tr valign="top">
+% <td bgcolor="#F2F2F2"><p><tt>PSDriver</tt></p></td>
+% <td bgcolor="#F2F2F2"><p><tt>'level1'</tt> | {<tt>'level2'</tt>}</p></td>
+% <td bgcolor="#F2F2F2"><p>PostScript level.
+% </p></td>
+% <td bgcolor="#F2F2F2"><p><tt>-deps</tt>, <tt>-depsc</tt>, <tt>-deps2</tt>, <tt>-depsc2</tt></p></td>
+% </tr>
+% <tr valign="top">
+% <td bgcolor="#F2F2F2"><p><tt>TiffPreview</tt></p></td>
+% <td bgcolor="#F2F2F2"><p><tt>'on'</tt> | {<tt>'off'</tt>}</p></td>
+% <td bgcolor="#F2F2F2"><p><tt>'on'</tt> to add a 72-dpi TIFF preview. For
+% different resolution, use <tt>epspreview</tt> function instead.
+% </p></td>
+% <td bgcolor="#F2F2F2"><p><tt>-tiff</tt></p></td>
+% </tr>
+% <tr valign="top">
+% <td bgcolor="#F2F2F2"><p><tt>BoundingBox</tt></p></td>
+% <td bgcolor="#F2F2F2"><p><tt>'tight'</tt> | {<tt>'loose'</tt>}</p></td>
+% <td bgcolor="#F2F2F2"><p>Figure cropping mode. <tt>'loose'</tt> outputs
+% the figure as is. <tt>'tight'</tt> crops the unused figure edge space.
+% </p></td>
+% <td bgcolor="#F2F2F2"><p><tt>-loose</tt></p></td>
+% </tr>
+% <tr valign="top">
+% <td bgcolor="#F2F2F2"><p><tt>ShowUI</tt></p></td>
+% <td bgcolor="#F2F2F2"><p>{<tt>'on'</tt>} | <tt>'off'</tt></p></td>
+% <td bgcolor="#F2F2F2"><p>UI control display mode. <tt>'on'</tt> to
+% display; <tt>'off'</tt> to hide.
+% </p></td>
+% <td bgcolor="#F2F2F2"><p><tt>-noui</tt></p></td>
+% </tr>
+% <tr valign="top">
+% <td bgcolor="#F2F2F2"><p><tt>Renderer</tt></p></td>
+% <td bgcolor="#F2F2F2"><p>{<tt>'painter'</tt>} | <tt>'opengl'</tt> | <tt>'zbuffer'</tt></p></td>
+% <td bgcolor="#F2F2F2"><p>Output rendering mode. <tt>'painter'</tt>
+% renders with Painter's algorihtm, <tt>opengl</tt> renders with OpenGL
+% algorithm, and <tt>'zbuffer'</tt> renders with the Z-buffer algorithm.
+% Only <tt>'painter'</tt> creates a vector image. Both <tt>opengl</tt> and
+% <tt>zbuffer</tt> rasterizes the figure.
+% </p></td>
+% <td bgcolor="#F2F2F2"><p><tt>-painter</tt>, <tt>-opengl</tt>, <tt>-zbuffer</tt></p></td>
+% </tr>
+% <tr valign="top">
+% <td bgcolor="#F2F2F2"><p><tt>EmbedFonts</tt></p></td>
+% <td bgcolor="#F2F2F2"><p><tt>'none'</tt> | {<tt>'default'</tt>} | <tt>'addsymbol'</tt> | <tt>'all'</tt></p></td>
+% <td bgcolor="#F2F2F2"><p>Font embedding mode. <tt>'none'</tt> de-embeds
+% all fonts. <tt>'default'</tt> keeps the MATLAB default (only embeds
+% LaTeX fonts). <tt>'addsymbol'</tt> also includes Symbol font.
+% <tt>'all'</tt> embeds all the fonts. By default, embed fonts are
+% subsetted with encryption. For alternate embedding scheme, use
+% <tt>epsembedfont</tt>.
+% </p></td>
+% <td bgcolor="#F2F2F2"><p>n/a</p></td>
+% </tr>
+% </tbody>
+% </table>
+% </html>
+%
+%% Example
+%
+%
+%% See Also
+% <doc_eps2raster.html |eps2raster|>, <doc_epsembedfont.html |epsembedfont|>, 
+% <doc_epssetlinestyle.html |epssetlinestyle|>, <doc_epsembedfont.html
+% |epsembedfont|>, <doc_epssetbbox.html |epssetbbox|>, <doc_epssetbgcolor.html |epssetbgcolor|>
+%
+% Copyright 2012. Takeshi Ikuma. All rights reserved.
+
+##### SOURCE END #####
+--></body></html>

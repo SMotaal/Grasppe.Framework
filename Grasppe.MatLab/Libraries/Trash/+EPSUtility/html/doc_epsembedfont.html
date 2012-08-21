@@ -1,0 +1,134 @@
+
+<!DOCTYPE html
+  PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html><head>
+      <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+   <!--
+This HTML was auto-generated from MATLAB code.
+To make changes, update the MATLAB code and republish this document.
+      --><title>epsembedfont</title><meta name="generator" content="MATLAB 7.11"><link rel="schema.DC" href="http://purl.org/dc/elements/1.1/"><meta name="DC.date" content="2012-05-07"><meta name="DC.source" content="doc_epsembedfont.m"><style type="text/css">
+
+body {
+  background-color: white;
+  margin:10px;
+}
+
+h1 {
+  color: #990000; 
+  font-size: x-large;
+}
+
+h2 {
+  color: #990000;
+  font-size: medium;
+}
+
+/* Make the text shrink to fit narrow windows, but not stretch too far in 
+wide windows. */ 
+p,h1,h2,div.content div {
+  max-width: 600px;
+  /* Hack for IE6 */
+  width: auto !important; width: 600px;
+}
+
+pre.codeinput {
+  background: #EEEEEE;
+  padding: 10px;
+}
+@media print {
+  pre.codeinput {word-wrap:break-word; width:100%;}
+} 
+
+span.keyword {color: #0000FF}
+span.comment {color: #228B22}
+span.string {color: #A020F0}
+span.untermstring {color: #B20000}
+span.syscmd {color: #B28C00}
+
+pre.codeoutput {
+  color: #666666;
+  padding: 10px;
+}
+
+pre.error {
+  color: red;
+}
+
+p.footer {
+  text-align: right;
+  font-size: xx-small;
+  font-weight: lighter;
+  font-style: italic;
+  color: gray;
+}
+
+  </style></head><body><div class="content"><h1>epsembedfont</h1><!--introduction--><p>Embed fonts to a MATLAB-generated EPS file</p><!--/introduction--><h2>Contents</h2><div><ul><li><a href="#1">Syntax</a></li><li><a href="#2">Description</a></li><li><a href="#3">Example</a></li><li><a href="#4">See Also</a></li></ul></div><h2>Syntax<a name="1"></a></h2><pre>epsembedfont(epsfile)
+epsembedfont(epsfile, outfile)
+epsembedfont(..., '--Subset')
+epsembedfont(..., '--Full')
+epsembedfont(..., '--Encrypt')
+epsembedfont(..., '--NoEncrypt')
+epsembedfont(..., '+/-All')
+epsembedfont(..., '+/-FontName1', '+/-FontName2',...)
+epsembedfont(..., '+FontName=&gt;EmbedFontName',...)</pre><h2>Description<a name="2"></a></h2><p><tt>epsembedfont(epsfile)</tt> analyzes the MATLAB generated EPS file specified by <tt>epsfile</tt> for the fonts used, and embeds all fonts used in the file. The fonts to be embed must be defined in the font search path (<a href="doc_epsfontpath.html"><tt>epsfontpath</tt></a>) or in the font alias table (<a href="doc_epsfontalias.html"><tt>epsfontalias</tt></a>).</p><p><tt>epsembedfont(epsfile, outfile)</tt> saves the modified EPS data to a file specified by <tt>outname</tt>.</p><p><tt>epsembedfont(..., '--Subset')</tt> only embeds the minimum subsets of embedded fonts. <tt>epsembedfont(..., '--full')</tt> conversely embeds full font dictionaries. The default is <tt>'--Subset'</tt>.</p><p><tt>epsembedfont(..., '--Encrypt')</tt> eexec encrypts and encodes (ASCII hexadecimal) the Private and CharStrings subdictionaries of the embedded font dictionaries. <tt>epsembedfont(..., '--NoEncrypt')</tt> removes the encryption, which roughly halves the byte size of font dictionaries but leaves binary data to be exposed in the EPS. The default option is <tt>'--Encrypt'</tt>, and it is recommended to keep encryption on if the EPS file may later be modified by hand.</p><p><tt>epsembedfont(..., '+/-All') embeds all (</tt>'+All'|) or none (<tt>'-All'</tt>) of the fonts used in the EPS file. <tt>'+All'</tt> is the default option if no font name is specified in the optional arguments.</p><p><tt>epsembedfont(..., '+/-FontName1', '+/-FontName2',...)</tt> specifies fonts to be embedded (with preceeding <tt>'+'</tt> or to be unembedded (with preceeding <tt>'-'</tt>). The <tt>'-FontName'</tt> option can follow <tt>'+All'</tt> option to specify exceptions.</p><p><tt>epsembedfont(..., '+FontName=&gt;EmbedFontName',...)</tt> option may be used to force font conversion. For example, <tt>'+Courier=&gt;Courier-SH'</tt> is equivalent to the default embedding of the Courier font.</p><h2>Example<a name="3"></a></h2><h2>See Also<a name="4"></a></h2><p><a href="doc_epsfontpath.html"><tt>epsfontpath</tt></a>, <a href="doc_epsfontalias.html"><tt>epsfontalias</tt></a>, <a href="doc_epswrite.html"><tt>epswrite</tt></a>.</p><p>Copyright 2012. Takeshi Ikuma. All rights reserved.</p><p class="footer"><br>
+      Published with MATLAB&reg; 7.11<br></p></div><!--
+##### SOURCE BEGIN #####
+%% epsembedfont
+% Embed fonts to a MATLAB-generated EPS file
+%
+%% Syntax
+%  epsembedfont(epsfile)
+%  epsembedfont(epsfile, outfile)
+%  epsembedfont(..., 'REPLACE_WITH_DASH_DASHSubset')
+%  epsembedfont(..., 'REPLACE_WITH_DASH_DASHFull')
+%  epsembedfont(..., 'REPLACE_WITH_DASH_DASHEncrypt')
+%  epsembedfont(..., 'REPLACE_WITH_DASH_DASHNoEncrypt')
+%  epsembedfont(..., '+/-All')
+%  epsembedfont(..., '+/-FontName1', '+/-FontName2',...)
+%  epsembedfont(..., '+FontName=>EmbedFontName',...)
+%
+%% Description
+% |epsembedfont(epsfile)| analyzes the MATLAB generated EPS file
+% specified by |epsfile| for the fonts used, and embeds all fonts used in
+% the file. The fonts to be embed must be defined in the font search path
+% (<doc_epsfontpath.html |epsfontpath|>) or in the font alias table
+% (<doc_epsfontalias.html |epsfontalias|>).
+%
+% |epsembedfont(epsfile, outfile)| saves the modified EPS data to a file
+% specified by |outname|.
+%
+% |epsembedfont(..., 'REPLACE_WITH_DASH_DASHSubset')| only embeds the minimum subsets of
+% embedded fonts. |epsembedfont(..., 'REPLACE_WITH_DASH_DASHfull')| conversely embeds full
+% font dictionaries. The default is |'REPLACE_WITH_DASH_DASHSubset'|.
+%
+% |epsembedfont(..., 'REPLACE_WITH_DASH_DASHEncrypt')| eexec encrypts and encodes (ASCII
+% hexadecimal) the Private and CharStrings subdictionaries of the embedded
+% font dictionaries. |epsembedfont(..., 'REPLACE_WITH_DASH_DASHNoEncrypt')| removes the
+% encryption, which roughly halves the byte size of font dictionaries but
+% leaves binary data to be exposed in the EPS. The default option is
+% |'REPLACE_WITH_DASH_DASHEncrypt'|, and it is recommended to keep encryption on if the EPS
+% file may later be modified by hand.
+%
+% |epsembedfont(..., '+/-All') embeds all (|'+All'|) or none (|'-All'|)
+% of the fonts used in the EPS file. |'+All'| is the default option if no
+% font name is specified in the optional arguments.
+%
+% |epsembedfont(..., '+/-FontName1', '+/-FontName2',...)| specifies fonts
+% to be embedded (with preceeding |'+'| or to be unembedded (with
+% preceeding |'-'|). The |'-FontName'| option can follow |'+All'| option to
+% specify exceptions.
+%
+% |epsembedfont(..., '+FontName=>EmbedFontName',...)| option may be used to
+% force font conversion. For example, |'+Courier=>Courier-SH'| is
+% equivalent to the default embedding of the Courier font.
+%
+%% Example
+%
+%% See Also
+% <doc_epsfontpath.html |epsfontpath|>, <doc_epsfontalias.html
+% |epsfontalias|>, <doc_epswrite.html |epswrite|>.
+%
+% Copyright 2012. Takeshi Ikuma. All rights reserved.
+
+##### SOURCE END #####
+--></body></html>
