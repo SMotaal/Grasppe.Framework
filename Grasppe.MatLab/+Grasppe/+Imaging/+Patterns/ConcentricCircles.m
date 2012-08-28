@@ -25,6 +25,8 @@ function [ image range contrast reference] = ConcentricCircles( cycles, referenc
   image = im2bw(image);
   image = (reference - contrast/2) + (image.*contrast);
   
+  % disp([reference contrast mean(image(:)) min(image(:)) max(image(:))]);
+  
   range = [reference - contrast/2, reference + contrast/2];
   
   return;

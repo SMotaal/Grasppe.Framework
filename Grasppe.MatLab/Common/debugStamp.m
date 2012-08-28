@@ -2,7 +2,7 @@ function [ output_args ] = debugStamp( tag, level, obj )
   %DEBUGSTAMP Summary of this function goes here
   %   Detailed explanation goes here
   
-  debugmode     = false;
+  debugmode     = true;
   if ~debugmode, return; end
   
   persistent debugtimer debugstack stackdups stackloops stacktime;
@@ -14,6 +14,8 @@ function [ output_args ] = debugStamp( tag, level, obj )
   detailed      = false;
   stackLimit    = 5;
   latencyLimit  = stackLimit * 100;
+  
+  errorID = '';
 
   if isnumeric(tag)
     if nargin==2
@@ -25,6 +27,8 @@ function [ output_args ] = debugStamp( tag, level, obj )
       level = tag; tag = '';
     end
     
+  elseif isa(tag, 'MException')
+    errorID = [tag.identifier]; % '@'];
   else
     if nargin<2
       level = 5;
@@ -35,11 +39,13 @@ function [ output_args ] = debugStamp( tag, level, obj )
   
   d = dbstack('-completenames');
   
-  d = d(2);
+  %d = d(2:min(4,numel(d)));
   
-  tx = [d.name ' (' int2str(d.line) ')'];
-  
-  dbstamp = sprintf('<a href="matlab: opentoline(%s, %d)">%s</a>', d.file, d.line, tx);
+  dbstamp = '';
+  for m = 2:min(4,numel(d)) %numel(d)
+    tx = [d(m).name ' (' int2str(d(m).line) ')'];
+    dbstamp = sprintf('%s:<a href="matlab: opentoline(%s, %d)">%s</a>', dbstamp, d(m).file, d(m).line, tx);
+  end
   
   n = stamp;
   
@@ -50,12 +56,12 @@ function [ output_args ] = debugStamp( tag, level, obj )
   end  
  
   try
-    try if nargin>2 && isa(Grasppe.Core.Prototype(obj))
+    try if nargin>2 && isa(obj, 'Grasppe.Core.Prototype')
       tag = [obj.ID '.' tag]; end; end
     
-    nextstack = sprintf('\n%s',[tag ':' dbstamp]);
+    nextstack = sprintf('\n%s',[errorID tag dbstamp]);
   catch
-    nextstack = sprintf('\n%s',['@' dbstamp]);
+    nextstack = sprintf('\n%s',[errorID dbstamp]);
   end
   
 %   if n > 10

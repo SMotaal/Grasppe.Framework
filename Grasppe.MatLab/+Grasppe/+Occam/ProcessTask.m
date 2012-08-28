@@ -7,6 +7,7 @@ classdef ProcessTask < Grasppe.Core.Prototype
     Load      = 1;
     Progress  = 0;
     Factor    = 1;
+    Quota     = [];    
     Process   = [];
     Cancelled = false;
     Completed = false;

@@ -59,7 +59,7 @@ classdef Process < Grasppe.Occam.ProcessData & Grasppe.Core.Prototype % handle &
 
       instanceNumber = 1;
       try instanceNumber = Grasppe.Occam.Singleton.Get.Names.(typeName) + 1; end
-      Grasppe.Occam.Singleton.Get.Names.(typeName) = instanceNumber + 1;
+      try Grasppe.Occam.Singleton.Get.Names.(typeName) = instanceNumber + 1; end
       
       obj.Name = [typeName int2str(instanceNumber)];
     end

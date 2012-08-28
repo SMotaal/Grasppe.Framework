@@ -19,6 +19,8 @@ classdef ProcessProgress < Grasppe.Core.Prototype
     progressListeners = {};
     resetting         = false;
     completed         = false;
+    started           = [];
+    estimated         = [];
   end
   
   events
@@ -63,7 +65,14 @@ classdef ProcessProgress < Grasppe.Core.Prototype
     end
     
     function activateTask(obj, task)
-      obj.ActiveTask = task;
+      obj.started     = tic;      
+      obj.ActiveTask  = task;
+      
+      % try %if isempty(task)
+      %   dispf('Active Task: %s', task.Title);
+      % catch err
+      %   dispf('Active Task: %s', '[None]');
+      % end
     end
     
     function state = isResetting(obj)
@@ -98,7 +107,7 @@ classdef ProcessProgress < Grasppe.Core.Prototype
       catch err
       end
       obj.resetting = [];
-      
+      obj.started   = [];
     end
     
     function task = addTask(obj, title, load, varargin)
@@ -106,6 +115,11 @@ classdef ProcessProgress < Grasppe.Core.Prototype
       task = Grasppe.Occam.ProcessTask(obj, title, load, varargin{:});
       
       obj.Tasks(end+1) = task;
+    end
+    
+    function task = addAllocatedTask(obj, title, quota, load, varargin)
+      task        = obj.addTask(title, load, varargin{:});
+      task.Quota  = quota;
     end
   end
   
@@ -121,77 +135,135 @@ classdef ProcessProgress < Grasppe.Core.Prototype
         return;
       end
         
-      tasks     = obj.Tasks;
-      ntasks    = numel(tasks);
-      active    = obj.ActiveTask;
+      tasks         = obj.Tasks;
+      ntasks        = numel(tasks);
+      active        = obj.ActiveTask;
       
-      load      = 0;
-      progress  = 0;
+      subload       = 0;
+      subprogress   = 0;
+      subquota      = 100;
+      
+      progress      = 0;
+      quotas        = 0;
       
       for m = 1:ntasks
         task        = tasks(m);
         
-        if ~task.isvalid() || task.isTerminated()
-          continue; 
-        end
-               
-        factor      = abs(task.Factor);
-        taskload    = abs(task.Load     * factor);
+        if ~task.isvalid() || task.isTerminated(), continue; end
         
-        load        = load + taskload;
+        taskquota     = task.Quota;
+        taskfactor    = abs(task.Factor);
+        taskload      = abs(task.Load     * taskfactor);
+        taskprogress  = abs(task.Progress * taskfactor);
         
-        if task.isCompleted()
-          progress  = progress  + taskload;
-        else
-          progress  = progress  + abs(task.Progress * factor);
-        end
-        
-      end
-      
-      progressChange  = ~isequal(obj.load, load) || ~isequal(obj.progress, progress);
-      
-      obj.load      = load;
-      obj.progress  = progress;
-      
-      overall = obj.OverallProgress*100;
-      
-      if progressChange
-        
-        %dsc = 'Running';
-        
-        %cnt = sprintf('%0.0f', ;
-        
-        if load==0
-          s = '';
-          overall = [];
-        elseif round(progress)==round(load)
-          s = '';
-          overall = [];
-        else          
-          s = sprintf('Processing: %d of %d', round([progress, load])); %overall*100
-          
-          try
-            s = sprintf('%s: %d of %d', active.Title, round([active.Progress, active.Load])); %overall*100
-            % disp(s);
-%           catch err
-%             %disp(err);
-%             x=1;
+        if isnumeric(taskquota) && isscalar(taskquota)
+          quotas      = quotas   + taskquota;
+          progress    = progress + max(0, taskprogress*taskquota/taskload); % could be NaN
+        else % isempty(taskquota)
+          subload     = subload + taskload;
+          if task.isCompleted()
+            subprogress  = subprogress  + taskload;
+          else
+            subprogress  = subprogress  + taskprogress;
           end
         end
+      end
+      
+      subquota        = subquota  - quotas;
+      progress        = progress  + max(0, subprogress*subquota/subload); % could be NaN
+      load            = 100;
+      
+      change          = ~isequal(obj.progress, progress) || ~isequal(obj.load, load);
+      
+      if change
         
+        obj.load      = load; %min(0, load);
+        obj.progress  = progress; %min(0, progress);
         
+        overall       = obj.OverallProgress*100;
+        
+        if load==0 || round(progress)==round(load) || isnan(progress) || isnan(load)
+          s = '';
+          overall = [];
+        else
+          
+          s = sprintf('Processing - %d of %d', round([progress, load]));
+          try
+            %s = sprintf('%s: %d of %d', active.Title, round([active.Progress, active.Load]));
+            s = sprintf('%s - %d tasks remaining', active.Title, round([active.Load - active.Progress]));
+          end
+          
+          %% Time Estimation
+          try
+            if isempty(obj.started), obj.started = tic; end
+            
+            duration    = toc(obj.started);
+            estimated   = obj.estimated;
+            remaining   = [];
+            
+            if isempty(active)
+              eprogress   = progress;
+              eload       = load;
+            else
+              eprogress   = active.Progress;
+              eload       = active.Load;
+            end
+            
+            epercent      = eprogress*100/eload;
+            
+            if eprogress>0
+              estimated   = duration / eprogress * (eload-eprogress);
+              estimating  = isscalar(obj.estimated) && epercent > 10 && duration > 3;
+              decreasing  = estimating && estimated < obj.estimated*0.95;
+              increasing  = estimating && estimated > obj.estimated*1.2;
+              
+              if decreasing || increasing
+                remaining = estimated;
+                obj.estimated = estimated;
+              elseif estimating %&& ~(increasing || decreasing)
+                remaining = obj.estimated;
+              else
+                remaining = [];
+              end
+              
+              if isempty(obj.estimated), obj.estimated = estimated; end
+            else
+              estimated     = [];
+              obj.estimated = estimated;
+            end
+            
+            if isscalar(remaining) && isnumeric(remaining)
+              remaining = max(0, (remaining *1.45) - 1);              
+              if remaining>60 && remaining < 2*60
+                remaining = 2*60; %remaining *1.45;
+                % remaining = remaining * 1.25;
+                %s = sprintf('%s - %d:%02.0f minutes', s, floor(remaining/60), rem(remaining, 60));
+                s = sprintf('%s - less than %d minutes', s, ceil(remaining/60));
+              elseif remaining>2*60
+                %remaining = remaining * 1.45;
+                % if remaining>4*60, remaining = remaining * 1.5; end
+                % remaining = max(2*60, remaining);
+                s = sprintf('%s - more than %d minutes', s, round((remaining+15)/60)); %, rem(remaining, 60));
+              else
+                %if remaining>2 && remaining < 39, remaining = remaining * 1.5; end
+                % remaining = min(remaining, 60);
+                s = sprintf('%s - around %1.0f seconds', s, remaining);
+              end
+            end          
+            
+          catch err
+            try debugStamp(err, 1, obj); catch, debugStamp(); end;
+          end
+          
+          
+        end
         
         h=obj.Window;
-        if ~isscalar(h) || ~ishandle(h)
-          h = 0;
-        end
+        if ~isscalar(h) || ~ishandle(h), h = 0; end
           
-        try
-          UI.setStatus(s, h, overall); %status('', 0, []);
-        catch err
-          UI.setStatus(s, 0);
-        end
-          %dispf('Progress: %0.0f (%0.0f / %0.0f)', obj.OverallProgress*100, progress, load);
+        try UI.setStatus(s, h, overall);
+        catch err, UI.setStatus(s, 0); end
+
       end
     end
   end
