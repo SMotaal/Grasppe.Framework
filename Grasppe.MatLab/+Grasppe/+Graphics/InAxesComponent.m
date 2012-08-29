@@ -27,11 +27,15 @@ classdef InAxesComponent < Grasppe.Graphics.HandleGraphicsComponent ... % & Gras
     
     
     function set.ParentAxes(obj, parentAxes)
+      
+      if isempty(parentAxes), return; end
+      if ~Grasppe.Graphics.Axes.checkInheritence(parentAxes)
+        %error('Grasppe:ParentAxes:NotAxes', 'Attempt to set parent axes to a non-axes object.');
+        obj.ParentAxes = [];
+        %obj.Parent = [];
+        return;
+      end
       try
-        if isempty(parentAxes), return; end        
-        if ~Grasppe.Graphics.Axes.checkInheritence(parentAxes)
-          error('Grasppe:ParentAxes:NotAxes', 'Attempt to set parent axes to a non-axes object.');
-        end
         obj.ParentAxes = parentAxes;
         obj.Parent = parentAxes.Handle;
       catch err

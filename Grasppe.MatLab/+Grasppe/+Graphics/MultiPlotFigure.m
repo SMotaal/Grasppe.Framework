@@ -83,6 +83,8 @@ classdef MultiPlotFigure < Grasppe.Graphics.PlotFigure
         'Visible', 'off', 'Renderer', 'painters', ...
         'Position', floor([0 0 pageSize]), ...
         'Color', 'none', ...
+        'Toolbar', 'none', 'Menubar', 'none', ...
+        'NumberTitle','off', 'Name', 'Grasppe Ouput', ...
         };
       
       %% Functions
@@ -169,7 +171,8 @@ classdef MultiPlotFigure < Grasppe.Graphics.PlotFigure
         
         ax.XLim = ax.XLim + [-1 +1];
         ax.YLim = ax.YLim + [-1 +1];
-        
+        ax.Box  = 'on';
+                
         for o = 1:nDecendents
           
           [hdObject, hgObject, clObject, hdInfo] = HG.handleObject(decendents(o));
@@ -192,9 +195,70 @@ classdef MultiPlotFigure < Grasppe.Graphics.PlotFigure
           end
           
         end
+        
+        if isequal(ax.Visible, 'on')
+          tick2text(ax);
+          hx = getappdata(ax, 'XTickText');
+          hy = getappdata(ax, 'YTickText');
+          hz = getappdata(ax, 'ZTickText');
+          hxyz = [hx; hy; hz];
+          
+          set(hxyz, 'Units', 'data');
+          hxPos = get(hx, 'Position');
+          hyPos = get(hy, 'Position');
+          hzPos = get(hz, 'Position');
+          
+          set(hx, 'VerticalAlignment', 'Cap', 'HorizontalAlignment', 'Center'); %, 'Units', 'Pixels');
+          
+          set(hy, 'VerticalAlignment', 'Middle', 'HorizontalAlignment', 'Right'); % ', 'Units', 'Pixels');
+          
+          %
+          %           for n = 1:numel(hx)
+          %             hn = handle(hx(n));
+          %             hn.Position = (hn.Position .* [1 0 1]) - [-hn.Position(3) 5 0]; %+ [0 hn.Extent(4)-5 0];
+          %           end
+          %
+          %           for n = 1:numel(hy)
+          %             hn = handle(hy(n));
+          %             hn.Position = (hn.Position .* [0 1 1]) - [5 0 0]; %[hn.Position(3)+5 0 0];
+          %           end
+          
+          set(hxyz, 'Margin', 2, ... %'BackgroundColor', 'g', ...
+            'FontUnits', ax.FontUnits, 'FontSize', ax.FontSize);
+          
+          set(hxyz, 'Units', 'data');
+          
+          for n = 1:numel(hx)
+            hn = handle(hx(n));
+            hn.Position = [hxPos{n}(1) min(ax.YLim)-0.5 hxPos{n}(3)];
+          end
+          
+          for n = 1:numel(hy)
+            hn = handle(hy(n));
+            hn.Position = [min(ax.XLim)-0.5 hyPos{n}(2) hyPos{n}(3)];
+          end
+          
+          for n = 1:numel(hz)
+            hn = handle(hz(n));
+            hn.Position = hzPos{n};
+          end          
+          %hpos2 = get(hxyz, 'Position');
+
+        end
+        
+        set(ax, 'Units', 'pixels');
       end
       
       %% Fix Objects
+      
+      %% Fix Text
+%       hdTexts = unique(findall(hdOutput, 'type', 'text'));
+%       %set(hdText, 'Margin' , cell2mat(get(hdText, 'Margin')) +1)
+%       for m = 1:numel(hdTexts)
+%         hgText = handle(hdTexts(m));
+%         hgText.Margin = hgText.Margin + 2;
+%         %hgText.BackgroundColor = 'g';
+%       end
       
       %% Fix Surfs
       for hgSurf = hgObjects.('surface')
@@ -267,9 +331,9 @@ classdef MultiPlotFigure < Grasppe.Graphics.PlotFigure
       
       %% Output Results
       assignin('base', 'hgObjects', hgObjects);
-      
+            
       %% Export Document
-      export_fig(fullfile('output','export.pdf'), '-painters', hdOutput);
+      export_fig(fullfile('Output','export.pdf'), '-painters', hdOutput);
       
       %% Delete Figure
       %try deleteHandle(obj.OutputFigure); end
@@ -428,6 +492,7 @@ classdef MultiPlotFigure < Grasppe.Graphics.PlotFigure
       
       for m = 1:numel(plotAxes)
         plotAxes{m}.FontSize = 6;
+        plotAxes{m}.handleSet('LooseInset', [0,0,0,0]);
       end
       
     end
