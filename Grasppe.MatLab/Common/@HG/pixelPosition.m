@@ -8,7 +8,7 @@ function [ position ] = pixelPosition( handle, outer )
     try
       if ~exist('outer', 'var')
         position = get(handle, 'Position');
-      elseif outer==true
+      elseif isequal(outer, 1)  || isequal(lower(outer), 'outer')
         position = get(handle, 'OuterPosition');
       end
     end
