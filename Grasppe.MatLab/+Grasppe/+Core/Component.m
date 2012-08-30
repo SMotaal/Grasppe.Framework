@@ -61,20 +61,21 @@ classdef Component < Grasppe.Core.Instance
     end
     
     function deleteHandles(obj)
-      handles = obj.SubHandles;
-      for m = 1:numel(handles)
+      %handles = obj.SubHandles;
+      for m = 1:numel(obj.SubHandles)
         % try dispf('Deleting %s @ %s', toString(handles(m)), obj.ID); end
-        try delete(handles(m)); end
+        try delete(obj.SubHandles(m)); end
+        obj.SubHandles(m) = [];
       end
       
       obj.SubHandles = [];
       
-      objects = obj.SubHandleObjects;
-      for m = 1:numel(objects)
+      %objects = obj.SubHandleObjects;
+      for m = 1:numel(obj.SubHandleObjects)
         % try dispf('Deleting %s @ %s', toString(handles{m}), obj.ID); end
-        try delete(objects{m}); end
+        try delete(obj.SubHandleObjects{m}); end
+        obj.SubHandleObjects{m} = [];
       end
-      
       obj.SubHandleObjects = {};
     end
     

@@ -92,7 +92,7 @@ classdef PlotFigure < Grasppe.Graphics.Figure
       % obj.StatusText  = OverlayTextObject.Create(obj.OverlayAxes);
       obj.TitleText   = Grasppe.Graphics.TextObject(obj.OverlayAxes);
       
-      obj.TitleText.handleSet('Tag', [obj.TitleText.handleGet('Tag') '@Screen']);
+      %obj.TitleText.handleSet('Tag', [obj.TitleText.handleGet('Tag') '@Screen']);
       % obj.TitleText.updateTitle;
       
     end

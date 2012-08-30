@@ -9,6 +9,7 @@ classdef OverlayAxes < Grasppe.Graphics.Axes
     
     function obj = OverlayAxes(varargin)
       obj = obj@Grasppe.Graphics.Axes(varargin{:});
+      obj.handleSet('Tag', '#OverlayAxes');      
     end    
   end
   

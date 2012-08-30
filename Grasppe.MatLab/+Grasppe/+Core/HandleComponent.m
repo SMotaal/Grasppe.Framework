@@ -33,7 +33,7 @@ classdef HandleComponent < Grasppe.Core.Component
     
     function delete(obj)
       debugStamp(5, obj);
-      try obj.handleSet('UserData', []); end
+      %try obj.handleSet('UserData', []); end
     end
 
     

@@ -46,6 +46,7 @@ classdef PlotAxes < Grasppe.Graphics.Axes
     function createHandleObject(obj)
       obj.createHandleObject@Grasppe.Graphics.Axes;
       obj.handleSet('NextPlot', 'replacechildren');
+      obj.handleSet('Tag', '#PlotAxes');
     end
   end
   

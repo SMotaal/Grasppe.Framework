@@ -73,6 +73,10 @@ classdef MultiPlotFigure < Grasppe.Graphics.PlotFigure
       
       S = warning('off', 'all');
       
+      obj.ColorBar.createPatches; obj.ColorBar.createLabels;
+      
+      obj.layoutPlotAxes;
+      
       try
       
       %% Options
@@ -161,17 +165,104 @@ classdef MultiPlotFigure < Grasppe.Graphics.PlotFigure
       
       %% Restore Print/Non-Print
       set(findobj(hdFigure, '-regexp','Tag','@Screen'), 'Visible', 'on');
-      set(findobj(hdFigure, '-regexp','Tag','@Print'), 'Visible', 'off');    
+      set(findobj(hdFigure, '-regexp','Tag','@Print'), 'Visible', 'off');
+      
+      set(hdOutput, 'Units', 'pixels', 'Position', [0 0 100 100]);
+      
+      plotRect=[];
       
       %% Gather Decendents
       
-      for ax = hgObjects.('axes')
+      for ax = fliplr(hgObjects.('axes'))
         decendents  = allchild(ax);
         nDecendents = numel(decendents);
         
-        ax.XLim = ax.XLim + [-1 +1];
-        ax.YLim = ax.YLim + [-1 +1];
-        ax.Box  = 'on';
+        
+        % if isempty(strfind('ax.Tag', '#PlotAxes'))
+        %   continue;
+        % end
+        
+        ax.Units = 'pixels';
+        
+        tag = ax.Tag;
+        
+        isPlotAxes  = ~isempty(strfind(ax.Tag, 'PlotAxes'));
+        isColorBar  = ~isempty(strfind(ax.Tag, 'ColorBar'));
+        isOverlay  = ~isempty(strfind(ax.Tag, 'OverlayAxes'));
+        
+        if isPlotAxes %~isempty(strfind(ax.Tag, 'PlotAxes'))
+          ax.XLim = ax.XLim + [-1 +1];
+          ax.YLim = ax.YLim + [-1 +1];
+          
+          if all(mod(ax.View,90))==0
+            %dispf('AX:\t[View: %d %d]', mod(ax.View,90));
+            ax.Box  = 'on';
+          end
+          ax.OuterPosition = ax.OuterPosition + [15 15 30 30];
+          
+          clObject = 'PlotAxes';
+          if isfield(hgObjects, clObject)
+            hgObjects.(clObject)(end+1) = ax;
+          else
+            hgObjects.(clObject)        = ax;
+          end
+          
+        elseif isColorBar %~isempty(strfind(ax.Tag, 'ColorBar'))
+          %axOffset = 10; %ax.Position(3)/2;
+          %ax.OuterPosition  = ax.OuterPosition + [-25 15 0 0];
+          ax.Position       = [0 0 175 15]; %.* [1 1 0.75 0.75];
+          %ax.Position       = ax.Position .* [0.75 0.75 0.75 0.75];
+          ax.Visible  = 'off';
+          %colorBars{end+1} = ax;
+          clObject = 'ColorBarAxes';
+          if isfield(hgObjects, clObject)
+            hgObjects.(clObject)(end+1) = ax;
+          else
+            hgObjects.(clObject)        = ax;
+          end
+          
+          if ax.LineWidth==1, ax.LineWidth = 0.5; end
+          set(findobj(decendents, 'Type', 'text'), 'FontSize', 4, 'FontWeight', 'normal');
+          
+          continue;
+        elseif isOverlay
+          clObject = 'OverlayAxes';
+          if isfield(hgObjects, clObject)
+            hgObjects.(clObject)(end+1) = ax;
+          else
+            hgObjects.(clObject)        = ax;
+          end
+          continue;
+        else
+          %ax.OuterPosition = ax.OuterPosition + [15 15 0 0];
+          %ax.LineWidth = ax.LineWidth/2;
+        end
+                
+        if isequal(ax.Visible, 'on')
+          parentPosition = HG.pixelPosition(hdOutput);
+          
+          % dispf(['AX:\t[Position: %d %d %d %d \t' ...
+          %   'OuterPoisiton: %d %d %d %d\t' ...
+          %   'TightInset: %d %d %d %d\t' ...
+          %   'LooseInset: %d %d %d %d\t' ...
+          %   'Figure: %d %d %d %d' ...
+          %   ], ax.Position, ax.OuterPosition, ax.TightInset, ax.LooseInset, ...
+          %   parentPosition);
+          
+          axPosition    = ax.Position;
+          axRight       = axPosition(1) + axPosition(3);
+          axTop         = axPosition(2) + axPosition(4);
+          
+          parentWidth   = parentPosition(3);
+          parentHeight  = parentPosition(4);
+          
+          if isPlotAxes && axRight > parentWidth || axTop > parentHeight
+            parentPosition  = [parentPosition(1:2) axRight+50 axTop+50];
+            parentUnits     = get(hdOutput, 'Units');
+            set(hdOutput, 'Units', 'pixels', 'Position', parentPosition);
+            set(hdOutput, 'Units', parentUnits);
+          end
+        end
                 
         for o = 1:nDecendents
           
@@ -180,7 +271,7 @@ classdef MultiPlotFigure < Grasppe.Graphics.PlotFigure
           try clObject = hgObject.type; end
           
           switch clObject
-            case {'text', 'surface'}
+            case {'text', 'surface', 'line', 'patch'}
               
             otherwise
               %dispf('Not formatting handle %d because %s objects are not supported.\t%s', floor(hdObject), clObject, hdInfo);
@@ -196,7 +287,7 @@ classdef MultiPlotFigure < Grasppe.Graphics.PlotFigure
           
         end
         
-        if isequal(ax.Visible, 'on')
+        if isequal(ax.Visible, 'on') && all(mod(ax.View,90))==0 && isPlotAxes
           tick2text(ax);
           hx = getappdata(ax, 'XTickText');
           hy = getappdata(ax, 'YTickText');
@@ -246,11 +337,8 @@ classdef MultiPlotFigure < Grasppe.Graphics.PlotFigure
 
         end
         
-        set(ax, 'Units', 'pixels');
       end
-      
-      %% Fix Objects
-      
+           
       %% Fix Text
 %       hdTexts = unique(findall(hdOutput, 'type', 'text'));
 %       %set(hdText, 'Margin' , cell2mat(get(hdText, 'Margin')) +1)
@@ -265,10 +353,12 @@ classdef MultiPlotFigure < Grasppe.Graphics.PlotFigure
         if isa(hgSurf.Userdata, 'Grasppe.PrintUniformity.Graphics.UniformityPlotComponent')
           objSurf   = hgSurf.Userdata(1);
           
-          hdAx      = hgSurf.Parent; %, 'Parent');
-          hdTitle   = get(hdAx, 'Title');
+          hdAx      = hgSurf.Parent;
           
-          set(hdTitle, 'String', obj.Title, 'FontSize', 7);
+          %           hdTitle   = title(hdAx, obj.Title, 'FontSize', 6, 'FontWeight', 'normal', ...
+          %             'Units', 'normalized', 'Position', [0 1], 'HorizontalAlignment', 'left', 'VerticalAlignment', 'middle'); % 'HorizontalAlignment', 'left');
+          %
+          %           set(hdTitle,'Units', 'pixels', 'Position', HG.pixelPosition(hdTitle) + [0 15 0]);
           
           try
             dataSource  = objSurf.DataSource;
@@ -321,13 +411,110 @@ classdef MultiPlotFigure < Grasppe.Graphics.PlotFigure
         end
       end
       
+      %% Remove @Screen Objects
+      set(findobj(hdOutput, '-regexp','Tag','@Screen'), 'Visible', 'off');
+      set(findobj(hdOutput, '-regexp','Tag','@Print'), 'Visible', 'on');      
+      
+      
+      %% Determine Active PlotArea
+      plotRect      = [];
+      outerRect     = [];
+      axesMaxArea   = [0 0];
+      
+      for ax = hgObjects.('PlotAxes')
+        set(ax, 'Units', 'pixels');
+        
+        %% Plot Rect
+        axPosition    = HG.pixelPosition(ax)
+        
+        %ht          = text(max(ax.XLim), max(ax.YLim), 'test', 'Parent', ax); % max(ax.ZLim));
+        ht            = text('Units', 'normalized', 'Parent', ax, 'String', '.', 'Position', [1 1]);
+        htMax         = HG.pixelPosition(ht);
+        set(ht, 'Units', 'normalized', 'Position', [0 0]);
+        htMin         = HG.pixelPosition(ht);
+        try delete(ht); end
+        
+        htBottomLeft  = axPosition(1:2) + min([htMax(:,1:2); htMin(:,1:2)]);
+        htTopRight    = axPosition(1:2) + max([htMax(:,1:2); htMin(:,1:2)]);
+        
+        axBottomLeft  = htBottomLeft;
+        axTopRight    = max([axPosition(1:2)+axPosition(3:4); htTopRight]);
+        htDiff        = axPosition(3:4) - (htTopRight - htBottomLeft);
+        
+        axBottomLeft  = axBottomLeft + htDiff/2;
+        axTopRight    = axTopRight - htDiff/2;
+        
+        if isempty(plotRect)
+          plotRect = [axBottomLeft axTopRight];
+        else
+          plotRect = [ ...
+            min([plotRect(1:2); axBottomLeft  ]), ...
+            max([plotRect(3:4); axTopRight    ])];
+        end
+        
+        axesMaxArea = max([axesMaxArea; axPosition(3:4)]);
+        
+        %% Outer Rect
+        inset         = ax.TightInset;
+        exBottomLeft  = axBottomLeft - inset(1:2) - 10;
+        exTopRight    = axTopRight   + inset(3:4) + 10; %+ inset(1:2);
+                
+        if isempty(outerRect)
+          outerRect = [exBottomLeft exTopRight];
+        else
+          outerRect = [ ...
+            min([outerRect(1:2); exBottomLeft ]), ...
+            max([outerRect(3:4); exTopRight   ])];
+        end
+        
+        
+      end
+      
+      plotRect(3:4)     = plotRect(3:4)-plotRect(1:2);
+      %outerRect(1:2)    = outerRect(1:2)+[-15 5];
+      outerRect(3:4)    = outerRect(3:4)-outerRect(1:2);
+      
+      hax = axes('Parent', hdOutput, 'Units','pixels', 'Position', plotRect , ...
+        'Visible', 'off', 'Color', 'none', 'Box', 'on');
+      hax2 = axes('Parent', hdOutput, 'Units','pixels', 'Position', outerRect , ...
+        'Visible', 'off', 'Color', 'none', 'Box', 'on');      
+      
+      %% Fix OverlayAxes
+      for m = 1:numel(hgObjects.('OverlayAxes'))
+          ax = hgObjects.('OverlayAxes')(m);
+        if m==1
+          ax.Position     = plotRect;
+          htx = (findobj(ax,'Type', 'text'));
+          
+          set(htx(1), 'Units', 'normalized', 'Position',[0 1], 'FontSize', 7, ...
+            'HorizontalAlignment', 'left', 'VerticalAlignment', 'bottom');
+          
+          set(htx(1), 'Units', 'pixels', 'Position', HG.pixelPosition(htx(1)) + [0 +7 0]);
+        else
+          try delete(ax); end
+        end
+      end
+      
+      %% Fix ColorBarAxes
+      for m = 1:numel(hgObjects.('ColorBarAxes'))
+        ax = hgObjects.('ColorBarAxes')(m);
+        if m==1
+          ax.Units        = 'pixels';
+          axPosition      = ax.Position;
+          axPosition(3)   = max(min(250, plotRect(3)/4), 175);
+          axPosition(4)   = axPosition(3)/(max(ax.XLim)-min(ax.XLim));
+          
+          ax.Position = [ ...
+            plotRect(1)+plotRect(3)-axPosition(3) plotRect(2)+plotRect(4)+axPosition(4)/2 axPosition(3:4)];
+          ax.Visible  = 'on';
+        else
+          try delete(ax); end
+        end
+      end
+      
       %% Fix Appearances
       
       %% Fix Layout
-      
-      %% Remove @Screen Objects
-      set(findobj(hdOutput, '-regexp','Tag','@Screen'), 'Visible', 'off');
-      set(findobj(hdOutput, '-regexp','Tag','@Print'), 'Visible', 'on');
       
       %% Output Results
       assignin('base', 'hgObjects', hgObjects);
@@ -350,6 +537,10 @@ classdef MultiPlotFigure < Grasppe.Graphics.PlotFigure
   methods (Access=protected)
     function createComponent(obj)
       obj.createComponent@Grasppe.Graphics.PlotFigure();
+      
+      obj.ColorBar = Grasppe.Graphics.ColorBar('Axes', obj.OverlayAxes, 'Size', 10);
+      
+      obj.ColorBar.createPatches; obj.ColorBar.createLabels;
     end
     
     
@@ -448,20 +639,23 @@ classdef MultiPlotFigure < Grasppe.Graphics.PlotFigure
       idx       = nextIdx;
       id        = nextID;
       
+      try
+        obj.ColorBar.createPatches; obj.ColorBar.createLabels;
+      end
+      
       obj.layoutPlotAxes();
     end
     
     function layoutOverlay(obj)
       
       plotArea      = obj.PlotArea;
+      plotInset     = obj.PlotAxes{1}.handleGet('TightInset');
       
       try
         obj.TitleText.handleSet('Units', 'pixels');
         
         titlePosition = obj.TitleText.handleGet('Position');
         titleExtent   = obj.TitleText.handleGet('Extent');
-        
-        plotInset     = obj.PlotAxes{1}.handleGet('TightInset');
         
         % titlePosition = [plotArea(1) + plotArea(3)/2 ... %-titleExtent(3))/2  ...
         %   plotArea(2)+plotArea(4)-(1*titleExtent(4))  ...
@@ -474,10 +668,27 @@ classdef MultiPlotFigure < Grasppe.Graphics.PlotFigure
         titlePosition = titlePosition + [0 plotInset(2)+plotInset(4) 0];
       end
       
-      try obj.TitleText.handleSet('Position', titlePosition); end
+      try 
+        obj.TitleText.handleSet('Position', titlePosition);
+        obj.TitleText.handleSet('HorizontalAlignment', 'left');
+        obj.TitleText.handleSet('VerticalAlignment', 'bottom');
+      end
       
-      obj.TitleText.handleSet('HorizontalAlignment', 'left');
-      obj.TitleText.handleSet('VerticalAlignment', 'bottom');
+      try
+        colorBar = obj.ColorBar;
+        colorBar.handleSet('Units', 'pixels');
+        colorBarPosition  = colorBar.handleGet('Position');
+        colorBarWidth     = 250;
+        colorBarHeight    = 25;
+        colorBarOffset    = (titleExtent(4) - colorBarHeight)/2; %(20-colorBarHeight)
+        colorBarPosition = [...
+          plotArea(1)+plotArea(3)-colorBarWidth ...
+          plotArea(2)+plotArea(4)-colorBarOffset ...
+          colorBarWidth colorBarHeight];
+        colorBarPosition = colorBarPosition + [0 plotInset(2)+plotInset(4) 0 0];
+      end
+           
+      try obj.ColorBar.handleSet('Position', colorBarPosition); end      
       
     end
   end
@@ -620,11 +831,20 @@ classdef MultiPlotFigure < Grasppe.Graphics.PlotFigure
           end
         end
         
-        areaMin = min(plotPosition, [], 1);
-        areaMax = max(plotPosition, [], 1);
-        areaPosition = [areaMin(1:2)  areaMin(1:2)-areaMax(1:2)+areaMax(3:4)];
+        % areaMin = min(plotPosition, [], 1);
+        % areaMax = max(plotPosition, [], 1);
+        % areaPosition = [areaMin(1:2)  areaMin(1:2)-areaMax(1:2)+areaMax(3:4)];
+
+        plotAreas       = plotPosition;
+        plotAreas(:,3)  = plotAreas(:,3)+plotAreas(:,1);
+        plotAreas(:,4)  = plotAreas(:,4)+plotAreas(:,2);
         
-        obj.PlotArea = areaPosition;
+        plotArea      = [ ...
+          min(plotAreas(:,1:2)), ...
+          max(plotAreas(:,3:4))-min(plotAreas(:,1:2)) ...
+          ];
+        
+        obj.PlotArea  = plotArea;
         
       catch err
         try debugStamp(obj.ID); end

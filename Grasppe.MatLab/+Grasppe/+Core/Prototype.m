@@ -15,6 +15,16 @@ classdef Prototype < handle & dynamicprops %& hgsetget
       obj.createMetaPropertyTable;
     end
     
+    function delete(obj)
+      return;
+      %% delete MetaProperties
+      %       metaProperties = obj.MetaProperties;
+      %
+      %       if isstruct(metaProperties) && ~isempty(metaProperties)
+      %         prototypes = struct2cell(metaProperties);
+      %         delete(prototypes{:});
+      %       end
+    end
     
     function id = char(obj)
       id = obj.ID;
@@ -26,7 +36,7 @@ classdef Prototype < handle & dynamicprops %& hgsetget
       if isempty(definedProperties) || ~isa(definedProperties, 'cell'), return; end
       
       definingClasses   = definedProperties(2,:);
-      definedProperties = definedProperties(1,:); %vertcat(definedProperties{1,:});
+      definedProperties = definedProperties(1,:);
       tableSize = size(definedProperties{1});
       
       if isa(definedProperties{1}, 'cell') && tableSize(2)==5
@@ -85,6 +95,17 @@ classdef Prototype < handle & dynamicprops %& hgsetget
     
     
   end
+  
+%   methods (Access=protected)
+%     function registerHandle(obj, handles)
+%     end
+%     
+%     function deleteHandles(obj)
+%     end
+%     
+%     function createComponent(obj)
+%     end
+%   end
   
   methods (Static, Hidden)
     

@@ -13,7 +13,6 @@ classdef Mediator < Grasppe.Core.Component % & Grasppe.Core.Component
   methods
     function obj = Mediator()
       obj = obj@Grasppe.Core.Component;
-      % obj = obj@Grasppe.Core.Component;
     end
     
     function attachMediatorProperty(obj, subject, property, alias)
@@ -45,10 +44,11 @@ classdef Mediator < Grasppe.Core.Component % & Grasppe.Core.Component
           nativeMeta.GetObservable = true; ...
             nativeMeta.SetObservable = true;
           
-          mediationMeta     = Grasppe.Core.MetaProperty.CreateDuplicate(subjectMeta, ...
-            'Grouping', mediatorID, 'Name', alias);
+          mediationMeta     = Grasppe.Core.MetaProperty.CreateDuplicate(subjectMeta, 'Grouping', mediatorID, 'Name', alias); ...
+            obj.registerHandle(mediationMeta);
           
-          mediatorProperty  = Grasppe.Core.MediatedProperty(obj, subject, subjectMeta, mediationMeta);
+          mediatorProperty  = Grasppe.Core.MediatedProperty(obj, subject, subjectMeta, mediationMeta); ...
+            obj.registerHandle(mediatorProperty);
           
           % Attach Mediator Listeners
           

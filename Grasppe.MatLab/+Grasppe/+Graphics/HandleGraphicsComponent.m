@@ -64,13 +64,14 @@ classdef HandleGraphicsComponent < Grasppe.Core.HandleComponent ...
             if isa(child, 'Grasppe.Graphics.HandleGraphicsComponent')
               try delete(child); end
             end
+            child = [];
+            try delete(children(m)); end;
           end
+          children(m) = [];
         end
       end
-      try delete(obj.Handle); end      
-    end    
-    
-    
+      try delete(obj.Handle); end
+    end
   end
     
   methods (Access=protected, Hidden=false)
@@ -108,7 +109,19 @@ classdef HandleGraphicsComponent < Grasppe.Core.HandleComponent ...
       if isOn(obj.IsDestructing), return; end
       obj.handlePostSet@Grasppe.Core.HandleComponent(source, event);
     end
+  end
+  
+  methods
+    function handleSet(obj, name, value)
+      if isOn(obj.IsDestructing), return; end
+      obj.handleSet@Grasppe.Core.HandleComponent(name, value);
+    end
     
+    function value = handleGet(obj, name)
+      value = [];
+      if isOn(obj.IsDestructing), return; end
+      value = obj.handleGet@Grasppe.Core.HandleComponent(name);
+    end    
   end
   
   methods(Abstract, Static, Hidden)
