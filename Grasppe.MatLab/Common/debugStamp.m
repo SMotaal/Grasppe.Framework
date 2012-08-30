@@ -18,6 +18,7 @@ function [ output_args ] = debugStamp( tag, level, obj )
   latencyLimit  = stackLimit * 100;
   
   errorID = '';
+  err = [];
 
   if isnumeric(tag)
     if nargin==2
@@ -30,7 +31,8 @@ function [ output_args ] = debugStamp( tag, level, obj )
     end
     
   elseif isa(tag, 'MException')
-    errorID = [tag.identifier]; % '@'];
+    err     = tag;
+    errorID = [err.message '[' err.identifier ']' ]; % '@'];
   else
     if nargin<2
       level = 5;
@@ -38,13 +40,17 @@ function [ output_args ] = debugStamp( tag, level, obj )
   end
   
   
+  if ~isempty(err)
+    d = err.stack;
+  else
+    d = dbstack('-completenames');
+    try d = d(2:end); end
+  end
   
-  d = dbstack('-completenames');
-  
-  %d = d(2:min(4,numel(d)));
+  %
   
   dbstamp = '';
-  for m = 2:min(4,numel(d)) %numel(d)
+  for m = 1:min(3,numel(d)) %numel(d)
     tx = [d(m).name ' (' int2str(d(m).line) ')'];
     dbstamp = sprintf('%s:<a href="matlab: opentoline(%s, %d)">%s</a>', dbstamp, d(m).file, d(m).line, tx);
   end
