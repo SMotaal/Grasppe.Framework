@@ -1,4 +1,4 @@
-function [ output_args ] = cleardebug( input_args )
+function cleardebug
   %DBCLEAR Summary of this function goes here
   %   Detailed explanation goes here
   
@@ -6,9 +6,12 @@ function [ output_args ] = cleardebug( input_args )
   
   warning('off');
   
+  global debugmode;
+  
+  d = debugmode;	debugmode = false;
+  
   try evalin('base', 'Grasppe.Core.Prototype.ClearPrototypes'); end
-%   
-%   evalin('base', 'clear');
+  %   evalin('base', 'clear');
   
   mlock;
   try
@@ -16,7 +19,7 @@ function [ output_args ] = cleardebug( input_args )
     dbstate = evalin('base', 'dbstatus(''-completenames'')');
     evalin('base', 'clear all;');
     evalin('base', 'clear classes;');
-    evalin('base', 'delete(timerfindall());');  
+    evalin('base', 'delete(timerfindall());');
     try delete(findobj(findall(0),'type','figure')); catch err, end
     delete(timerfindall);
     evalin('base', 'clear java;');
@@ -26,6 +29,9 @@ function [ output_args ] = cleardebug( input_args )
   end
   munlock;
   evalin('base', 'clear cleardebug');
+  
+  evalin('base', 'global debugmode;');
+  assignin('base', 'debugmode', isequal(d, 'true'));
   
   warning('on');
   
