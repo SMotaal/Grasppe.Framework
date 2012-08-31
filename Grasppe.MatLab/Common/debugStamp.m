@@ -4,8 +4,10 @@ function [ output_args ] = debugStamp( tag, level, obj )
   
   global debugmode;
   
-  if ~isscalar(debugmode) || ~islogical(debugmode), debugmode = false; end
-  if ~debugmode, return; end
+  if ~exist('level', 'var') || level~=1
+    if ~isscalar(debugmode) || ~islogical(debugmode), debugmode = false; end
+    if ~debugmode, return; end
+  end
   
   persistent debugtimer debugstack stackdups stackloops stacktime;
   
@@ -30,7 +32,8 @@ function [ output_args ] = debugStamp( tag, level, obj )
       level = tag; tag = '';
     end
     
-  elseif isa(tag, 'MException')
+  elseif isa(tag, 'MException') || ...
+      (isstruct(tag) && all(isfield(tag,{'message', 'identifier', 'stack'})))
     err     = tag;
     errorID = [err.message '[' err.identifier ']' ]; % '@'];
   else
@@ -98,7 +101,7 @@ function [ output_args ] = debugStamp( tag, level, obj )
   
   debugstack = [debugstack nextstack];
   
-  if verbose || level < 5
+  if verbose || level < 4
     disp(nextstack);
   end  
   
