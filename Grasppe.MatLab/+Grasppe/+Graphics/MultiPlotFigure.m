@@ -23,8 +23,14 @@ classdef MultiPlotFigure < Grasppe.Graphics.PlotFigure
       obj = obj@Grasppe.Graphics.PlotFigure(varargin{:});
     end
     
+%     function OnDelete(obj)
+%       try delete(obj.ColorBar); end
+%     end
+    
     
     function OnResize(obj, source, event)
+      obj.bless;
+      
       obj.OnResize@Grasppe.Graphics.PlotFigure(source, event);
       obj.layoutPlotAxes;
       obj.layoutOverlay;
@@ -33,6 +39,8 @@ classdef MultiPlotFigure < Grasppe.Graphics.PlotFigure
     
   
     function OnKeyPress(obj, source, event)
+      obj.bless;
+      
       shiftKey = stropt('shift', event.Data.Modifier);
       commandKey = stropt('command', event.Data.Modifier) || stropt('control', event.Data.Modifier);
       
@@ -70,6 +78,8 @@ classdef MultiPlotFigure < Grasppe.Graphics.PlotFigure
     end
     
     function Export(obj)
+      
+      obj.bless;
       
       S = warning('off', 'all');
       
@@ -425,7 +435,7 @@ classdef MultiPlotFigure < Grasppe.Graphics.PlotFigure
         set(ax, 'Units', 'pixels');
         
         %% Plot Rect
-        axPosition    = HG.pixelPosition(ax)
+        axPosition    = HG.pixelPosition(ax);
         
         %ht          = text(max(ax.XLim), max(ax.YLim), 'test', 'Parent', ax); % max(ax.ZLim));
         ht            = text('Units', 'normalized', 'Parent', ax, 'String', '.', 'Position', [1 1]);
@@ -539,12 +549,16 @@ classdef MultiPlotFigure < Grasppe.Graphics.PlotFigure
       obj.createComponent@Grasppe.Graphics.PlotFigure();
       
       obj.ColorBar = Grasppe.Graphics.ColorBar('Axes', obj.OverlayAxes, 'Size', 10);
+      obj.OverlayAxes.registerHandle(obj.ColorBar);
+      obj.registerHandle(obj.ColorBar);
       
       obj.ColorBar.createPatches; obj.ColorBar.createLabels;
     end
     
     
     function preparePlotAxes(obj)
+      obj.bless;
+      
       try debugStamp(obj.ID); end; % catch, debugStamp(); end;
       nPlots      = obj.PlotAxesLength;
       plotStack   = obj.PlotAxesStack;
@@ -586,6 +600,9 @@ classdef MultiPlotFigure < Grasppe.Graphics.PlotFigure
     end
     
     function [plotAxes idx id] = createPlotAxes(obj, idx, id)
+      
+      obj.bless; %if isOn(obj.IsDestructing), return; end
+      
       try debugStamp(obj.ID); catch, debugStamp(); end;
       nextIdx = idx;  nextID  = id;
       
@@ -647,9 +664,13 @@ classdef MultiPlotFigure < Grasppe.Graphics.PlotFigure
     end
     
     function layoutOverlay(obj)
+      obj.bless;
       
       plotArea      = obj.PlotArea;
-      plotInset     = obj.PlotAxes{1}.handleGet('TightInset');
+      if ~isnumeric(plotArea) || numel(plotArea)~=4, return; end
+      
+      plotInset     = [0 0 0 0];
+      try plotInset = obj.PlotAxes{1}.handleGet('TightInset'); end
       
       try
         obj.TitleText.handleSet('Units', 'pixels');
@@ -666,12 +687,16 @@ classdef MultiPlotFigure < Grasppe.Graphics.PlotFigure
         titlePosition = [plotArea(1) plotArea(2)+plotArea(4) titlePosition(3)];
         
         titlePosition = titlePosition + [0 plotInset(2)+plotInset(4) 0];
+      catch err
+        debugStamp(err, 1);        
       end
       
       try 
         obj.TitleText.handleSet('Position', titlePosition);
         obj.TitleText.handleSet('HorizontalAlignment', 'left');
         obj.TitleText.handleSet('VerticalAlignment', 'bottom');
+      catch err
+        debugStamp(err, 1);        
       end
       
       try
@@ -686,6 +711,8 @@ classdef MultiPlotFigure < Grasppe.Graphics.PlotFigure
           plotArea(2)+plotArea(4)-colorBarOffset ...
           colorBarWidth colorBarHeight];
         colorBarPosition = colorBarPosition + [0 plotInset(2)+plotInset(4) 0 0];
+      catch err
+        debugStamp(err, 1);
       end
            
       try obj.ColorBar.handleSet('Position', colorBarPosition); end      
@@ -695,6 +722,9 @@ classdef MultiPlotFigure < Grasppe.Graphics.PlotFigure
   
   methods
     function formatPlotAxes(obj, axes)
+      
+      obj.bless;
+      
       if nargin==2
         plotAxes  = {axes};
       else
@@ -710,6 +740,8 @@ classdef MultiPlotFigure < Grasppe.Graphics.PlotFigure
     
     
     function layoutPlotAxes(obj)
+      obj.bless;
+      
       try
         cells           = sum(~cellfun(@isempty,obj.PlotAxes));
         parentPosition  = HG.pixelPosition(obj.Handle);
@@ -839,12 +871,17 @@ classdef MultiPlotFigure < Grasppe.Graphics.PlotFigure
         plotAreas(:,3)  = plotAreas(:,3)+plotAreas(:,1);
         plotAreas(:,4)  = plotAreas(:,4)+plotAreas(:,2);
         
-        plotArea      = [ ...
-          min(plotAreas(:,1:2)), ...
-          max(plotAreas(:,3:4))-min(plotAreas(:,1:2)) ...
-          ];
+        if size(plotAreas,1) > 1
+          plotBottomLeft  = min(plotAreas(:,1:2));
+          plotTopRight    = max(plotAreas(:,3:4));
+        else
+          plotBottomLeft  = plotAreas(1:2);
+          plotTopRight    = plotAreas(3:4);
+        end
         
-        obj.PlotArea  = plotArea;
+        plotArea        = [ plotBottomLeft    plotTopRight-plotBottomLeft ];
+        
+        obj.PlotArea    = plotArea;
         
       catch err
         try debugStamp(obj.ID); end

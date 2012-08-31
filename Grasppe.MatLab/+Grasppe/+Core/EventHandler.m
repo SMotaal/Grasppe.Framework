@@ -114,6 +114,7 @@ classdef EventHandler < Grasppe.Core.Prototype
     function callbackEvent(source, event, obj, eventName, varargin)
       % try disp(WorkspaceVariables); end
       
+      
       if nargin==2 && isa(source, 'Grasppe.Core.EventHandler')
         % disp(toString({source, event}));
         obj = source;
@@ -141,6 +142,10 @@ classdef EventHandler < Grasppe.Core.Prototype
         case {'OnKeyPress', 'OnKeyRelease'}
           event = Grasppe.Core.EventData(eventFunction, event);
       end
+      
+      if isequal(eventName, 'delete') && isa(obj, 'Grasppe.Core.Component')
+        obj.bless;
+      end      
       
       try
         feval(str2func(eventFunction), obj, source, event);

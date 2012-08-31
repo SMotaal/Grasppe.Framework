@@ -88,9 +88,13 @@ classdef PlotFigure < Grasppe.Graphics.Figure
     function createComponent(obj)
       obj.createComponent@Grasppe.Graphics.Figure();
       obj.preparePlotAxes;
+      
       obj.OverlayAxes = Grasppe.Graphics.OverlayAxes('ParentFigure', obj);  %OverlayAxesObject.Create(obj);
-      % obj.StatusText  = OverlayTextObject.Create(obj.OverlayAxes);
+      obj.registerHandle(obj.OverlayAxes);
+      
       obj.TitleText   = Grasppe.Graphics.TextObject(obj.OverlayAxes);
+      obj.OverlayAxes.registerHandle(obj.TitleText);
+      obj.registerHandle(obj.TitleText);
       
       %obj.TitleText.handleSet('Tag', [obj.TitleText.handleGet('Tag') '@Screen']);
       % obj.TitleText.updateTitle;
@@ -98,10 +102,14 @@ classdef PlotFigure < Grasppe.Graphics.Figure
     end
     
     function preparePlotAxes(obj)
+      obj.bless;
+      
       obj.PlotAxes    = Grasppe.Graphics.PlotAxes('ParentFigure', obj);
     end
         
     function updatePlotTitle(obj)
+      obj.bless;
+      
       if isempty(obj.SampleTitle)
         obj.Title = [obj.BaseTitle]; % ' (' obj.SampleTitle ')'];
       else
@@ -118,6 +126,9 @@ classdef PlotFigure < Grasppe.Graphics.Figure
   methods (Hidden)
        
     function OnMousePan(obj, source, event)
+      
+      obj.bless;
+      
       try
         try
           if isa(source, 'Grasppe.Graphics.PlotAxes')
@@ -137,6 +148,9 @@ classdef PlotFigure < Grasppe.Graphics.Figure
   methods
     
     function OnKeyPress(obj, source, event)
+      
+      obj.bless;
+      
       shiftKey = stropt('shift', event.Data.Modifier);
       commandKey = stropt('command', event.Data.Modifier) || stropt('control', event.Data.Modifier);
       
@@ -180,6 +194,8 @@ classdef PlotFigure < Grasppe.Graphics.Figure
     
     function panAxes(obj, plotAxes, panXY, panLength) % (obj, source, event)
       persistent lastPanXY
+      
+      obj.bless;
       
       if isequal(plotAxes.ViewLock, true), return; end
       

@@ -30,7 +30,7 @@ classdef SimpleDataModel  < Grasppe.Data.Models.DataModel
           %subref(a.DATA, s);
         end
       catch err
-        try debugStamp(err.message, 1); catch, debugStamp(); end;
+        try debugStamp(err.message, 2); catch, debugStamp(); end;
         rethrow(err);
       end
     end

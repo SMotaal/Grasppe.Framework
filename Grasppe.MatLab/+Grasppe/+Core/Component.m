@@ -7,6 +7,7 @@ classdef Component < Grasppe.Core.Instance
     Initialized = false;
     SubHandles  = [];
     SubHandleObjects = {};
+    IsDeleting  = false;
   end
   
   properties (Access=private)
@@ -29,12 +30,25 @@ classdef Component < Grasppe.Core.Instance
     
     function delete(obj)
       debugStamp(5, obj);
+      obj.IsDeleting = true;
       obj.deleteHandles;
     end
     
+    function bless(obj)
+      isBlessed = isvalid(obj) && ~isequal(obj.IsDeleting, true)
+      
+      if ~isBlessed
+        debugStamp('Component Not Blessed', 5, obj);
+        evalin('caller', 'return');
+        return;
+      end
+      debugStamp('Component Blessed', 5, obj);
+    end
+    
+    
   end
   
-  methods (Access=protected)
+  methods (Hidden) %Access=protected)
     
     function registerHandle(obj, handles)
       % try
@@ -61,23 +75,33 @@ classdef Component < Grasppe.Core.Instance
     end
     
     function deleteHandles(obj)
+      
+      %objects = obj.SubHandleObjects;
+      for m = 1:numel(obj.SubHandleObjects)
+        try obj.SubHandleObjects{m}.obj.IsDeleting = true; end
+      end
+      
       %handles = obj.SubHandles;
       for m = 1:numel(obj.SubHandles)
         % try dispf('Deleting %s @ %s', toString(handles(m)), obj.ID); end
+        %try obj.SubHandles(m).obj.IsDeleting = true;
         try delete(obj.SubHandles(m)); end
         obj.SubHandles(m) = [];
       end
       
       obj.SubHandles = [];
       
-      %objects = obj.SubHandleObjects;
       for m = 1:numel(obj.SubHandleObjects)
-        % try dispf('Deleting %s @ %s', toString(handles{m}), obj.ID); end
+        % try dispf('Deleting %s @ %s', toString(handles{m}), obj.ID); end        
         try delete(obj.SubHandleObjects{m}); end
         obj.SubHandleObjects{m} = [];
       end
       obj.SubHandleObjects = {};
     end
+    
+  end
+  
+  methods(Access=protected)
     
     function createComponent(obj)
       

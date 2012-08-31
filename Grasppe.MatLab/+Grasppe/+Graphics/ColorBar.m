@@ -69,6 +69,9 @@ classdef ColorBar < Grasppe.Graphics.Axes
   methods
     
     function h = createPatches(obj)
+      
+      obj.bless;
+      
       map     = colormap(obj.ParentFigure.Handle);
       
       steps   = size(map,1);
@@ -100,6 +103,8 @@ classdef ColorBar < Grasppe.Graphics.Axes
       obj.PatchHandle = patch(xData, yData, zData, 'Parent', obj.Handle, ...
         'EdgeColor', 'none', 'LineStyle', 'none');
       
+      obj.registerHandle(obj.PatchHandle);
+      
       obj.XTick = [];
       obj.YTick = [];
       obj.ZTick = [];
@@ -115,6 +120,9 @@ classdef ColorBar < Grasppe.Graphics.Axes
     end
     
     function updateLimits(obj)
+      
+      obj.bless;
+      
       plotAxes  = obj.ParentFigure.PlotAxes;
       steps     = obj.Size;
       
@@ -147,6 +155,10 @@ classdef ColorBar < Grasppe.Graphics.Axes
     end
     
     function createLabels(obj)
+      
+      obj.bless;
+      
+      
       try obj.deleteLabels; end
       try
         obj.updateLimits();
@@ -163,6 +175,9 @@ classdef ColorBar < Grasppe.Graphics.Axes
     end
     
     function createLabel(obj, index)
+      
+      obj.bless;
+      
       label = [];
       
       if ~exist('index', 'var') || isempty(index)
@@ -190,6 +205,9 @@ classdef ColorBar < Grasppe.Graphics.Axes
     end
     
     function updateLabel(obj, index)
+      
+      obj.bless;
+      
       try
         label   = obj.getLabel(index);
         
@@ -218,6 +236,9 @@ classdef ColorBar < Grasppe.Graphics.Axes
     end
     
     function formatLabel(obj, index)
+      
+      obj.bless;
+      
       try
         label = obj.getLabel(index);
         label.FontSize = 5.5; %obj.FontSize;
@@ -245,6 +266,9 @@ classdef ColorBar < Grasppe.Graphics.Axes
     end
     
     function positionLabel(obj, index)
+      
+      obj.bless;
+      
       try
         label = obj.getLabel(index);
         
@@ -256,6 +280,9 @@ classdef ColorBar < Grasppe.Graphics.Axes
     end
     
     function label = getLabel(obj, index)
+      
+      obj.bless;
+      
       label = [];
       label = obj.LabelObjects{index};
       %if isempty(label), return; end

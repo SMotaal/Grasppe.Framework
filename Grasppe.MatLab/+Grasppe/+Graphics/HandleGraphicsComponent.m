@@ -80,16 +80,11 @@ classdef HandleGraphicsComponent < Grasppe.Core.HandleComponent ...
   
   methods (Hidden)
     
-%     function delete(obj)
-%       obj.OnDelete;
-%     end
-
     function OnCreate(obj, source, event)
       disp(['Creating handle for ' obj.ID]);
     end
         
     function OnDelete(obj, source, event)
-      % if isequal(obj.IsDestructing, true), return; end
       debugStamp(obj, 5);
       obj.IsDestructing = true;
     end
@@ -114,6 +109,13 @@ classdef HandleGraphicsComponent < Grasppe.Core.HandleComponent ...
   methods
     function handleSet(obj, name, value)
       if isOn(obj.IsDestructing), return; end
+      
+      switch lower(name)
+        case 'position'
+          try value(1:2)    = max(value(1:2),   0); end
+          try value(3:end)  = max(value(3:end), 1); end
+      end
+      
       obj.handleSet@Grasppe.Core.HandleComponent(name, value);
     end
     
@@ -121,7 +123,18 @@ classdef HandleGraphicsComponent < Grasppe.Core.HandleComponent ...
       value = [];
       if isOn(obj.IsDestructing), return; end
       value = obj.handleGet@Grasppe.Core.HandleComponent(name);
-    end    
+    end 
+    
+    function bless(obj)
+      isBlessed = isvalid(obj) && ~isequal(obj.IsDeleting, true) && ~isOn(obj.IsDestructing);
+      
+      if ~isBlessed
+        debugStamp('Not Blessed', 5, obj);
+        evalin('caller', 'return');
+        return;
+      end
+      debugStamp('Blessed', 5, obj);
+    end
   end
   
   methods(Abstract, Static, Hidden)
