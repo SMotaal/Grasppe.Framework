@@ -5,8 +5,8 @@ classdef DataParameters < Grasppe.Core.Model
   properties (SetAccess=protected, GetAccess=protected)
     caseID
     setID
-    sampleID
     variableID
+    sampleID
   end
   
   methods

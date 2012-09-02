@@ -50,6 +50,19 @@ classdef Component < Grasppe.Core.Instance
   
   methods (Hidden) %Access=protected)
     
+    function value = DefaultValue(obj, propertyName, fallbackValue)
+      value     = [];
+      try
+        value = obj.MetaProperties.(propertyName).NativeMeta.DefaultValue;
+      catch err
+        if nargin>1
+          value = fallbackValue;
+        else
+          rethrow(err);
+        end
+      end
+    end
+    
     function registerHandle(obj, handles)
       % try
       %   if isa(handles, 'Grasppe.Core.Prototype')

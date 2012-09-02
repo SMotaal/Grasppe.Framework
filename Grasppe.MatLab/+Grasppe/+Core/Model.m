@@ -36,6 +36,38 @@ classdef Model < Grasppe.Core.Prototype & matlab.mixin.Copyable
         try id = obj.Creator.ID; end
       end
     end
+    
+    
+    function tf = eq(a,b)
+      tf = false;
+      
+      if ~isequal(size(a), size(b)),        return; end
+      if ~isequal(class(a), class(b)),      return; end
+      
+      fields = fieldnames(a);
+      
+      for m = 1:numel(fields)
+        field = fields{m};
+        if ~isequal(a.(field), b.(field)),  return; end
+      end
+      
+      tf = true;
+    end
+    
+    %function tf = ne(a,b)
+    %  tf = ~(a==b);
+    %end    
+    
+    function tf = Compare(a, b, field)
+      tf      = false;
+      
+      if nargin>2
+        try tf  = isequal(a.(field), b.(field)); end
+      else
+        tf = a==b;
+      end
+    end
+    
   end
   
   methods (Access = protected)
