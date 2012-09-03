@@ -16,7 +16,7 @@ function [ output_args ] = debugStamp( tag, level, obj )
   verbose       = false;
   intrusive     = false;
   detailed      = false;
-  stackLimit    = 5;
+  stackLimit    = 10;
   latencyLimit  = stackLimit * 100;
   
   errorID = '';
@@ -53,7 +53,7 @@ function [ output_args ] = debugStamp( tag, level, obj )
   %
   
   dbstamp = '';
-  for m = 1:min(3,numel(d)) %numel(d)
+  for m = 1:min(stackLimit,numel(d)) %numel(d)
     tx = [d(m).name ' (' int2str(d(m).line) ')'];
     dbstamp = sprintf('%s:<a href="matlab: opentoline(%s, %d)">%s</a>', dbstamp, d(m).file, d(m).line, tx);
   end

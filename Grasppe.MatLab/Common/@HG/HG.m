@@ -8,6 +8,7 @@ classdef HG
   methods (Static)
     [ position ]    = pixelPosition( handle, outer );
     [HD HG CL INFO] = handleObject(h);
+    fname = DefineFont(familyNames, style, fontSize, fontUnits);
   end
   
 end
