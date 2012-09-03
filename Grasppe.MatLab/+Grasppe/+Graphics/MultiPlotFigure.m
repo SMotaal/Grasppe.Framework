@@ -349,8 +349,6 @@ classdef MultiPlotFigure < Grasppe.Graphics.PlotFigure
         
       end
            
-      %% Fix Text
-%       hdTexts = unique(findall(hdOutput, 'type', 'text'));
 %       %set(hdText, 'Margin' , cell2mat(get(hdText, 'Margin')) +1)
 %       for m = 1:numel(hdTexts)
 %         hgText = handle(hdTexts(m));
@@ -489,6 +487,22 @@ classdef MultiPlotFigure < Grasppe.Graphics.PlotFigure
       hax2 = axes('Parent', hdOutput, 'Units','pixels', 'Position', outerRect , ...
         'Visible', 'off', 'Color', 'none', 'Box', 'on');      
       
+      %% Fix Text
+      hdTexts = unique(findall(hdOutput, 'type', 'text'));
+      for m = 1:numel(hdTexts)
+        hgText = handle(hdTexts(m));
+        hgText.FontUnits    = 'pixels';
+        if hgText.FontSize > 8.5
+          hgText.FontSize   = hgText.FontSize+1;
+        elseif hgText.FontSize < 8.5
+          %disp(hgText.FontSize);
+          hgText.FontSize   = 8.5;
+        end
+        %hgText.Margin = hgText.Margin + 2;
+        %hgText.BackgroundColor = 'g';
+      end      
+      
+      
       %% Fix OverlayAxes
       for m = 1:numel(hgObjects.('OverlayAxes'))
           ax = hgObjects.('OverlayAxes')(m);
@@ -496,7 +510,7 @@ classdef MultiPlotFigure < Grasppe.Graphics.PlotFigure
           ax.Position     = plotRect;
           htx = (findobj(ax,'Type', 'text'));
           
-          set(htx(1), 'Units', 'normalized', 'Position',[0 1], 'FontSize', 7, ...
+          set(htx(1), 'Units', 'normalized', 'Position',[0 1], 'FontSize', 16, ...
             'HorizontalAlignment', 'left', 'VerticalAlignment', 'bottom');
           
           set(htx(1), 'Units', 'pixels', 'Position', HG.pixelPosition(htx(1)) + [0 +7 0]);
@@ -521,7 +535,7 @@ classdef MultiPlotFigure < Grasppe.Graphics.PlotFigure
           try delete(ax); end
         end
       end
-      
+            
       %% Fix Appearances
       
       %% Fix Layout
