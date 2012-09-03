@@ -2,7 +2,7 @@ classdef SimpleDataModel  < Grasppe.Data.Models.DataModel
   %RAWDATAMODEL Summary of this class goes here
   %   Detailed explanation goes here
   
-  properties
+  properties (Hidden)
     DATA = [];
   end
   
@@ -77,6 +77,21 @@ classdef SimpleDataModel  < Grasppe.Data.Models.DataModel
     
     function sz = size(a)
       sz = size(a.DATA);
+    end
+    
+    function display(obj)
+      
+      d = obj.DATA;
+      c = class(obj);
+      m = eval(NS.CLASS);
+      f = fieldnames(d);            
+      s = whos('d');      
+      
+      cref = '<a href="matlab: open %s">%s</a>';
+      dispf(['\n\t' cref '\t' cref ''], c, c, m, m);
+      dispf('\tElements: %d\tFields: %d\tSize: %1.1f KB\n', numel(d), numel(f), s.bytes/2^10);
+      t = evalc('disp(d)');
+      dispf(regexprep(['\t\t' t],'\n','\\n\\t\\t'));
     end
     
   end

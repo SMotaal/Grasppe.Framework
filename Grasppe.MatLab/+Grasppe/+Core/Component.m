@@ -193,6 +193,7 @@ classdef Component < Grasppe.Core.Instance
             if ~strcontains(err.identifier, 'noSetMethod')
               try debugStamp(obj.ID, 5); end
               disp(['Could not set ' names{i} ' for ' class(obj)]);
+              rethrow(err);
             end
           end
         end

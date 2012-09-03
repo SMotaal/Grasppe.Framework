@@ -30,10 +30,12 @@ classdef Model < Grasppe.Core.Prototype & matlab.mixin.Copyable
     
     function id = get.CreatorID(obj)
       id = [];
-      if isa(obj.Creator, 'Grasppe.Core.Model')
-        try id = obj.Creator.CreatorID; end
-      else
-        try id = obj.Creator.ID; end
+      try
+        if isa(obj.Creator, 'Grasppe.Core.Model')
+          id = obj.Creator.CreatorID;
+        else
+          id = obj.Creator.ID;
+        end
       end
     end
     
