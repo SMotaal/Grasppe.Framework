@@ -93,6 +93,10 @@ classdef MultiPlotFigure < Grasppe.Graphics.PlotFigure
       pageScale   = 150;
       pageSize    = [11 8.5] .* 150;
       
+      screenPPI   = get(0, 'ScreenPixelsPerInch');
+      
+      set(0, 'ScreenPixelsPerInch', 96);
+      
       figureOptions = { ...
         'Visible', 'off', 'Renderer', 'painters', ...
         'Position', floor([0 0 pageSize]), ...
@@ -488,15 +492,42 @@ classdef MultiPlotFigure < Grasppe.Graphics.PlotFigure
         'Visible', 'off', 'Color', 'none', 'Box', 'on');      
       
       %% Fix Text
+      titleFont   = 8;
+      smallFont   = 5;
+      adjustFont  = 0;
+      fontUnits   = 'points';
+      
       hdTexts = unique(findall(hdOutput, 'type', 'text'));
       for m = 1:numel(hdTexts)
         hgText = handle(hdTexts(m));
-        hgText.FontUnits    = 'pixels';
-        if hgText.FontSize > 8.5
-          hgText.FontSize   = hgText.FontSize+1;
-        elseif hgText.FontSize < 8.5
-          %disp(hgText.FontSize);
-          hgText.FontSize   = 8.5;
+        
+        hgText.FontUnits  = fontUnits;
+        hgText.FontSize   = hgText.FontSize+adjustFont;
+        
+        if hgText.FontSize < smallFont
+          hgText.FontSize   = smallFont;
+        end        
+        
+        try
+          str   = hgText.String;
+          nstr  = {};
+          
+          adjustText  = num2str(adjustFont,'%+1.0f');
+          smallText   = num2str(smallFont,'%1.0f');
+          
+          %disp({adjustText, smallText});
+
+          for l = 1:size(str,1)
+            %nstr = strvcat(nstr, regexprep(strtrim(str(l,:)),'(\\fontsize{)([\d\.]+)(})', ['$1${max(2, ' int2str(smallFont-2) ', str2num($2)+' int2str(adjustFont) ')}$3']));
+            nstr{end+1,1} = regexprep(strtrim(str(l,:)), ...
+              '(\\fontsize{)([\d]+)(})', ...
+              ['$1' '${int2str(max([2 ' smallText ' str2num($2)' adjustText ' ]) )}' '$3']);
+          end
+          %disp(str);
+          %disp(nstr);
+          hgText.String = nstr;
+        catch err
+          disp(err);
         end
         %hgText.Margin = hgText.Margin + 2;
         %hgText.BackgroundColor = 'g';
@@ -510,7 +541,8 @@ classdef MultiPlotFigure < Grasppe.Graphics.PlotFigure
           ax.Position     = plotRect;
           htx = (findobj(ax,'Type', 'text'));
           
-          set(htx(1), 'Units', 'normalized', 'Position',[0 1], 'FontSize', 16, ...
+          set(htx(1), 'Units', 'normalized', 'Position',[0 1], ...
+            'FontUnits', fontUnits, 'FontSize', titleFont, ...
             'HorizontalAlignment', 'left', 'VerticalAlignment', 'bottom');
           
           set(htx(1), 'Units', 'pixels', 'Position', HG.pixelPosition(htx(1)) + [0 +7 0]);
@@ -554,6 +586,7 @@ classdef MultiPlotFigure < Grasppe.Graphics.PlotFigure
         rethrow(err);
       end
       
+      set(0, 'ScreenPixelsPerInch', screenPPI);
       warning(S);
     end
   end

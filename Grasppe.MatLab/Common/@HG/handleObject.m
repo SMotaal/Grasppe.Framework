@@ -9,7 +9,7 @@ function [HD HG CL INFO] = handleObject(h)
   end
   
   hdInfo      = '';
-  try hdInfo  = [hdInfo 'Handle: ' num2str(m,'% 3.0f') '\t']; end
+  try hdInfo  = [hdInfo 'Handle: ' num2str(h,'% 3.0f') '\t']; end
   
   hpObject    = [];
   clObject    = class(hgObject);
