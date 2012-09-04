@@ -43,7 +43,7 @@ function [ output_args ] = halt( err, tag )
       disp(sprintf('\n%s\n\t%s\n\t%d\t%s',e.identifier, e.message, ...
         length(e.stack), toString({e.stack.name})));
     catch err
-      disp(err);
+      debugStamp(err,1);
       keyboard;
     end
     
@@ -57,7 +57,7 @@ function [ output_args ] = halt( err, tag )
 %     evalin('caller', 'keyboard');
   catch err
     dbstop(s);
-    disp(err);
+    debugStamp(err,1);
     keyboard;
   end
   

@@ -71,7 +71,7 @@ if exists('text')
         fclose(fid);
         clear buffer fid;
       catch err
-        disp(err);
+        debugStamp(err,1);
       end
     end
   end

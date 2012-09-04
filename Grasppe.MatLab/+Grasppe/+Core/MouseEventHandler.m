@@ -84,7 +84,7 @@ classdef MouseEventHandler < Grasppe.Core.Prototype & Grasppe.Core.EventHandler
         lastDownID lastUpID ...
         lastDownXY clickTimer ...
         lastPanTic lastScrollSwipeTic  ...
-        fireClickTimer lastMouseStateHandle MouseButtonState;
+        lastMouseStateHandle MouseButtonState; % fireClickTimer
       
       doubleClickRate     = 0.2;
       
@@ -108,9 +108,9 @@ classdef MouseEventHandler < Grasppe.Core.Prototype & Grasppe.Core.EventHandler
       try lastUpSameID    = isequal(lastUpID, obj.ID); end
       
       
-      if isempty(fireClickTimer) || ~isvalid(fireClickTimer)
-        fireClickTimer = timer( 'StartDelay', doubleClickRate);
-      end
+      % if isempty(fireClickTimer) || ~isvalid(fireClickTimer)
+      %   fireClickTimer = timer( 'StartDelay', doubleClickRate);
+      % end
       
       sourceData = event.Data;
       
@@ -172,13 +172,13 @@ classdef MouseEventHandler < Grasppe.Core.Prototype & Grasppe.Core.EventHandler
                   clickTimer = timer('name', 'ClickTimer', 'Period', doubleClickRate, 'StartDelay', doubleClickRate, ...
                   'TimerFcn', clickFunction);
                 else
-                  stop(clickTimer);
-                  set(clickTimer, 'TimerFcn', clickFunction);
+                  try stop(clickTimer); end
+                  try set(clickTimer, 'TimerFcn', clickFunction); end
                 end
                 start(clickTimer);
               elseif isequal(selectionType, 'open') %&& lastUpToc < doubleClickRate %if lastUpToc < doubleClickRate %&& lastDownToc < doubleClickRate                
                 if ~isempty(clickTimer) && isvalid(clickTimer)
-                  stop(clickTimer);
+                  try stop(clickTimer); end
                 end
                 event.Name = 'MouseDoubleClick';
                 Grasppe.Core.EventHandler.callbackEvent(obj, event, currentObject, event.Name);
@@ -187,7 +187,7 @@ classdef MouseEventHandler < Grasppe.Core.Prototype & Grasppe.Core.EventHandler
               
             end
           catch err
-            disp(err.message);
+            debugStamp(err, 1);
           end
           
           
@@ -237,7 +237,7 @@ classdef MouseEventHandler < Grasppe.Core.Prototype & Grasppe.Core.EventHandler
             event.Data.Scrolling.Momentum      = lastScrollToc < scrollingThreshold; % && lastScrollToc>1;
             % disp(event);
           catch err
-            disp(err.message);
+            debugStamp(err, 1);
             disp(event);
             % beep;
           end

@@ -25,7 +25,7 @@ function [ value unit ] = unitValue( strs )
         end
       end
     catch err
-      disp(err);
+      debugStamp(err,1);
     end
   end
   

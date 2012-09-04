@@ -86,7 +86,7 @@ function [string value] = structString(value, level, fieldLabel)
       subtree = ['[Struct Array]\t' listString(fieldnames(value))];%structTree(value, level+1, fieldLabel);
     end
   catch err
-    disp(err);
+    debugStamp(err,1);
   end
   
   string = subtree;

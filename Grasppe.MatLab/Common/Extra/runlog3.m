@@ -103,7 +103,7 @@ function [ result ] = runlog( text, command )
           end
         end
       catch err
-        disp(err);
+        debugStamp(err,1);
       end
     end
   end

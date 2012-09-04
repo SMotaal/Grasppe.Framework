@@ -37,7 +37,7 @@ function [HD HG CL INFO] = handleObject(h)
       try hdInfo    = [hdInfo 'UserData: ' hpInfo '\t']; end
     end
   catch err
-    disp(err);
+    debugStamp(err,1);
   end
   
   hdInfo = strtrim(sprintf(hdInfo));

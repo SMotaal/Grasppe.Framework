@@ -5,13 +5,13 @@ function [ err ] = dealwith(err)
   debugmode = true;
   
   if debugmode
-    disp(err);
+    debugStamp(err,1);
     keyboard;
     dbstop in dealwith>debugError if error;
     debugError(err);
     dbclear in dealwith;
   elseif ~debugmode
-    disp(err);
+    debugStamp(err,1);
   else
     return;
   end

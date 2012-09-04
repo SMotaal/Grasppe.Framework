@@ -23,7 +23,7 @@ function [ value index ] = pairedValue( name, last, varargin )
       return;
     end
   catch err
-      disp(err);    
+      debugStamp(err,1);
   end
   
   try
@@ -36,7 +36,7 @@ function [ value index ] = pairedValue( name, last, varargin )
       value = values{index(1)};
     end
   catch err
-      disp(err);    
+      debugStamp(err,1);
   end
 end
 

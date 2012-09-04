@@ -233,7 +233,7 @@ try
     subtree = structTree(value, level+1, fieldLabel);
   end
 catch err
-  disp(err);
+  debugStamp(err,1);
 end
 
 string = subtree;%sprintf(subtree);

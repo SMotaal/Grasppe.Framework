@@ -54,7 +54,7 @@ function [string] = tokenString(token)
       callback = ['grasppeQueue(' int2str(callback.id) ')'];
     end
   catch err
-    disp(err);
+    debugStamp(err,1);
     callback = '';
   end
   

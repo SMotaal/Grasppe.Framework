@@ -210,7 +210,7 @@ function datastore = loaddata(datastore, forced)
         loaded = true;
         UI.setStatus('Processing persistent data...'); forcedraw(); % fprintf(1,'Done.\n\n');
       catch err
-        disp(err);
+        debugStamp(err,1);
       end
     else
       loaded = true;

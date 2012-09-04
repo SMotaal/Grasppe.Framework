@@ -69,7 +69,7 @@ function [ result ] = runlog( text, command )
           buffer = backspace(char(buffer(:)', text(:)'));
         end
       catch err
-        disp(err);
+        debugStamp(err,1);
       end
       
       try
@@ -94,11 +94,11 @@ function [ result ] = runlog( text, command )
             fclose(fid);
             clear buffer fid;
           catch err
-            disp(err);
+            debugStamp(err,1);
           end
         end
       catch err
-        disp(err);
+        debugStamp(err,1);
       end
       
     end

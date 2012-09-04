@@ -527,7 +527,7 @@ classdef MultiPlotFigure < Grasppe.Graphics.PlotFigure
           %disp(nstr);
           hgText.String = nstr;
         catch err
-          disp(err);
+          debugStamp(err,1);
         end
         %hgText.Margin = hgText.Margin + 2;
         %hgText.BackgroundColor = 'g';

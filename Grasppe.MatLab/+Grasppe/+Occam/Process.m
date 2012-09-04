@@ -154,8 +154,7 @@ classdef Process < Grasppe.Occam.ProcessData & Grasppe.Core.Prototype % handle &
         
         obj.Processes{end+1} = processListener;
       catch err
-        disp(err);
-        null;
+        debugStamp(err,1);
       end
     end
     

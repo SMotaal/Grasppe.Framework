@@ -6,8 +6,10 @@ function [ h ] = setStatus( status )
   
   default status false;
   
-  if isempty(statustimer)
-    
+  try 
+    if isempty(statustimer)
+      statustimer = timerfindall('Tag', 'statustimer');
+    end
   end
       
   if ischar(status)
@@ -19,7 +21,7 @@ function [ h ] = setStatus( status )
       disp('starting');
       try
         start(statustimer);
-      catch err
+      catch err        
         statustimer = timer('Name','StatusTimer','ExecutionMode', 'fixedDelay', 'Period', 0.1, 'StartDelay', 1, 'TimerFcn', 'setStatus();');
         start(statustimer);
       end
