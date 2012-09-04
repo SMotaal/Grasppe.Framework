@@ -126,6 +126,8 @@ classdef ProcessProgress < Grasppe.Core.Prototype
   methods (Hidden)
     function updateProgress(obj)
       
+      if isQuitting, pause(1); end
+      
       if obj.isResetting;
         try
           UI.setStatus('', h, []);
