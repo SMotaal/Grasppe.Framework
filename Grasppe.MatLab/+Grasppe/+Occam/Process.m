@@ -70,17 +70,17 @@ classdef Process < Grasppe.Occam.ProcessData & Grasppe.Core.Prototype % handle &
       notify(obj, 'StatusChanged');
     end
     
-    function output = Execute(obj, parameters)
+    function output = Execute(obj, parameters, input)
       
       try obj.Parameters = parameters; end; %if nargin > 1, try obj.Parameters = parameters; end; end
       
-      if (isempty(obj.Input))
-        try
+      if ~exist('input', 'var')
+        if (isempty(obj.Input))
           obj.Input = evalin('caller', 'output');
         end
+        
+        input     = obj.Input;
       end
-      
-      input     = obj.Input;
       input     = obj.InitializeProcess(input);
       obj.Input = input;
       

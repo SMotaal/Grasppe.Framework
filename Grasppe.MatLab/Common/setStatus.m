@@ -2,41 +2,40 @@ function [ h ] = setStatus( status )
   %SETSTATUS Summary of this function goes here
   %   Detailed explanation goes here
   
-  persistent statustext statustimer
+  persistent statusText statusTimer
   
-  default status false;
+  if ~exist('status', 'var') status = false; end
   
-  try 
-    if isempty(statustimer)
-      statustimer = timerfindall('Tag', 'statustimer');
-    end
-  end
-      
+  %   try
+  %     if isempty(statusTimer)
+  %       statusTimer = timerfindall('Tag', 'statusTimer');
+  %     end
+  %   end
+  
+  try stop(statusTimer); end
+  
   if ischar(status)
     if isempty(status)
-      statustext = '';
-%       stop(statustimer);
+      statusText = '';
+      %       stop(statusTimer);
     else
-      statustext = status;
+      statusText = status;
       disp('starting');
-      try
-        start(statustimer);
-      catch err        
-        statustimer = timer('Name','StatusTimer','ExecutionMode', 'fixedDelay', 'Period', 0.1, 'StartDelay', 1, 'TimerFcn', 'setStatus();');
-        start(statustimer);
+      
+      if isempty(statusTimer) || ~isscalar(statusTimer) || ~isa(statusTimer, 'timer') || ~isvalid(statusTimer)
+        statusTimer = GrasppeKit.DelayedCall(@(s, e) setStatus(), 0.1, 'hold');
       end
+      try start(statusTimer); end
     end
   end
-    
   
-
-  if isempty(statustext)
+  
+  
+  if isempty(statusText)
     h = statusbar(0);
-    disp('stopping');
-    stop(statustimer);
   else
-%     disp('updating');
-    h = statusbar(0, statustext);
+    %     disp('updating');
+    h = statusbar(0, statusText);
   end
   
 end

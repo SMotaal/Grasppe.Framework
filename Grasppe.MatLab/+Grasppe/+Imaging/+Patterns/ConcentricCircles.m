@@ -1,4 +1,4 @@
-function [ image range contrast reference] = ConcentricCircles( cycles, reference, contrast, width )
+function [ img range contrast reference] = ConcentricCircles( cycles, reference, contrast, width )
   %CONCENTRICCIRCLES Summary of this function goes here
   %   Detailed explanation goes here
   
@@ -21,9 +21,9 @@ function [ image range contrast reference] = ConcentricCircles( cycles, referenc
   
   % if diff<0, contrast = contrast + diff; end
   
-  image = Grasppe.Imaging.Patterns.SineCircles(cycles, 50, 100, width); 
-  image = im2bw(image);
-  image = (reference - contrast/2) + (image.*contrast);
+  img = Grasppe.Imaging.Patterns.SineCircles(cycles, 50, 100, width); 
+  img = im2bw(img);
+  img = (reference - contrast/2) + (img.*contrast);
   
   % disp([reference contrast mean(image(:)) min(image(:)) max(image(:))]);
   

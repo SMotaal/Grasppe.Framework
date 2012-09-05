@@ -174,10 +174,10 @@ end
 
 function curve = createToneCurve(spi, lpi, angle, gain, noise, blur, radius) % screenID)
   
-  screenID    = generateScreenID(spi, lpi, angle, gain, noise, blur, radius);
-  curvePath   = curvesPath(screenID);
+  screenID      = generateScreenID(spi, lpi, angle, gain, noise, blur, radius);
+  curvePath     = curvesPath(screenID);
   
-  outputLinear = true;
+  outputLinear  = true;
   
   if outputLinear
     linearPath  = fullfile('.','Output', 'Linear');
@@ -186,10 +186,10 @@ function curve = createToneCurve(spi, lpi, angle, gain, noise, blur, radius) % s
   
   if ~(exist(curvePath, 'file')==2)
     
-    steps = 101;
+    steps       = 101;
     
-    in    = linspace(0,100, steps);
-    out   = linspace(0,100, steps);
+    in          = linspace(0,100, steps);
+    out         = linspace(0,100, steps);
     
     %% Create Curves
     for m = numel(in)
@@ -199,15 +199,19 @@ function curve = createToneCurve(spi, lpi, angle, gain, noise, blur, radius) % s
       
       out(m)    = meantone*100;
 
-      if outputLinear, imwrite(halftone, fullfile(linearPath ,['tv' num2str(in(m),'%03d') '.png'])); end
+      if outputLinear
+        imwrite(halftone, fullfile(linearPath ,['tv' num2str(in(m),'%03d') '.png'])); 
+      end
     end
     
     %curve = [in(:) out(:)];
+    in          = in(2:end-1);
+    out         = out(2:end-1);
     
     if any(in~=out)
-      curve = [in(:) out(:)];
+      curve     = [ 0   0;  in  out;  100   100 ];
     else
-      curve = [0 0; 100 100];
+      curve     = [ 0   0;            100   100 ];
     end
     
     dlmwrite(curvePath, curve);

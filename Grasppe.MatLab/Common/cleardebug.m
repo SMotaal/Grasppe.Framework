@@ -10,22 +10,32 @@ function cleardebug
   
   d = debugmode;	debugmode = false;
   
+  dbstate = evalin('base', 'dbstatus(''-completenames'')');
+  
   try evalin('base', 'Grasppe.Core.Prototype.ClearPrototypes'); end
   %   evalin('base', 'clear');
   
   mlock;
   try
     if feature('IsDebugMode'), dbquit all; end
-    dbstate = evalin('base', 'dbstatus(''-completenames'')');
+    %dbstate = evalin('base', 'dbstatus(''-completenames'')');
     evalin('base', 'clear all;');
     evalin('base', 'clear classes;');
-    evalin('base', 'delete(timerfindall());');
+    try stop(timerfindall); end
+    
+    %WTB: stop timerfindall @ base screws with persistent locked dbstate
+    %evalin('base', 'stop(timerfindall());');
+    %evalin('base', 'delete(timerfindall());');
+    
     try delete(findobj(findall(0),'type','figure')); catch err, end
-    delete(timerfindall);
+    try delete(timerfindall); end
+    
     evalin('base', 'clear java;');
+    
     assignin('base', 'dbstate', dbstate);
     evalin('base', 'dbstop(dbstate)');
     evalin('base', 'clear dbstate;');
+    
   end
   munlock;
   evalin('base', 'clear cleardebug');

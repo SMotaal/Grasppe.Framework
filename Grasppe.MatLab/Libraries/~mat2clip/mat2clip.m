@@ -142,8 +142,10 @@ else
 
 end
 
-clipboard('copy', b);
+% clipboard('copy', b);
 
 if nargout
   out = b;
+else
+  clipboard('copy', b);
 end

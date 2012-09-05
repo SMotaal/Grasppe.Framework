@@ -1,4 +1,4 @@
-function [ image range] = SineCircles( cycles, reference, contrast, width )
+function [ img range] = SineCircles( cycles, reference, contrast, width )
   %CONCENTRICCIRCLES Summary of this function goes here
   %   Detailed explanation goes here
   
@@ -12,8 +12,8 @@ function [ image range] = SineCircles( cycles, reference, contrast, width )
   contrast  = abs(contrast) / 100.0;
   
   
-  image = YkImage.sinConcentric([width width], cycles, 90, 0.5, 0.5);  %Old phase was 135;
-  image = reference - contrast/2 + image.*contrast;  
+  img   = YkImage.sinConcentric([width width], cycles, 90, 0.5, 0.5);  %Old phase was 135;
+  img   = reference - contrast/2 + img.*contrast;  
   
 end
 

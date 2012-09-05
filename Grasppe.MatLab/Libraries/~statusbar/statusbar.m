@@ -171,12 +171,20 @@ function setDesktopStatus(statusText)
   persistent statusbarTimer
   
   try
-    if isempty(statusbarTimer)
+    if isempty(statusbarTimer) || ~isscalar(statusbarTimer) || ~isa(statusbarTimer, 'timer') || ~isvalid(statusbarTimer)
       statusbarTimer = timerfind('Tag', 'statusbarTimer');
       try 
-        statusbarTimer = statusbarTimer(isvalid(statusbarTimer));
-        statusbarTimer = statusbarTimer(1);
-      catch
+        invalidTimers       = statusbarTimer;
+        try invalidTimers   = statusbarTimer(~isvalid(statusbarTimer)); end
+        try statusbarTimer  = statusbarTimer(isvalid(statusbarTimer)); end
+        try invalidTimers   = [invalidTimers, statusbarTimer(2:end)]; end
+        try statusbarTimer = statusbarTimer(1); end
+        %for m = 1:numel(invalidTimers)
+        try stop(invalidTimers);   end
+        try delete(statusbarTimer); end
+      catch err
+        debugStamp(err, 1);
+        try stop(statusbarTimer);   end
         try delete(statusbarTimer); end
         statusbarTimer = [];
       end
@@ -196,17 +204,15 @@ function setDesktopStatus(statusText)
         try
           
           try stop(statusbarTimer); end
-          % catch err
-          % try delete(statusbarTimer); end
-          %         end
-          statusbarTimer = timer('Tag','statusbarTimer', ...
-            'ErrorFcn', @(s, e) null, 'TimerFcn',@(s,e)setText(desktop,statusText), ...
-            'StartDelay', 0.05, 'Period', 0.25, 'ExecutionMode','singleShot');
-          %t = timer('Name','statusbarTimer', 'TimerFcn',{@setText,desktop,statusText}, 'StartDelay',0.05, 'ExecutionMode','singleShot');
+          if isempty(statusbarTimer) || ~isscalar(statusbarTimer) || ~isa(statusbarTimer, 'timer') || ~isvalid(statusbarTimer)
+            statusbarTimer = timer('Tag','statusbarTimer', ...
+              'ErrorFcn', @(s, e) null, 'TimerFcn',@(s,e)setText(desktop,statusText), ...
+              'StartDelay', 0.05, 'Period', 0.25, 'ExecutionMode','singleShot');
+          end
           start(statusbarTimer);
-        catch
+        catch err
+          debugStamp(err, 1);
           % Probably an old Matlab version that still doesn't have timer
-
           desktop.setStatusText(statusText);
         end
     catch
