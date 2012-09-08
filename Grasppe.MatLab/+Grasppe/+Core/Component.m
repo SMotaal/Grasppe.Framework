@@ -35,7 +35,7 @@ classdef Component < Grasppe.Core.Instance
     end
     
     function bless(obj)
-      isBlessed = isvalid(obj) && ~isequal(obj.IsDeleting, true)
+      isBlessed = isvalid(obj) && ~isequal(obj.IsDeleting, true);
       
       if ~isBlessed
         debugStamp('Component Not Blessed', 5, obj);
@@ -63,7 +63,7 @@ classdef Component < Grasppe.Core.Instance
       end
     end
     
-    function registerHandle(obj, handles)
+    function registerHandle(obj, handle)
       % try
       %   if isa(handles, 'Grasppe.Core.Prototype')
       %     dispf('Registering %s @ %s', handles.ID, obj.ID);
@@ -73,16 +73,21 @@ classdef Component < Grasppe.Core.Instance
       % catch
       %   dispf('Registering %s @ %s', 'objects', obj.ID);
       % end
-      if ishandle(handles) && isnumeric(handles)
-        try obj.SubHandles = [obj.SubHandles handles]; end
-      elseif isobject(handles)
-        try obj.SubHandleObjects = {obj.SubHandleObjects{:}, handles}; end
-      elseif iscell(handles)
-        for m = 1:numel(handles)
-          handle = handles{m};
-          if isobject(handle)
-            try obj.SubHandleObjects = {obj.SubHandleObjects{:}, handle}; end
-          end
+      if ishandle(handle) && isnumeric(handle)
+        try obj.SubHandles = unique([obj.SubHandles handle]); end
+      elseif isobject(handle)
+        try
+          skip = cellfun(@(o)isequal(o, handle), obj.SubHandleObjects);
+          if any(skip); return; end
+        end
+        try obj.SubHandleObjects{end+1} = handle; end
+      elseif iscell(handle)
+        for m = 1:numel(handle)
+          try obj.registerHandle(handle{m}); end
+          % handle = handles{m};
+          % if isobject(handle)
+          %   try obj.SubHandleObjects = {obj.SubHandleObjects{:}, handle}; end
+          % end
         end
       end
     end

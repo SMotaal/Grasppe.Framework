@@ -30,7 +30,9 @@ classdef MediatedProperty < Grasppe.Core.Prototype & Grasppe.Core.Property
       if isa(alias, 'Grasppe.Core.MetaProperty')
         obj.MetaProperty  = alias;
         
-        obj.Value         = propertyValue;
+        if ~isequal(obj.Value, propertyValue)
+          obj.Value         = propertyValue;
+        end
         
       elseif isa(alias,'char')
         name              = propertyMeta.Name;
@@ -42,7 +44,9 @@ classdef MediatedProperty < Grasppe.Core.Prototype & Grasppe.Core.Property
         obj.MetaProperty  = Grasppe.Core.MetaProperty.Declare( ...
           alias, class(obj), displayName, category, mode, description);
         
-        obj.Value         = propertyValue;
+        if ~isequal(obj.Value, propertyValue)
+          obj.Value         = propertyValue;
+        end
       else
         error('Grasppe:MediatedProperty:MissingMeta', 'Unable to construct a Grasppe.Core.MediatedProperty without a valid MediatorMeta.');
       end
@@ -74,8 +78,11 @@ classdef MediatedProperty < Grasppe.Core.Prototype & Grasppe.Core.Property
       end
       
       propertyName            = obj.SubjectMeta.Name;
-      subject.(propertyName)  = obj.Value;
-
+      
+      if ~isequal(subject.(propertyName), obj.Value)
+        subject.(propertyName)  = obj.Value;
+      end
+      
     end
     
     function [value changed] = newValue(obj, value, currentValue)
@@ -89,9 +96,15 @@ classdef MediatedProperty < Grasppe.Core.Prototype & Grasppe.Core.Property
         for m = 1:numel(subjects)
           subject         = subjects{m};
           propertyName    = obj.SubjectMeta.Name;
-          subject.(propertyName) = value;
+          
+          if ~isequal(subject.(propertyName), value)
+            subject.(propertyName) = value;
+          end
+          
         end
+        
       end
+      
     end
     
   end

@@ -56,6 +56,7 @@ function displayError(s, e)
   %   feval('debugStamp', ...
   %     struct('message', e.Data.message, 'identifier', e.Data.messageID, 'stack', st), 1)  ...
   %     );
+  st = dbstack('-completenames');
   try debugStamp(struct('message', e.Data.message, 'identifier', e.Data.messageID, 'stack', st), 1);
   catch err
     debugStamp(err, 1);

@@ -97,7 +97,6 @@ classdef Mediator < Grasppe.Core.Component % & Grasppe.Core.Component
       mediationProperty.Value = mediationProperty.Subject.(subjectName);
       
       obj.(mediationID) = mediationProperty.Value;
-      
       return;
     end
     
@@ -111,7 +110,7 @@ classdef Mediator < Grasppe.Core.Component % & Grasppe.Core.Component
     end
     
     function mediationSet(obj, value)
-      mediationID = obj.SettingProperty;
+      mediationID       = obj.SettingProperty;
       mediationProperty = obj.MediationProperties.(mediationID);
       try
         if ~isequal(mediationProperty, value)
@@ -157,7 +156,7 @@ classdef Mediator < Grasppe.Core.Component % & Grasppe.Core.Component
   
   methods (Access=protected, Hidden=false)
     function createComponent(obj, type, varargin)
-%       obj.attachMediatorProperty
+      %       obj.attachMediatorProperty
       return;
     end
   end

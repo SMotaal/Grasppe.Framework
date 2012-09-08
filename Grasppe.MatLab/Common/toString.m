@@ -4,6 +4,8 @@ function [ strings ] = toString( varargin )
   
   args = varargin;
   
+  if isempty(varargin), strings = ''; return; end
+  
   while ~isempty(args) && iscell(args) && length(args)==1
     args = args{1};
   end
@@ -11,27 +13,16 @@ function [ strings ] = toString( varargin )
   strings = strtrim(evalc('disp(args);'));
   
   if ~isempty(strings)
-  
     lines = regexpi(strings, '[^\n]*', 'match');
-
     strings = flatcat(regexprep(lines, '^\s*((Column \d+)|(Columns \d+ through \d+))\s*$', ''));
-
     strings = regexprep(strtrim(strings), '\s+', ', ');
-    
     strings = strrep(strings, '''', '');
+  else
+    if ischar(args), strings = '''''';
+    elseif iscell(args), strings = '{}';
+    else strings = '[]';
+    end
   end
-  
-  
-  
-  
-%   if length(varargin)==1
-%     strings = valueString(varargin{1});
-%   else
-%     strings = cell(size(varargin));
-%     for i = 1:length(varargin)
-%       strings{i} = valueString(varargin{i});
-%     end
-%   end
   
 end
 
@@ -103,7 +94,7 @@ function [string value] = listString (value)
     else
       string = char(value);
     end
-%     string = ['{' strings '}'];
+    %     string = ['{' strings '}'];
   elseif (isnumeric(value) || islogical(value))
     string = strtrim(sprintf(reshape(strcat(num2str(value),';\t')',1,[])));
     string = ['[' string(1:end-1) ']'];
