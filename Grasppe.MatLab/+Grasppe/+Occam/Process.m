@@ -76,7 +76,7 @@ classdef Process < Grasppe.Occam.ProcessData & Grasppe.Core.Prototype % handle &
       
       if ~exist('input', 'var')
         if (isempty(obj.Input))
-          obj.Input = evalin('caller', 'output');
+          try obj.Input = evalin('caller', 'output'); end
         end
         
         input     = obj.Input;

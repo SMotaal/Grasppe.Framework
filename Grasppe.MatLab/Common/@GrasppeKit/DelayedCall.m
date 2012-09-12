@@ -74,6 +74,6 @@ function clearCallbacks(s)
   try s.TimerFcn    = []; end
   try s.ErrorFcn    = []; end
   try s.StopFcn     = []; end
-  try s.DeleteFcn   = []; end
+  %try s.DeleteFcn   = []; end
   try s.StartFcn    = []; end
 end

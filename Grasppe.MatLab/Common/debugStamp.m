@@ -25,6 +25,43 @@ function st = debugStamp( tag, level, obj )
 
     %error('something happened');
     
+    if nargin==0
+      
+      str = '';
+      
+      obj = [];
+      try obj = evalin('caller', 'obj'); end
+      if isempty(obj), try obj = evalin('caller', 'evt'); end; end
+      if isempty(obj), try obj = evalin('caller', 'val'); end; end
+      
+      if ~isempty(obj) && isscalar(obj) && isobject(obj)
+        objID = class(obj);
+        try objID = obj.ID; end
+        str = [str objID];
+      end
+            
+      err = [];
+      try err = evalin('caller', 'err'); end
+      
+      if ~isempty(err) && isscalar(obj) && isa(err, 'MException')
+        errorID = [err.message '[' err.identifier ']' ]; % '@'];
+        str = [strtrim(str) ' ' errorID];
+      end      
+      
+      d   = dbstack('-completenames');
+      dbstamp = '';
+      for m = 2:min(5, numel(d)) %numel(d)
+        tx = [d(m).name ' (' int2str(d(m).line) ')'];
+        dbstamp = sprintf('%s:<a href="matlab: opentoline(%s, %d)">%s</a>', dbstamp, d(m).file, d(m).line, tx);
+        str = [strtrim(str) dbstamp];
+      end
+      
+      disp(str);
+      
+      return;
+    end
+    
+    
     if ~exist('level', 'var') || ~isequal(level,1)
       if ~isscalar(debugmode) || ~islogical(debugmode), debugmode = false; end
       if ~debugmode, return; end
