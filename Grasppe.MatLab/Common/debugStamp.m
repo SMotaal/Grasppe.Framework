@@ -25,7 +25,7 @@ function st = debugStamp( tag, level, obj )
 
     %error('something happened');
     
-    if nargin==0
+    if nargin==0 || nargin==1 && isnumeric(tag) && isscalar(tag) && tag<2
       
       str = '';
       
