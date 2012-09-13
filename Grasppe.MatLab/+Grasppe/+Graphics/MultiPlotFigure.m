@@ -88,6 +88,12 @@ classdef MultiPlotFigure < Grasppe.Graphics.PlotFigure
       obj.layoutPlotAxes;
       
       try
+        for m = 1:numel(obj.DataSources)
+          try obj.DataSources{m}.PlotOverlay.updateSubPlots; end
+        end
+      end
+      
+      try
       
       %% Options
       pageScale   = 150;
@@ -376,7 +382,7 @@ classdef MultiPlotFigure < Grasppe.Graphics.PlotFigure
             dataSource  = objSurf.DataSource;
             
             switch class(dataSource)
-              case ('Grasppe.PrintUniformity.Data.RegionStatsDataSource')
+              case {'Grasppe.PrintUniformity.Data.RegionStatsDataSource', 'Grasppe.PrintUniformity.Data.RegionPlotDataSource'}
                 
                 regionMasks = dataSource.PlotRegions;
                 regionData  = dataSource.PlotValues;
@@ -384,6 +390,8 @@ classdef MultiPlotFigure < Grasppe.Graphics.PlotFigure
                 
                 regionPatch = [];
                 regionLine  = [];
+                
+                regionMean  = nanmean(regionData(:));
                 
                 for r = 1:size(regionMasks,1)
                   region = squeeze(eval(['regionMasks(r' repmat(',:',1,ndims(regionMasks)-1)  ')']));
@@ -407,9 +415,11 @@ classdef MultiPlotFigure < Grasppe.Graphics.PlotFigure
                   
                   xd      = xl([1 2 2 1 1])';
                   yd      = yl([1 1 2 2 1])';
-                  zd      = zv([1 1 1 1 1]);
+                  zd      = regionMean([1 1 1 1 1]);
+                  cd      = zv([1 1 1 1 1]);
                   
-                  regionPatch(end+1)  = patch(xd, yd, zd, 'ZData', zd, 'Parent', hgSurf.Parent, 'FaceColor', 'flat', 'EdgeColor', 'k' , 'LineWidth', 0.125 ); %'EdgeColor', [0.5 0.15 0.15]
+                  %'ZData',
+                  regionPatch(end+1)  = patch(xd, yd, zd, cd, 'Parent', hgSurf.Parent, 'FaceColor', 'flat', 'EdgeColor', 'k' , 'LineWidth', 0.125 ); %'EdgeColor', [0.5 0.15 0.15]
                   regionLine(end+1)   = line(xd, yd, 210*[1 1 1 1 1], 'Parent', hgSurf.Parent, 'Color', 'k' , 'LineWidth', 0.125 ); %'EdgeColor', [0.5 0.15 0.15]
                   %, 'ZData', 210*[1 1 1 1 1], 
                 end

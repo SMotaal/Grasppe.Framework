@@ -88,6 +88,22 @@ classdef Axes < Grasppe.Graphics.InFigureComponent
     end
     
     
+    function [cspec reverse] = GetMapColor(obj, value)
+          cMap    = colormap(obj.Handle);
+          cLimit  = get(obj.Handle, 'clim');
+          cValue  = value; %obj.LabelValues(index);
+          cStep   = Math.linInterp(cValue, size(cMap, 1), cLimit); % round(interp1(1:size(cMap, 1), linspace(cLimit(1), cLimit(2), size(cMap, 1)), 15));
+          cStep   = min(max(1, cStep), size(cMap, 1));
+          cspec   = cMap(round(cStep), :);
+          
+          reverse = max(cspec) < 0.75 && mean(cspec)<0.75;
+          
+          %cStep   = (cValue-min(cLimit))/(max(cLimit)-min(cLimit)-1)*size(cMap, 1);
+          %cPatch  = interp1(1:size(cMap, 1), cMap, cStep);
+          %cPatch  = cMap(1+round(cStep), :);
+          
+    end
+    
     
     %% AspectRatio / DataAspectRatio
     function set.AspectRatio(obj, value)

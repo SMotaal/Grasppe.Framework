@@ -92,7 +92,7 @@ classdef MediatedProperty < Grasppe.Core.Prototype & Grasppe.Core.Property
       
       subjects = [{obj.Subject}, obj.Subjects];
       
-      if changed
+      if true %changed
         for m = 1:numel(subjects)
           subject         = subjects{m};
           propertyName    = obj.SubjectMeta.Name;

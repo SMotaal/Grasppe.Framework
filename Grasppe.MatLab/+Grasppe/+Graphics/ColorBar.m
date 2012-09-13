@@ -74,17 +74,20 @@ classdef ColorBar < Grasppe.Graphics.Axes
       
       map     = colormap(obj.ParentFigure.Handle);
       
-      steps   = size(map,1);
-      if isempty(obj.Size)
-        obj.Size  = steps;
-      else
-        steps     = obj.Size;
+      steps   = max(min(15, size(map,1)), 3);
+      % if isempty(obj.Size)
+      %   obj.Size  = steps;
+      % else
+      %   steps     = obj.Size;
+      % end
+      
+      %steps = steps + (rem(steps, 2)~=1);
+      
+      if rem(steps,2)==0
+        steps = steps + 1;
       end
       
-      if rem(steps,2)~=1
-        steps = steps + 1;
-        obj.Size  = steps;
-      end
+      obj.Size  = steps;
       
       patches = round(linspace(1, size(map,1), steps)); %round((1:steps/steps).*size(map,1));
       patchct = 1:numel(patches);
@@ -248,12 +251,8 @@ classdef ColorBar < Grasppe.Graphics.Axes
         label.IsClickable = false;
         
         stepColor = obj.ColorMap(index,:);
-        
-        stepLAB  = Color.sRGB2Lab(stepColor(:));
-        
-        %[index stepColor stepLAB']
-        
-        if stepLAB(1) < 0.65 %mean(stepGray<0.5)
+                
+        if max(stepColor) < 0.75 && mean(stepColor)<0.75
           label.Color = 'w';
         else
           label.Color = 'k';

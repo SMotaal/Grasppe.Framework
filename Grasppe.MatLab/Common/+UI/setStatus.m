@@ -15,23 +15,32 @@ function sb = setStatus( t, h, p )
   if ~NS.argPassed('h'), h=0; end
   if ~NS.argPassed('p'), p=[]; end
   
-  sb = statusbar(h, t);
+  try 
+    if ~ishandle(h) || ~isequal(get(h, 'Visible'), 'on'), return; end; 
   
-  if isnumeric(p) && isscalar(p)
-    if p==-1
-      sb.ProgressBar.setIndeterminate(true);
-      sb.ProgressBar.setVisible(true);
+    sb = statusbar(h, t);
+    
+    % if ~ishandle(sb), return; end; 
+    
+    if isnumeric(p) && isscalar(p)
+      if p==-1
+        sb.ProgressBar.setIndeterminate(true);
+        sb.ProgressBar.setVisible(true);
+      else
+        set(sb.ProgressBar, 'Minimum',0, 'Maximum',100, 'Value', p);
+        sb.ProgressBar.setIndeterminate(false);
+        sb.ProgressBar.setVisible(true);
+        sb.ProgressBar.setString([int2str(p) '%']);
+      end
     else
-      set(sb.ProgressBar, 'Minimum',0, 'Maximum',100, 'Value', p);
-      sb.ProgressBar.setIndeterminate(false);
-      sb.ProgressBar.setVisible(true);
-      sb.ProgressBar.setString([int2str(p) '%']);
+      try sb.ProgressBar.setVisible(false); end
     end
-  else
-    try sb.ProgressBar.setVisible(false); end
+    
+    drawnow update;
+    
+  catch err
+    debugStamp();
   end
-  
-  drawnow update;
   
   
 end
