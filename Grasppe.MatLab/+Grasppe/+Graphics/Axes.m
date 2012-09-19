@@ -88,20 +88,35 @@ classdef Axes < Grasppe.Graphics.InFigureComponent
     end
     
     
-    function [cspec reverse] = GetMapColor(obj, value)
-          cMap    = colormap(obj.Handle);
-          cLimit  = get(obj.Handle, 'clim');
-          cValue  = value; %obj.LabelValues(index);
-          cStep   = Math.linInterp(cValue, size(cMap, 1), cLimit); % round(interp1(1:size(cMap, 1), linspace(cLimit(1), cLimit(2), size(cMap, 1)), 15));
-          cStep   = min(max(1, cStep), size(cMap, 1));
-          cspec   = cMap(round(cStep), :);
+    function [cSpec reverse] = GetMapColor(obj, value)
+          cMap      = colormap(obj.Handle);
+          cLimit    = get(obj.Handle, 'clim');
+          cValue    = max(min(value, max(cLimit)), min(cLimit));
           
-          reverse = max(cspec) < 0.75 && mean(cspec)<0.75;
+          cStep     = Math.linInterp(cValue, size(cMap, 1), cLimit, 'nearest');
+          cStep     = min(max(1, cStep), size(cMap, 1));
           
-          %cStep   = (cValue-min(cLimit))/(max(cLimit)-min(cLimit)-1)*size(cMap, 1);
-          %cPatch  = interp1(1:size(cMap, 1), cMap, cStep);
-          %cPatch  = cMap(1+round(cStep), :);
+          cSpec     = cMap(round(cStep), :);
+                   
+          cMu       = mean(cSpec);
+          cMax      = max(cSpec);
+          cMin      = min(cSpec);
+          cRange    = cMax-cMin;
+          cRed      = cSpec(1);
+          cGreen    = cSpec(2);
+          cBlue     = cSpec(3);
           
+          darkhue   = (cRed+cGreen) < 0.75;
+          darktone  = cMax<0.75 || cMu < 0.75;
+          graytone  = cRange < 0.25;
+          darkgray  = graytone && cMax<0.75;
+          
+          reverse   = (darkhue+darktone+darkgray)>1; %mean(cspec)<0.30; %|| (max(cspec) < 0.75 && mean(cspec)<0.30);
+          
+          % dispf(['C: %1.1f %1.1f %1.1f\tMu: %1.1f\tR: %1.1f\tMax: %1.1f\tMin: %1.1f\t' ...
+          %   'Hue: %d\tTone: %d\tGray: %d\tRev: %d'], ...
+          %   cSpec, cMu, cRange, cMax, cMin, ...
+          %   darkhue, darktone, darkgray, reverse);          
     end
     
     

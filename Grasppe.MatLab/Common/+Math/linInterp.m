@@ -1,8 +1,10 @@
-function [ xI ] = linInterp( x, steps, range )
+function [ xI ] = linInterp( x, steps, range, method)
   %INTERPSPACE Interpolate linear value
   %   Detailed explanation goes here
   
-  xI = interp1(linspace(range(1), range(2), steps), 1:steps, x);
+  if ~exist('method', 'var'), method = 'linear'; end
+  
+  xI = interp1(linspace(range(1), range(2), steps), 1:steps, x, method);
   
 end
 
