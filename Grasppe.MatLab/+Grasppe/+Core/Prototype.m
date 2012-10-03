@@ -165,8 +165,8 @@ classdef Prototype < handle & dynamicprops %& hgsetget
         if isnumeric(obj)
           object = prototypes{obj};
           try 
-            if ~isa(object, 'object') || isvalid(object)
-              delete(object); 
+            if ishandle(object) || (isa(object, 'object') && isvalid(object))
+              delete(object);
             end
           end
           prototypes{obj} = {};

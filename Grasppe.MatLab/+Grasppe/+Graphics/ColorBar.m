@@ -221,7 +221,7 @@ classdef ColorBar < Grasppe.Graphics.Axes
           val = values(m);
           %[val ex] = sciparts(values(m));
 %           if ex==0
-            string = [string ' ' num2str(val,'%1.1f')];
+            string = [string ' ' num2str(val,'%1.2f')];
 %           elseif ex==1
 %             string = [string ' ' num2str(val*10,'%1.0f')];
 %           else

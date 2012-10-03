@@ -415,13 +415,21 @@ classdef MultiPlotFigure < Grasppe.Graphics.PlotFigure
                   
                   xd      = xl([1 2 2 1 1])';
                   yd      = yl([1 1 2 2 1])';
-                  zd      = regionMean([1 1 1 1 1]);
+                  zd      = min(get(hdAx, 'ZLim')) .* [1 1 1 1 1]; %regionMean([1 1 1 1 1]);
                   cd      = zv([1 1 1 1 1]);
                   
                   %'ZData',
                   regionPatch(end+1)  = patch(xd, yd, zd, cd, 'Parent', hgSurf.Parent, 'FaceColor', 'flat', 'EdgeColor', 'k' , 'LineWidth', 0.125 ); %'EdgeColor', [0.5 0.15 0.15]
                   regionLine(end+1)   = line(xd, yd, 210*[1 1 1 1 1], 'Parent', hgSurf.Parent, 'Color', 'k' , 'LineWidth', 0.125 ); %'EdgeColor', [0.5 0.15 0.15]
+                  
+                  %uistack(regionLine(end+1), 'bottom');
+                  %uistack(regionPatch(end+1), 'bottom');
+                  
+                  set(hdAx, 'Clipping', 'off');
+                  
                   %, 'ZData', 210*[1 1 1 1 1], 
+                  
+                  %try delete(hgSurf); end
                 end
                 
                 hgSurf.Visible = 'off';
