@@ -25,19 +25,19 @@ function [ Output ] = grasppeScreen3( imagePath, ppi, spi, lpi, angle, printing,
     ppi = 600;
   end
   
-  if ~exist('spi', 'var') || ~isscalar(ppi) || ~isnumeric(ppi)
+  if ~exist('spi', 'var') || ~isscalar(spi) || ~isnumeric(spi)
     spi = DEFAULT{1};
   end
   
-  if ~exist('lpi', 'var') || ~isscalar(ppi) || ~isnumeric(ppi)
+  if ~exist('lpi', 'var') || ~isscalar(lpi) || ~isnumeric(lpi)
     lpi = DEFAULT{2};
   end  
   
-  if ~exist('angle', 'var') || ~isscalar(ppi) || ~isnumeric(ppi)
+  if ~exist('angle', 'var') || ~isscalar(angle) || ~isnumeric(angle)
     angle = DEFAULT{3};
   end  
   
-  NP      = 0; try ...
+  NP      = 0; try ... %pi()*2/100;
       NP  = findField(printing, 'Noise' );
   end
   
@@ -63,7 +63,7 @@ function [ Output ] = grasppeScreen3( imagePath, ppi, spi, lpi, angle, printing,
   
   %% Load Image
   
-  if exist('imagePath', 'var') && (isnumeric(imagePath) || islogical(imagePath))
+  if exist('imagePath', 'var') && (isnumeric(imagePath) || islogical(imagePath)) && ~isempty(imagePath)
     contone = imagePath;
     
     imagePath = inputname(1);
@@ -355,7 +355,7 @@ function [halftone raster screen contone] = screenImage(contone, PPI, SPI, LPI, 
           np = NP/100;
           
           nq = rand(ceil(msw/SPL), ceil(msh/SPL));
-          nq = imresize(nq, 14, 'nearest');
+          nq = imresize(nq, SPL, 'nearest');
           nq = nq(1:msw, 1:msh)-0.5;
           
           nq = 1+((nq-0.5).*np);
