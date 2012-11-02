@@ -194,7 +194,7 @@ function datastore = loaddata(datastore, forced)
   if ~isequal(loaded, true), loaded = false; end
   
   try
-    forced = ~isequal(forced, true);
+    forced = isequal(forced, true);
   catch
     forced = false;
   end
@@ -223,7 +223,7 @@ function [] = savedata(datastore, forced)
   %default forced false;
   
   try
-    forced = ~isequal(forced, true);
+    forced = isequal(forced, true);
   catch
     forced = false;
   end

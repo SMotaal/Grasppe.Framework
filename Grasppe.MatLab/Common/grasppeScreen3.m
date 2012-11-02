@@ -130,7 +130,7 @@ function [ Output ] = grasppeScreen3( imagePath, ppi, spi, lpi, angle, printing,
   if outputScreen || outputRaster
     [halftone raster screen] = screenImage(curvedtone, PPI, SPI, LPI, ANGLE, DP, NP, BP, BS);
   else
-    halftone = screenImage(contone, PPI, SPI, LPI, ANGLE, DP, NP, BP, BS);
+    halftone = screenImage(curvedtone, PPI, SPI, LPI, ANGLE, DP, NP, BP, BS);
   end
   
   FS.mkDir(outpath(''));
@@ -177,7 +177,7 @@ function curve = createToneCurve(spi, lpi, angle, gain, noise, blur, radius) % s
   screenID      = generateScreenID(spi, lpi, angle, gain, noise, blur, radius);
   curvePath     = curvesPath(screenID);
   
-  outputLinear  = true;
+  outputLinear  = false;
   
   if outputLinear
     linearPath  = fullfile('.','Output', 'Linear');
@@ -192,7 +192,7 @@ function curve = createToneCurve(spi, lpi, angle, gain, noise, blur, radius) % s
     out         = linspace(0,100, steps);
     
     %% Create Curves
-    for m = numel(in)
+    for m = 1:numel(in)
       contone   = ones(15, 15) .* in(m)/100;
       halftone  = screenImage(contone, lpi, spi, lpi, angle, gain, noise, blur, radius);
       meantone  = mean(halftone(:));
@@ -209,7 +209,7 @@ function curve = createToneCurve(spi, lpi, angle, gain, noise, blur, radius) % s
     out         = out(2:end-1);
     
     if any(in~=out)
-      curve     = [ 0   0;  in  out;  100   100 ];
+      curve     = [ 0   0;  in'  out';  100   100 ];
     else
       curve     = [ 0   0;            100   100 ];
     end
@@ -230,10 +230,11 @@ function image = appleToneCurves(image, curve)
   if ~any(in~=out), return; end
   
   src   = im2double(image);
-  dst  = zeros(size(src));  
+  dst   = zeros(size(src));  
   
   sig   = sort(unique(src(:)));
-  resp  = interp1(out, in, sig, 'spline');
+  resp  = interp1(out, in, sig, 'cubic');
+  % histogram test shows cubic & spline means were very close to contone mean, cubic (191) median was spot on versus spline (190) relative to contone (191)
   
   for m     = 1:numel(sig)
     s       = sig(m);
@@ -431,6 +432,7 @@ function [halftone raster screen contone] = screenImage(contone, PPI, SPI, LPI, 
       bs      = BS;
       bp      = (BP/100);
       
+      % Replace this with gaussian
       fblur   = fspecial('disk', bs);
       mblur   = imfilter(mzdbl, fblur);
       fmask   = mblur<mzdbl;
