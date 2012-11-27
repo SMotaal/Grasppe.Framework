@@ -5,7 +5,7 @@ classdef Instance < Grasppe.Core.Prototype
   properties
   end
   
-  properties (SetAccess=immutable, Hidden, Access=private)
+  properties (SetAccess=immutable, Hidden, GetAccess=private)
     InstanceID
   end
   
