@@ -93,6 +93,7 @@ function st = debugStamp( tag, level, obj )
         (isstruct(tag) && all(isfield(tag,{'message', 'identifier', 'stack'})))
       err     = tag;
       errorID = [err.message '[' err.identifier ']' ]; % '@'];
+      % tag = errorID;
     else
       if nargin<2
         level = 5;

@@ -10,9 +10,15 @@ function cleardebug
   
   d = debugmode;	debugmode = false;
   
+  %% Stop Debugging
   dbstate = evalin('base', 'dbstatus(''-completenames'')');
   
+  %% Safe Clear Prototypes 1
   try evalin('base', 'Grasppe.Core.Prototype.ClearPrototypes'); end
+  
+  %% Safe Clear Prototypes 2
+  try rmappdata(0, 'GrasppeInstanceTable'); end
+  try evalin('base', 'Grasppe.Prototypes.Utilities.Reset'); end
   %   evalin('base', 'clear');
   
   mlock;
