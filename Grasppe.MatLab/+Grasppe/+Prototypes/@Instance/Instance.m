@@ -1,4 +1,4 @@
-classdef Instance < Grasppe.Prototypes.HandleClass
+classdef (ConstructOnLoad) Instance < Grasppe.Prototypes.HandleClass
   %INSTANCE Superclass for Grasppe Core Prototypes 2
   %   Detailed explanation goes here
   
@@ -6,28 +6,55 @@ classdef Instance < Grasppe.Prototypes.HandleClass
     ID
   end
   
-  properties(SetAccess=private, GetAccess=protected) %, GetAccess=protected)
+  properties(SetAccess=private, GetAccess=protected, Transient, Hidden) %, GetAccess=protected)
     isAlive = true;
+  end
+  
+  properties(SetAccess=private, GetAccess=private)
+    id_base
+    instance_options
+  end
+    
+  properties(SetAccess=private, GetAccess=private, Transient)    
+    id_index
   end
   
   
   methods
     function obj = Instance(varargin)
-      obj     = obj@Grasppe.Prototypes.HandleClass(varargin{:});
-      % debugStamp('Constructing', 1, obj);
-
-      obj.ID  = Grasppe.Prototypes.InstanceTable.RegisterInstance([], obj);
+      instanceID              = [];
+      instanceOptions         = varargin;
+      try
+        idIndex               = find(strcmp(instanceOptions, 'ID'),1,'last');
+        if isscalar(idIndex)
+          instanceID          = instanceOptions{idIndex+1};
+          instanceOptions     = [instanceOptions(1:idIndex-1) instanceOptions(idIndex+2:end)];
+        end
+      end
       
-      % if isequal(mfilename, obj.ClassName), obj.initialize(); end      
+      obj                     = obj@Grasppe.Prototypes.HandleClass(instanceOptions{:});
+      obj.isAlive             = true;
+      
+      [id base idx]           = Grasppe.Prototypes.InstanceTable.RegisterInstance(instanceID, obj);
+      
+      obj.ID                  = id;
+      obj.id_base             = base;
+      obj.id_index            = idx;
+      obj.instance_options    = varargin;
+    end
+        
+    function delete(obj)
+      if ~isequal(obj.isAlive,true), return; end  % obj.isAlive = false;  debugStamp(['Deleting ' class(obj)], 5);
+      
+      if isvalid(obj)
+        obj.isAlive           = false;
+        debugStamp(['Deleting@' obj.ClassName], 5, obj);
+        try Grasppe.Prototypes.InstanceTable.UnregisterInstance(obj.ID); end
+      end
     end
     
-    function delete(obj)
-      obj.isAlive = false;
-      debugStamp(['Deleting@' obj.ClassName], 1, obj);
-      try Grasppe.Prototypes.InstanceTable.UnregisterInstance(obj.ID); end
-    end
 
-  end
+  end  
   
   methods (Access=protected)
     function initialize(obj)

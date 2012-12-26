@@ -43,7 +43,7 @@ classdef Application < Grasppe.Prototypes.Module
     function onInitialized(obj, src, evt)
       Grasppe.Prototypes.Utilities.StampEvent(obj, src, evt);
       
-      obj.result = obj.main(obj.arguments);
+      % obj.result = obj.main(obj.arguments);
     end    
     
     onLaunching(obj, src, evt);
@@ -59,6 +59,12 @@ classdef Application < Grasppe.Prototypes.Module
       applicationPath = obj.Path;
     end
     
+    function delete(obj)
+      obj.State = 'Terminating';
+      obj.notify('Terminating');
+      obj.State = 'Terminated';
+    end
+    
   end
   
   methods (Access=protected)
@@ -69,10 +75,6 @@ classdef Application < Grasppe.Prototypes.Module
       obj.LaunchPath      = pwd;
     end
     
-    function result = main(obj, varargin)
-      result = [];
-    end
-    
     function privateSet(obj, propertyName, value)
       try
         if ~isequal(obj.(propertyName), value), obj.(propertyName) = value; end
@@ -81,6 +83,10 @@ classdef Application < Grasppe.Prototypes.Module
       end
     end
     
+  end
+  
+  methods (Static, Abstract)
+    result = main(obj, varargin);
   end
   
   

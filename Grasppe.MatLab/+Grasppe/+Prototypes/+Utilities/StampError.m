@@ -2,7 +2,7 @@ function StampError(obj, level, err)
   %STAMPEVENT Print Event Stamp fto Console
   %   Detailed explanation goes here
   
-  debugStamp( err, level, obj );
+  evalin('caller', ['debugStamp( err, ' int2str(level) ', ' inputname(1) ');' ]);
   
   return;
   

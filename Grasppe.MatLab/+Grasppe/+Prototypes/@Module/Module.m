@@ -1,4 +1,4 @@
-classdef Module < Grasppe.Prototypes.Component & Grasppe.Prototypes.Process
+classdef Module < Grasppe.Prototypes.Controller & Grasppe.Prototypes.Process
   %APPLICATION Superclass for Grasppe Core Prototypes 2
   %   Detailed explanation goes here
   
@@ -7,21 +7,28 @@ classdef Module < Grasppe.Prototypes.Component & Grasppe.Prototypes.Process
     Path
   end
   
-  properties(SetAccess=private, GetAccess=protected) %, GetAccess=protected)
+  properties(SetAccess=protected, GetAccess=protected) %, GetAccess=protected)
     ModelClass
     ViewClass
     ControllerClass
+    ParentController
   end
   
   properties(SetAccess=private, GetAccess=public)
+    JavaClassPath
+    JavaPaths       = {};
     ResourcePath
     ComponentPath
     Modules
   end
   
+  properties
+    Application    
+  end
+  
   methods
     function obj = Module(name, path, varargin)
-      obj           = obj@Grasppe.Prototypes.Component(varargin{:});
+      obj           = obj@Grasppe.Prototypes.Controller(varargin{:});
       
       % debugStamp('Constructing', 1, obj);
       
@@ -40,7 +47,7 @@ classdef Module < Grasppe.Prototypes.Component & Grasppe.Prototypes.Process
         case 'status'
           obj.displayStatus();
         otherwise
-          obj.handlePropertyEvent@Grasppe.Prototypes.Component(src, evt);
+          obj.handlePropertyEvent@Grasppe.Prototypes.Controller(src, evt);
       end
     end
     
@@ -52,7 +59,7 @@ classdef Module < Grasppe.Prototypes.Component & Grasppe.Prototypes.Process
       try
         if ~isequal(obj.(propertyName), value), obj.(propertyName) = value; end
       catch err
-        obj.privateSet@Grasppe.Prototypes.Component(propertyName, value);
+        obj.privateSet@Grasppe.Prototypes.Controller(propertyName, value);
       end
     end
     
@@ -64,7 +71,7 @@ classdef Module < Grasppe.Prototypes.Component & Grasppe.Prototypes.Process
       
       obj.initializePaths();
       
-      obj.initialize@Grasppe.Prototypes.Component;
+      obj.initialize@Grasppe.Prototypes.Controller;
       
       obj.initializeComponents();
       
@@ -80,6 +87,7 @@ classdef Module < Grasppe.Prototypes.Component & Grasppe.Prototypes.Process
       try
         module                    = feval(moduleClass, varargin{:});
         obj.Modules.(moduleName)  = module;
+        obj.Modules.(moduleName).ParentController = obj;
       catch err
         try delete(module); end
         rethrow(err);
@@ -95,16 +103,34 @@ classdef Module < Grasppe.Prototypes.Component & Grasppe.Prototypes.Process
       
       obj.ResourcePath      =  Utilities.FindFolder(obj.Path, 'Resources');   %fullfile(obj.Path, 'Resources');
       obj.ComponentPath     =  Utilities.FindFolder(obj.Path, 'Components');  %fullfile(obj.Path, 'Components');
+      obj.JavaClassPath     =  Utilities.FindFolder(obj.ComponentPath, 'Java');  %fullfile(obj.Path, 'Components');
       
-      %% ADDPATHS To MatLab Search Path
-      addpath(obj.ResourcePath);  %fullfile(obj.Path, 'Resources'));
-      addpath(obj.ComponentPath); %fullfile(obj.Path, 'Modules'));
+      
+      s = warning('off', 'MATLAB:Java:DuplicateClass');
+      try
+        %% ADDPATHS to MatLab Search Path
+        addpath(obj.ResourcePath);  %fullfile(obj.Path, 'Resources'));
+        addpath(obj.ComponentPath); %fullfile(obj.Path, 'Modules'));
+        
+        %% JAVAADDPATH to MatLab Search Path
+        
+        % javaaddpath(obj.JavaClassPath);
+        
+        jarPaths            = dir(fullfile(obj.JavaClassPath, '*.jar'));
+        jarPaths            = strcat(obj.JavaClassPath, filesep, {jarPaths(:).name});
+        javaPaths           = [{obj.JavaClassPath}, jarPaths];
+        
+        javaaddpath(javaPaths);
+        
+        obj.JavaPaths       = javaPaths;
+      end
+      warning(s);
+      
     end
     
     function initializeComponents(obj)
       import(obj.Imports{:});
-
-
+      
       %% Populate Component Classes
       for m = {'Model', 'View', 'Controller'}
         try
@@ -119,17 +145,22 @@ classdef Module < Grasppe.Prototypes.Component & Grasppe.Prototypes.Process
       
       try
         % if isfield(obj, 'Controller')
-        if ~exist(obj.ControllerClass, 'class') && isa(obj, 'Grasppe.Prototypes.Controller')
-          controller      = obj;
-          obj.Controller  = controller;
-        else
-          controller = obj.initializeComponent('Controller');
+        if exist(obj.ControllerClass, 'class')
+          controller  = obj.initializeComponent('Controller', 'Module', obj);
+        elseif isa(obj, 'Grasppe.Prototypes.Controller')
+          controller  = obj;
         end
+        %         if ~exist(obj.ControllerClass, 'class') && isa(obj, 'Grasppe.Prototypes.Controller')
+        %           controller      = obj;
+        %           obj.Controller  = controller;
+        %         else
+        %           controller = obj.initializeComponent('Controller', 'Module', obj);
+        %         end
         % if isfield(obj, 'Model')
         
         if isa(controller, 'Grasppe.Prototypes.Controller') && isvalid(controller)
-          obj.Controller.setModel(obj.initializeComponent('Model',  'Controller', controller));
-          obj.Controller.setView(obj.initializeComponent('View',  'Controller', controller));
+          obj.Controller.setModel(obj.initializeComponent('Model', 'Module', obj, 'Controller', controller));
+          obj.Controller.setView(obj.initializeComponent('View',  'Module', obj, 'Controller', controller));
         end
         
       catch err
@@ -142,27 +173,27 @@ classdef Module < Grasppe.Prototypes.Component & Grasppe.Prototypes.Process
     end
     
     function createModules(obj)
-      model   = obj.Model;
+      controller            = obj.Controller;
       
-      if ~isa(model, 'Grasppe.Prototypes.Model') || ~isvalid(model), return; end
+      if ~isa(controller, 'Grasppe.Prototypes.Controller') || ~isvalid(controller), return; end
       
-      modelProperties = properties(model);
+      modelProperties       = {controller.MetaClass.PropertyList(:).Name}; %properties(model);
            
-      moduleClasses   = modelProperties(~cellfun(@isempty, regexp(modelProperties,'^.*ModuleClass$')));
+      moduleClasses         = modelProperties(~cellfun(@isempty, regexp(modelProperties,'^.*ModuleClass$')));
       
       %% Populate Component Classes
       for m = 1:numel(moduleClasses) % {'Model', 'View', 'Controller'}
         try
           mClassProperty    = char(moduleClasses{m});
-          mClass            = obj.Model.(mClassProperty);
+          mClass            = controller.(mClassProperty); % obj.Model.(mClassProperty);
           mProperty         = regexprep(mClassProperty, 'Class$', '');
           mName             = mProperty;
           
-          try delete(obj.Model.(mProperty)); end
+          try delete(controller.(mProperty)); end
           
           if ischar(mClass) && exist(mClass, 'class')>0
-            mModule         = obj.createModule(mName, mClass);
-            obj.Model.(mProperty) = mModule;
+            mModule                 = obj.createModule(mName, mClass);
+            controller.(mProperty)  = mModule;
           end
           
           % if isempty(obj.(mName)) || ~isobject(obj.(mName)) || ~isvalid(obj.(mName))
@@ -178,7 +209,7 @@ classdef Module < Grasppe.Prototypes.Component & Grasppe.Prototypes.Process
       component               = [];
       try
         componentClass        = obj.([componentName 'Class']);
-        if isempty(obj.(componentName)) || ~isa(obj.(componentName), componentClass) || ~isvalid(obj.(componentName))
+        if isempty(obj.(componentName)) || isequal(obj, obj.(componentName)) || ~isa(obj.(componentName), componentClass) || ~isvalid(obj.(componentName))
           if exist(componentClass, 'class')>0
             component           = feval(componentClass, varargin{:});
           end

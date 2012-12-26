@@ -2,10 +2,11 @@ classdef Component < Grasppe.Prototypes.Instance
   %COMPONENT Instance Superclass for Grasppe Core Prototypes 2
   %   Detailed explanation goes here
   
-  properties(SetAccess=protected, GetAccess=public) %, GetAccess=protected)
+  properties(SetAccess=protected, GetAccess=public, Transient) %, GetAccess=protected)
     Model
     View
     Controller
+    Module
   end
   
   events
@@ -26,17 +27,31 @@ classdef Component < Grasppe.Prototypes.Instance
     end
     
     function model = get.Model(obj)
-      model         = obj.Model;
-      try model     = obj.Controller.Model; end
+      if isa(obj, 'Grasppe.Prototypes.Model')
+        % if isa(obj, 'Grasppe.Prototypes.UDDModel'), model = obj.ModelData; end
+        model = obj;
+      else
+        model         = obj.Model;
+        try model     = obj.Controller.Model; end
+      end
     end
     
     function view = get.View(obj)
-      view          = obj.View;
-      try view      = obj.Controller.View; end
+      if isa(obj, 'Grasppe.Prototypes.View')
+        view = obj;
+      else
+        view          = obj.View;
+        try view      = obj.Controller.View; end
+      end
     end
     
     function controller = get.Controller(obj)
-      controller    = obj.Controller;
+      if ~isa(obj.Controller, 'Grasppe.Prototypes.Controller') && ...
+          isa(obj, 'Grasppe.Prototypes.Controller')
+        controller = obj;
+      else
+        controller = obj.Controller;
+      end
     end
     
     function set.Model(obj, model)
@@ -52,6 +67,22 @@ classdef Component < Grasppe.Prototypes.Instance
     function set.Controller(obj, controller)
       obj.Controller  = controller;
       obj.initializeController;
+    end
+    
+    function set.Module(obj, module)
+      obj.Module      = module;
+      
+      if isa(module, 'Grasppe.Prototypes.Module')
+        moduleProperties = {'ResourcePath', 'ComponentPath', 'Modules'};
+        for m = 1:numel(moduleProperties)
+          try
+            p           = addprop(obj, moduleProperties{m});
+            p.GetMethod = @(obj)obj.Module.(moduleProperties{m});
+          catch err
+            debugStamp(err, 1, obj);
+          end
+        end
+      end
     end
     
   end

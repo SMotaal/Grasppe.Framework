@@ -15,6 +15,8 @@ classdef Controller < Grasppe.Prototypes.Component
       
       try delete(obj.Model); end
       
+      model.Controller = obj; % obj.Model.Controller = obj;
+      
       obj.privateSet('Model', model);
     end
     
@@ -22,6 +24,8 @@ classdef Controller < Grasppe.Prototypes.Component
       if isequal(view, obj.View), return; end
       
       try delete(obj.View); end
+      
+      view.Controller = obj;  % obj.View.Controller = obj;
       
       obj.privateSet('View', view);
     end

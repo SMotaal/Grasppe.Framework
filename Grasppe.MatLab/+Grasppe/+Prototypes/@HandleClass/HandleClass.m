@@ -1,19 +1,34 @@
 classdef HandleClass < Grasppe.Prototypes.Prototype & dynamicprops
   %HANDLECLASS Prototype 2 SuperClass for Handle, Property & Event Listener functionality
-  %   HandleClass... 
+  %   HandleClass...
   
-  properties(SetAccess=private, GetAccess=public) %, GetAccess=protected)
+  properties(SetAccess=private, GetAccess=public, Transient) %, GetAccess=protected)
     EventListeners          = struct();
     PropertyEventListeners  = struct();
+    SelfListeners           = struct();
   end
-    
+  
   methods
     function obj=HandleClass(varargin)
-      obj@Grasppe.Prototypes.Prototype(varargin{:});
-      
-      % debugStamp('Constructing', 1, obj);
-      % if isequal(mfilename, obj.ClassName), obj.initialize(); end
-      
+      obj@Grasppe.Prototypes.Prototype(varargin{:});      
+    end
+    
+    function delete(obj)
+      obj.deleteRecursively(obj.EventListeners);
+      obj.deleteRecursively(obj.PropertyEventListeners);      
+      obj.deleteRecursively(obj.SelfListeners);
+    end
+    
+    function deleteRecursively(obj, items)
+      if isobject(items)
+        try delete(items); end
+      elseif iscell(items)
+        for m = numel(items):-1:1   % LIFO
+          try obj.deleteRecursively(items{m}); end
+        end
+      elseif isstruct(items)
+        try obj.deleteRecursively(struct2cell(items)); end
+      end
     end
     
     
@@ -71,7 +86,7 @@ classdef HandleClass < Grasppe.Prototypes.Prototype & dynamicprops
       try dbTag           = [dbTag ':' evt.AffectedObject.ID]; end
       try dbTag           = [dbTag ':' src.Name]; end
       
-      debugStamp( dbTag, 1, obj );
+      debugStamp( dbTag, 5, obj );
       
       return;
     end
@@ -83,13 +98,13 @@ classdef HandleClass < Grasppe.Prototypes.Prototype & dynamicprops
       try dbTag           = [dbTag ':' evt.AffectedObject.ID]; end
       try dbTag           = [dbTag ':' src.ID]; end
       
-      debugStamp( dbTag, 1, obj );
+      debugStamp( dbTag, 5, obj );
       
       return;
     end
     
   end
-    
+  
   methods (Access=protected)
     function initialize(obj)
       debugStamp(['Initializing@' obj.ClassName], 5, obj);
@@ -98,13 +113,13 @@ classdef HandleClass < Grasppe.Prototypes.Prototype & dynamicprops
       obj.attachPropertyListeners();
       obj.attachEventListeners();
     end
-  end  
+  end
   
   methods (Access=private)
     
     function attachEventListeners(obj)
-      eventNames          = events(obj);
-      methodNames         = methods(obj);
+      eventNames          = {obj.MetaClass.EventList(:).Name};  %events(obj);
+      methodNames         = {obj.MetaClass.MethodList(:).Name}; %methods(obj);
       
       for m = 1:numel(eventNames)
         eventName         = eventNames{m};
@@ -115,7 +130,12 @@ classdef HandleClass < Grasppe.Prototypes.Prototype & dynamicprops
         
         if any(strcmp(methodName, methodNames));
           try
-            obj.addlistener( eventName, @(s,e)feval(methodName, obj, s, e));
+            
+            try delete(obj.SelfListeners.([eventName 'Event'])); end
+            
+            lh            = obj.addlistener( eventName, @(s,e)feval(methodName, obj, s, e));
+            
+            obj.SelfListeners.([eventName 'Event']) = lh;
             continue;
           catch err
             disp(err);
@@ -128,7 +148,7 @@ classdef HandleClass < Grasppe.Prototypes.Prototype & dynamicprops
     
     function attachPropertyListeners(obj)
       metaProperties      = obj.MetaClass.PropertyList;
-      eventNames          = events(obj);
+      eventNames          = {obj.MetaClass.EventList(:).Name}; %events(obj);
       
       for m = 1:numel(metaProperties)
         propertyMeta      = metaProperties(m);
@@ -145,7 +165,12 @@ classdef HandleClass < Grasppe.Prototypes.Prototype & dynamicprops
         
         if propertyMeta.SetObservable && any(strcmp(eventName, eventNames));
           try
-            obj.addlistener( propertyName, 'PostSet', @(s,e)obj.notify(eventName, e)); %eval(['@obj.' propertyName 'Change']) );
+            
+            try delete(obj.SelfListeners.([propertyName 'PostSet'])); end
+            
+            lh            = obj.addlistener( propertyName, 'PostSet', @(s,e)obj.notify(eventName, e)); %eval(['@obj.' propertyName 'Change']) );
+            
+            obj.SelfListeners.([propertyName 'PostSet']) = lh;
             continue;
           catch err
             disp(err);
