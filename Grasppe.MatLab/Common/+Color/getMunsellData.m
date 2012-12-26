@@ -69,7 +69,7 @@ m.real.xyY    = [x y Y];
 m.real.XYZs   = Color.xyY2XYZ(  m.real.xyY  );
 m.real.XYZd   = m.real.XYZs' * CtoD50;
 
-m.real.Lab    = Color.XYZ2Lab(m.real.XYZd, 
+%m.real.Lab    = Color.XYZ2Lab(m.real.XYZd, Color.ref2XYZ(Color. 
 
 m.real.sRGB   = Color.XYZ2sRGB(m.real.XYZd');
 

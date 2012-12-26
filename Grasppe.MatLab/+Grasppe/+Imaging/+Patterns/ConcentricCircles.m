@@ -7,7 +7,7 @@ function [ img range contrast reference] = ConcentricCircles( cycles, reference,
   if nargin<3, contrast   =   100-abs(2*(50-reference)); end
   if nargin<4, width      =   256; end
   
-  contrastRange = Grasppe.Kit.ConRes.ContrastRange;
+  %contrastRange = ConResKit.ContrastRange;
   
   contrast  = min(contrast, (50-abs(50-reference))* 2);
   

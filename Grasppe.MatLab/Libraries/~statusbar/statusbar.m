@@ -167,30 +167,6 @@ function statusbarHandles = statusbar(varargin)
 
 %% Set the status bar text of the Matlab desktop
 function setDesktopStatus(statusText)
-  
-  persistent statusbarTimer
-  
-  try
-    if isempty(statusbarTimer) || ~isscalar(statusbarTimer) || ~isa(statusbarTimer, 'timer') || ~isvalid(statusbarTimer)
-      statusbarTimer = timerfind('Tag', 'statusbarTimer');
-      try 
-        invalidTimers       = statusbarTimer;
-        try invalidTimers   = statusbarTimer(~isvalid(statusbarTimer)); end
-        try statusbarTimer  = statusbarTimer(isvalid(statusbarTimer)); end
-        try invalidTimers   = [invalidTimers, statusbarTimer(2:end)]; end
-        try statusbarTimer = statusbarTimer(1); end
-        %for m = 1:numel(invalidTimers)
-        try stop(invalidTimers);   end
-        try delete(statusbarTimer); end
-      catch err
-        debugStamp(err, 1);
-        try stop(statusbarTimer);   end
-        try delete(statusbarTimer); end
-        statusbarTimer = [];
-      end
-    end
-  end
-    
     try
         % First, get the desktop reference
         try
@@ -202,18 +178,11 @@ function setDesktopStatus(statusText)
         % Schedule a timer to update the status text
         % Note: can't update immediately, since it will be overridden by Matlab's 'busy' message...
         try
-          
-          try stop(statusbarTimer); end
-          if isempty(statusbarTimer) || ~isscalar(statusbarTimer) || ~isa(statusbarTimer, 'timer') || ~isvalid(statusbarTimer)
-            statusbarTimer = timer('Tag','statusbarTimer', ...
-              'ErrorFcn', @(s, e) null, 'TimerFcn',@(s,e)setText(desktop,statusText), ...
-              'StartDelay', 0.05, 'Period', 0.25, 'ExecutionMode','singleShot');
-          end
-          start(statusbarTimer);
-        catch err
-          debugStamp(err, 1);
-          % Probably an old Matlab version that still doesn't have timer
-          desktop.setStatusText(statusText);
+            t = timer('Name','statusbarTimer', 'TimerFcn',{@setText,desktop,statusText}, 'StartDelay',0.05, 'ExecutionMode','singleShot');
+            start(t);
+        catch
+            % Probably an old Matlab version that still doesn't have timer
+            desktop.setStatusText(statusText);
         end
     catch
         %if any(ishandle(hFig)),  delete(hFig);  end

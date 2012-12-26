@@ -17,9 +17,26 @@ function cleardebug
   try evalin('base', 'Grasppe.Core.Prototype.ClearPrototypes'); end
   
   %% Safe Clear Prototypes 2
-  try rmappdata(0, 'GrasppeInstanceTable'); end
   try evalin('base', 'Grasppe.Prototypes.Utilities.Reset'); end
+  try rmappdata(0, 'GrasppeInstanceTable'); end  
   %   evalin('base', 'clear');
+  
+  %% Safe Clear Root Listeners
+  rootAppData   = getappdata(0);
+  rootAppFields = fieldnames(rootAppData);
+  rootListeners = rootAppFields(cellfun(@isscalar, regexp(rootAppFields, 'Listeners$')));
+  
+  for m = 1:numel(rootListeners)
+    listeners   = getappdata(0, rootListeners{m});
+    if isa(listeners,'handle.listener')
+      try delete(listeners); end
+    end
+    if ~any(ishandle(listeners))
+      rmappdata(0, rootListeners{m});
+    else
+      rmappdata(0, rootListeners{m}, listeners(ishandle(listeners)));
+    end
+  end
   
   mlock;
   try
@@ -27,6 +44,7 @@ function cleardebug
     %dbstate = evalin('base', 'dbstatus(''-completenames'')');
     evalin('base', 'clear all;');
     evalin('base', 'clear classes;');
+    evalin('base', 'clear java;');
     try stop(timerfindall); end
     
     %WTB: stop timerfindall @ base screws with persistent locked dbstate
@@ -34,6 +52,7 @@ function cleardebug
     %evalin('base', 'delete(timerfindall());');
     
     try delete(findobj(findall(0),'type','figure')); catch err, end
+    try stop(timerfindall); end
     try delete(timerfindall); end
     
     evalin('base', 'clear java;');

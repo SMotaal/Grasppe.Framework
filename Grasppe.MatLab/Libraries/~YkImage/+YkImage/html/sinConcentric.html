@@ -1,0 +1,137 @@
+
+<!DOCTYPE html
+  PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html><head>
+      <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+   <!--
+This HTML was auto-generated from MATLAB code.
+To make changes, update the MATLAB code and republish this document.
+      --><title>sinConcentric</title><meta name="generator" content="MATLAB 7.14"><link rel="schema.DC" href="http://purl.org/dc/elements/1.1/"><meta name="DC.date" content="2012-12-19"><meta name="DC.source" content="sinConcentric.m"><style type="text/css">
+html,body,div,span,applet,object,iframe,h1,h2,h3,h4,h5,h6,p,blockquote,pre,a,abbr,acronym,address,big,cite,code,del,dfn,em,font,img,ins,kbd,q,s,samp,small,strike,strong,sub,sup,tt,var,b,u,i,center,dl,dt,dd,ol,ul,li,fieldset,form,label,legend,table,caption,tbody,tfoot,thead,tr,th,td{margin:0;padding:0;border:0;outline:0;font-size:100%;vertical-align:baseline;background:transparent}body{line-height:1}ol,ul{list-style:none}blockquote,q{quotes:none}blockquote:before,blockquote:after,q:before,q:after{content:'';content:none}:focus{outine:0}ins{text-decoration:none}del{text-decoration:line-through}table{border-collapse:collapse;border-spacing:0}
+
+html { min-height:100%; margin-bottom:1px; }
+html body { height:100%; margin:0px; font-family:Arial, Helvetica, sans-serif; font-size:10px; color:#000; line-height:140%; background:#fff none; overflow-y:scroll; }
+html body td { vertical-align:top; text-align:left; }
+
+h1 { padding:0px; margin:0px 0px 25px; font-family:Arial, Helvetica, sans-serif; font-size:1.5em; color:#d55000; line-height:100%; font-weight:normal; }
+h2 { padding:0px; margin:0px 0px 8px; font-family:Arial, Helvetica, sans-serif; font-size:1.2em; color:#000; font-weight:bold; line-height:140%; border-bottom:1px solid #d6d4d4; display:block; }
+h3 { padding:0px; margin:0px 0px 5px; font-family:Arial, Helvetica, sans-serif; font-size:1.1em; color:#000; font-weight:bold; line-height:140%; }
+
+a { color:#005fce; text-decoration:none; }
+a:hover { color:#005fce; text-decoration:underline; }
+a:visited { color:#004aa0; text-decoration:none; }
+
+p { padding:0px; margin:0px 0px 20px; }
+img { padding:0px; margin:0px 0px 20px; border:none; }
+p img, pre img, tt img, li img { margin-bottom:0px; } 
+
+ul { padding:0px; margin:0px 0px 20px 23px; list-style:square; }
+ul li { padding:0px; margin:0px 0px 7px 0px; }
+ul li ul { padding:5px 0px 0px; margin:0px 0px 7px 23px; }
+ul li ol li { list-style:decimal; }
+ol { padding:0px; margin:0px 0px 20px 0px; list-style:decimal; }
+ol li { padding:0px; margin:0px 0px 7px 23px; list-style-type:decimal; }
+ol li ol { padding:5px 0px 0px; margin:0px 0px 7px 0px; }
+ol li ol li { list-style-type:lower-alpha; }
+ol li ul { padding-top:7px; }
+ol li ul li { list-style:square; }
+
+.content { font-size:1.2em; line-height:140%; padding: 20px; }
+
+pre, tt, code { font-size:12px; }
+pre { margin:0px 0px 20px; }
+pre.error { color:red; }
+pre.codeinput { padding:10px; border:1px solid #d3d3d3; background:#f7f7f7; }
+pre.codeoutput { padding:10px 11px; margin:0px 0px 20px; color:#4c4c4c; }
+
+@media print { pre.codeinput, pre.codeoutput { word-wrap:break-word; width:100%; } }
+
+span.keyword { color:#0000FF }
+span.comment { color:#228B22 }
+span.string { color:#A020F0 }
+span.untermstring { color:#B20000 }
+span.syscmd { color:#B28C00 }
+
+.footer { width:auto; padding:10px 0px; margin:25px 0px 0px; border-top:1px dotted #878787; font-size:0.8em; line-height:140%; font-style:italic; color:#878787; text-align:left; float:none; }
+.footer p { margin:0px; }
+
+  </style></head><body><div class="content"><pre class="codeinput"><span class="keyword">function</span> im = sinConcentric(vhSize, cyclePer100pix, phase, mean, amplitude)
+<span class="comment">% Draw sinusoidal concentric stripes and returns the imgage in matrix</span>
+<span class="comment">% im = sinConcentric(vhSize, cyclePerRot, phase, mean, amplitude)</span>
+<span class="comment">% vhSize: size of pattern, [vSize hSize]</span>
+<span class="comment">% cyclesPerRot: sets s.f. equivalent to the wind mill</span>
+<span class="comment">% phase: phase of grating in degree</span>
+<span class="comment">% mean: mean color value</span>
+<span class="comment">% amplitude: amplitude of color value</span>
+<span class="comment">%</span>
+<span class="comment">% last modified 12/17/98</span>
+<span class="comment">% (c) Yukiyasu Kamitani</span>
+<span class="comment">%</span>
+<span class="comment">% eg &gt; imshow(sinConcentric([100 100], 10, 0, 0.5, 0.5))</span>
+<span class="comment">%</span>
+
+import <span class="string">YkImage.*</span>;
+
+center = vhSize/2;
+Y = [-(vhSize(1)-1)/2:1:(vhSize(1)-1)/2];  <span class="comment">% size(V,1) = Axis(1)</span>
+X = [-(vhSize(2)-1)/2:1:(vhSize(2)-1)/2];
+distanceMap = sqrt( ones(vhSize(1),1)*(X.^2) + (Y'.^2)*ones(1,vhSize(2)) );
+
+im =  mean * ones(vhSize)  + amplitude*sin(2*pi* cyclePer100pix/100 * distanceMap <span class="keyword">...</span>
+		- deg2rad(phase)*ones(vhSize) );
+
+
+<span class="comment">% frequency modulation with radius</span>
+<span class="comment">%</span>
+<span class="comment">% im = mean + amplitude ...</span>
+<span class="comment">% 	* sin(2 * pi * (cyclePerRot * ones(vhSize) ...</span>
+<span class="comment">% 					./(2 * (distanceMap + 20 * ones(vhSize)))...</span>
+<span class="comment">% 	                    .* (distanceMap - 20 * ones(vhSize))...</span>
+<span class="comment">% 					)...</span>
+<span class="comment">% 		  - deg2rad(phase)*ones(vhSize) ...</span>
+<span class="comment">% 		  );</span>
+<span class="comment">% % frequency function is shifted to left and above by nPixels/10</span>
+</pre><pre class="codeoutput">Error using YkImage.sinConcentric (line 18)
+Not enough input arguments.</pre><p class="footer"><br>
+      Published with MATLAB&reg; 7.14<br></p></div><!--
+##### SOURCE BEGIN #####
+function im = sinConcentric(vhSize, cyclePer100pix, phase, mean, amplitude)
+% Draw sinusoidal concentric stripes and returns the imgage in matrix
+% im = sinConcentric(vhSize, cyclePerRot, phase, mean, amplitude)
+% vhSize: size of pattern, [vSize hSize]
+% cyclesPerRot: sets s.f. equivalent to the wind mill
+% phase: phase of grating in degree
+% mean: mean color value
+% amplitude: amplitude of color value
+%
+% last modified 12/17/98
+% (c) Yukiyasu Kamitani  
+% 
+% eg > imshow(sinConcentric([100 100], 10, 0, 0.5, 0.5))
+%
+
+import YkImage.*;
+
+center = vhSize/2;
+Y = [-(vhSize(1)-1)/2:1:(vhSize(1)-1)/2];  % size(V,1) = Axis(1)
+X = [-(vhSize(2)-1)/2:1:(vhSize(2)-1)/2]; 
+distanceMap = sqrt( ones(vhSize(1),1)*(X.^2) + (Y'.^2)*ones(1,vhSize(2)) );
+
+im =  mean * ones(vhSize)  + amplitude*sin(2*pi* cyclePer100pix/100 * distanceMap ...
+		- deg2rad(phase)*ones(vhSize) );
+
+
+% frequency modulation with radius
+%
+% im = mean + amplitude ... 
+% 	* sin(2 * pi * (cyclePerRot * ones(vhSize) ...
+% 					./(2 * (distanceMap + 20 * ones(vhSize)))...
+% 	                    .* (distanceMap - 20 * ones(vhSize))...
+% 					)...
+% 		  - deg2rad(phase)*ones(vhSize) ...
+% 		  );
+% % frequency function is shifted to left and above by nPixels/10
+
+
+##### SOURCE END #####
+--></body></html>

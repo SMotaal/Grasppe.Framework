@@ -1,0 +1,27 @@
+Property sheet
+Copyright 2008-2009 Levente Hunyadi
+
+A graphical user control that mimics MatLab's property inspector.
+
+A property sheet (or property grid) lists public properties of a MatLab value or handle object, and lets the user edit each property value using its natural representation. In particular,
+* character arrays can be edited in-place as a string;
+* matrices and vectors can be edited as text or in a pop-up dialog;
+* scalar logicals are mapped to checkboxes;
+* a selection from a set of values is presented as a list;
+* nested properties (when a property value is itself an object) are displayed as an expandable property.
+
+INSTALLATION
+
+The control internally uses a custom Java Swing control, wrapped in a Java package JPropertySheet.jar. This package has to be downloaded separately (see below), extracted into a subfolder called java, and added to the Java class path for the control to work. Type javastartup to add the package to the dynamic Java class path. Further instructions (to achieve higher performance) will be printed on the screen. For details, see the MatLab function javaclasspath.
+
+EXAMPLES
+
+The file example_propertysheet.m contains a basic example. Sample code for low-level function usage is found in example_jpropertysheet.m.
+
+DISCLAIMER
+
+This component is provided in the hope that it will be useful, but no claims are made as to the fitness for any purpose. In particular, the component has not been tested in a production environment and may exhibit unexpected behavior. No support is provided but you are welcome to submit bug reports directly to the author; comments made at the MathWorks File Exchange site might be ignored.
+
+DOWNLOAD
+
+The source code for the internally used Java Swing control is maintained as part of the Fraeser project and available for download at http://sourceforge.net/projects/fraeser/files/matlab_gui_extensions.

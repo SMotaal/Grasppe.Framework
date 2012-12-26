@@ -20,7 +20,7 @@ Y = [-(vhSize(1)-1)/2:1:(vhSize(1)-1)/2];  % size(V,1) = Axis(1)
 X = [-(vhSize(2)-1)/2:1:(vhSize(2)-1)/2]; 
 distanceMap = sqrt( ones(vhSize(1),1)*(X.^2) + (Y'.^2)*ones(1,vhSize(2)) );
 
-im =  mean * ones(vhSize)  + amplitude*sin(2*pi* cyclePer100pix/100 * distanceMap ...
+im =  mean * ones(vhSize)  + amplitude*square(2*pi* cyclePer100pix/100 * distanceMap ...
 		- deg2rad(phase)*ones(vhSize) );
 
 
