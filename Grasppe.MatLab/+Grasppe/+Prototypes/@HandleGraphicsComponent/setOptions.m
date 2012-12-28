@@ -1,13 +1,17 @@
 function [names values] = setOptions(obj, varargin)
   
-  % import(obj.Imports{:});
+  import(obj.Imports{:});
   
-  [names values paired pairs] = Grasppe.Prototypes.Utilities.ParseOptions(varargin{:});
+  [names values paired pairs] = Utilities.ParseOptions(varargin{:});
   
   if (paired)
     for i=1:numel(names)
       
       try
+        if ~isscalar(obj.findprop(names{i}))
+          obj.DefaultOptions.(names{i}) = values{i};
+          continue;
+        end
         obj.privateSet(names{i}, values{i})
       catch err
         try

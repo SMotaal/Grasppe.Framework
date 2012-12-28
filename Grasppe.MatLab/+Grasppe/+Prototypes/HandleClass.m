@@ -2,7 +2,7 @@ classdef HandleClass < Grasppe.Prototypes.Prototype & dynamicprops
   %HANDLECLASS Prototype 2 SuperClass for Handle, Property & Event Listener functionality
   %   HandleClass...
   
-  properties(SetAccess=private, GetAccess=public, Transient) %, GetAccess=protected)
+  properties(SetAccess=private, GetAccess=public, Transient, Hidden) %, GetAccess=protected)
     EventListeners          = struct();
     PropertyEventListeners  = struct();
     SelfListeners           = struct();

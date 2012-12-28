@@ -76,11 +76,6 @@ classdef (HandleCompatible) Prototype
     
     function privateSet(obj, propertyName, value)
       if ~isequal(obj.(propertyName), value), obj.(propertyName) = value; end
-      % try
-      %   if ~isequal(obj.(propertyName), value), obj.(propertyName) = value; end
-      % catch err
-      %   obj.privateSet@Grasppe.Prototypes.Component(propertyName, value);
-      % end
     end
     
     function initialize(obj)
