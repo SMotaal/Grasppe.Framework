@@ -1,4 +1,4 @@
-classdef Figure < Grasppe.Prototypes.HandleGraphicsComponent
+classdef Figure < Grasppe.Graphics.GraphicsHandle
   %FIGURE Summary of this class goes here
   %   Detailed explanation goes here
   
@@ -50,7 +50,7 @@ classdef Figure < Grasppe.Prototypes.HandleGraphicsComponent
   methods % (Access=protected)
     function obj = Figure(object, parent, varargin)
       figureDefaults  = {'NumberTitle', 'off', 'ToolBar', 'none', 'Renderer', 'opengl', 'PaperOrientation', 'landscape'};
-      obj             = obj@Grasppe.Prototypes.HandleGraphicsComponent('figure', object, parent, figureDefaults{:}, varargin{:});
+      obj             = obj@Grasppe.Graphics.GraphicsHandle('figure', object, parent, figureDefaults{:}, varargin{:});
       
       debugStamp('Constructing', 5, obj);
       
@@ -463,7 +463,7 @@ classdef Figure < Grasppe.Prototypes.HandleGraphicsComponent
   methods (Access=protected)
     function initialize(obj)
       debugStamp(['Initializing@' obj.ClassName], 5, obj);
-      obj.initialize@Grasppe.Prototypes.HandleGraphicsComponent;
+      obj.initialize@Grasppe.Graphics.GraphicsHandle;
     end
     
     function handleFigureMouseEvent(obj, evt)

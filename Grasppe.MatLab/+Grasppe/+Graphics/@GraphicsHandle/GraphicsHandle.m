@@ -1,5 +1,5 @@
-classdef HandleGraphicsComponent < Grasppe.Prototypes.Instance & dynamicprops & matlab.mixin.Heterogeneous
-  %HANDLEGRAPHICSCOMPONENT Summary of this class goes here
+classdef GraphicsHandle < Grasppe.Prototypes.Instance & dynamicprops & matlab.mixin.Heterogeneous
+  %HandleGraphicsClass Summary of this class goes here
   %   Detailed explanation goes here
   
   properties(SetAccess=immutable, Hidden) %, GetAccess=protected)
@@ -32,7 +32,7 @@ classdef HandleGraphicsComponent < Grasppe.Prototypes.Instance & dynamicprops & 
   properties (SetAccess=protected)
     DefaultOptions
     Object                    % Schema.Class Object
-    ParentComponent           % HandleGraphicsComponent Object
+    ParentComponent           % HandleGraphicsClass Object
     ChildComponents
     HandlePropertyListeners
     HandleFunctions
@@ -45,7 +45,7 @@ classdef HandleGraphicsComponent < Grasppe.Prototypes.Instance & dynamicprops & 
   
   
   methods(Access=protected)
-    function obj = HandleGraphicsComponent(objectType, object, parent, varargin)
+    function obj = GraphicsHandle(objectType, object, parent, varargin)
       
       if ~exist('objectType', 'var'), objectType  = []; end
       try  if isempty(objectType),    objectType  = get(object, 'Type'); end; end
@@ -53,7 +53,7 @@ classdef HandleGraphicsComponent < Grasppe.Prototypes.Instance & dynamicprops & 
       instanceOptions = {};
       
       if ischar(objectType)
-        instanceOptions   = {'ID', [upper(objectType(1)) objectType(2:end) 'Component']};
+        instanceOptions   = {'InstanceID', [upper(objectType(1)) objectType(2:end) 'Component']};
       end
       
       obj = obj@Grasppe.Prototypes.Instance(instanceOptions{:});
@@ -183,7 +183,7 @@ classdef HandleGraphicsComponent < Grasppe.Prototypes.Instance & dynamicprops & 
           eventType     = [];
           try eventType = evt.EventName; end
           
-          notifyData = Grasppe.Graphics.EventData(obj,eventType, eventData);
+          notifyData = Grasppe.Graphics.Events.Data(obj,eventType, eventData);
           obj.notify(evt.EventName, notifyData);
         catch err1
           obj.notify(evt.EventName);
@@ -192,9 +192,9 @@ classdef HandleGraphicsComponent < Grasppe.Prototypes.Instance & dynamicprops & 
       catch err
         dbTag                       = ['Error:Unknown:HandleEvent'];
         try dbTag                   = ['Error:' err.identifier ':HandleEvent']; end
-        try dbTag                   = [obj.ID ':Handle' evt.EventName]; end
-        try dbTag                   = [dbTag ':' evt.AffectedObject.ID]; end
-        try dbTag                   = [dbTag ':' src.ID]; end
+        try dbTag                   = [obj.InstanceID ':Handle' evt.EventName]; end
+        try dbTag                   = [dbTag ':' evt.AffectedObject.InstanceID]; end
+        try dbTag                   = [dbTag ':' src.InstanceID]; end
         debugStamp( dbTag, 1, obj );
       end
     end
@@ -227,9 +227,9 @@ classdef HandleGraphicsComponent < Grasppe.Prototypes.Instance & dynamicprops & 
         object                      = handle(h);
         component                   = getappdata(object, 'HandleComponent');
         
-        if isempty(component) || ~isa(component, 'Grasppe.Prototypes.HandleGraphicsComponent')
+        if isempty(component) || ~isa(component, 'Grasppe.Graphics.GraphicsHandle')
           objectType                = get(object, 'Type');
-          component                 = Grasppe.Prototypes.HandleGraphicsComponent.CreateComponentFromObject(object, obj);
+          component                 = Grasppe.Graphics.GraphicsHandle.CreateComponentFromObject(object, obj);
         end
       
     end
@@ -242,7 +242,7 @@ classdef HandleGraphicsComponent < Grasppe.Prototypes.Instance & dynamicprops & 
   end
   
   methods(Static, Hidden)
-    obj                             = testHandleGraphicsComponent(hObject);
+    obj                             = testGraphicsHandle(hObject);
     
     function component = CreateComponent(objectType, object, parent, varargin)
       component = feval(mfilename('class'), objectType, object, parent, varargin{:});

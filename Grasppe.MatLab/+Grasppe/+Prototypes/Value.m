@@ -1,4 +1,4 @@
-classdef ValueClass < Grasppe.Prototypes.Prototype
+classdef Value < Grasppe.Prototypes.Prototype
   %VALUECLASS Superclass for Grasppe Core Prototypes 2
   %   Detailed explanation goes here
   
@@ -8,7 +8,7 @@ classdef ValueClass < Grasppe.Prototypes.Prototype
   end
   
   methods
-    function obj=ValueClass(varargin)
+    function obj=Value(varargin)
       obj@Grasppe.Prototypes.Prototype(varargin{:});
     end
     

@@ -14,7 +14,7 @@ function [names values] = setOptions(obj, varargin)
           if ~isequal(obj.(names{i}), values{i}), obj.(names{i}) = values{i}; end
         catch err
           if ~strcontains(err.identifier, 'noSetMethod')
-            try debugStamp(obj.ID, 5); end
+            try debugStamp(obj.InstanceID, 5); end
             disp(['Could not set ' names{i} ' for ' class(obj) '. ' err.message]);
           end
         end

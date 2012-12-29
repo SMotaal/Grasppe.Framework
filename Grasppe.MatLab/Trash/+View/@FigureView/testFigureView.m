@@ -1,4 +1,4 @@
-function obj = testFigureObject(hObject)
+function obj = testFigureView(hObject)
   %TESTSCHEMAPROPERTIES Summary of this function goes here
   %   Detailed explanation goes here
       

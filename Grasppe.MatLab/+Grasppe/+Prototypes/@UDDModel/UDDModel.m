@@ -57,7 +57,7 @@ classdef (ConstructOnLoad) UDDModel < Grasppe.Prototypes.Model
       
       if loadingObject
         sObj                  = varargin{1};
-        options               = [varargin, {'ID'}, {sObj.ID}];
+        options               = [varargin, {'InstanceID'}, {sObj.InstanceID}];
       else
         options               = varargin; % {}; %varargin;
       end
@@ -156,7 +156,7 @@ classdef (ConstructOnLoad) UDDModel < Grasppe.Prototypes.Model
     function notifyUDDPropertyChanged(obj, src, evt, varargin)
       evt = get(evt);
       %evt.AffectedObject = obj;
-      obj.notify('PropertyChanged', Grasppe.Prototypes.EventData(obj, 'PropertyChanged', evt));
+      obj.notify('PropertyChanged', Grasppe.Prototypes.Events.Data(obj, 'PropertyChanged', evt));
     end
     
     
@@ -260,7 +260,7 @@ classdef (ConstructOnLoad) UDDModel < Grasppe.Prototypes.Model
       st.Class                = class(obj);
       st.Format               = 'Grasppe:UDDModel:R1';
       
-      debugStamp(['Serializing ' obj.ID], 1);
+      debugStamp(['Serializing ' obj.InstanceID], 1);
       
       %% UDD Schema
       
@@ -331,7 +331,7 @@ classdef (ConstructOnLoad) UDDModel < Grasppe.Prototypes.Model
         newModel(2:2:end)     = modelValues;
         
         %% Initialize Prototype UDDModel
-        obj                   = Grasppe.Prototypes.UDDModel.NewModel(st.Class, 'ID', st.ID, 'ModelData', newModel);
+        obj                   = Grasppe.Prototypes.UDDModel.NewModel(st.Class, 'InstanceID', st.ID, 'ModelData', newModel);
         modelData             = obj.ModelData;
         
         %         %% Populate Model Data

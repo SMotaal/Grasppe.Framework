@@ -36,7 +36,7 @@ function st = debugStamp( tag, level, obj )
       
       if ~isempty(obj) && isscalar(obj) && isobject(obj)
         objID = class(obj);
-        try objID = obj.ID; end
+        try objID = obj.InstanceID; end
         str = [str objID];
       end
             
@@ -83,7 +83,7 @@ function st = debugStamp( tag, level, obj )
       if nargin==2
         obj = level;
         level = tag; tag = '';
-        try tag = obj.ID; end
+        try tag = obj.InstanceID; end
         try if isempty(tag), tag = class(obj); end; end
       else
         level = tag; tag = '';
@@ -125,8 +125,8 @@ function st = debugStamp( tag, level, obj )
     end
     
     try
-      try if nargin>2 && isa(obj, 'Grasppe.Core.Prototype')
-          tag = [obj.ID '.' tag]; end; end
+      try if nargin>2 && isa(obj, 'Grasppe.Prototypes.Instance')
+          tag = [obj.InstanceID '.' tag]; end; end
       
       nextstack = sprintf('\n%s',[errorID tag dbstamp]);
     catch

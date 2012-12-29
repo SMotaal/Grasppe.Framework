@@ -1,4 +1,4 @@
-classdef Root < Grasppe.Prototypes.HandleGraphicsComponent
+classdef Root < Grasppe.Graphics.GraphicsHandle
   %ROOT Summary of this class goes here
   %   Detailed explanation goes here
   
@@ -9,7 +9,7 @@ classdef Root < Grasppe.Prototypes.HandleGraphicsComponent
   
   methods % (Access=protected)
     function obj = Root(varargin)
-      obj             = obj@Grasppe.Prototypes.HandleGraphicsComponent('root', handle(0), [], varargin{:});
+      obj             = obj@Grasppe.Graphics.GraphicsHandle('root', handle(0), [], varargin{:});
 
       debugStamp('Constructing', 5, obj);
       
@@ -53,7 +53,7 @@ classdef Root < Grasppe.Prototypes.HandleGraphicsComponent
   methods (Access=protected)
     function initialize(obj)
       debugStamp(['Initializing@' obj.ClassName], 5, obj);
-      obj.initialize@Grasppe.Prototypes.HandleGraphicsComponent;
+      obj.initialize@Grasppe.Graphics.GraphicsHandle;
     end
   end
   

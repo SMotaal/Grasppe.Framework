@@ -27,7 +27,7 @@ classdef Task < Grasppe.Prototypes.Instance & matlab.mixin.Heterogeneous
   end
   
   properties
-    ProgressData  = Grasppe.Prototypes.ProgressData;
+    ProgressData  = Grasppe.Prototypes.Models.ProgressModel;
   end
   
   methods
@@ -67,7 +67,7 @@ classdef Task < Grasppe.Prototypes.Instance & matlab.mixin.Heterogeneous
     end
     
     function reset(obj)
-      obj.ProgressData  = Grasppe.Prototypes.ProgressData;
+      obj.ProgressData  = Grasppe.Prototypes.Models.ProgressModel;
     end
     
     
@@ -129,7 +129,7 @@ classdef Task < Grasppe.Prototypes.Instance & matlab.mixin.Heterogeneous
       progress          = obj.getProgress;
       if ~isequal(currentProgress, progress)
         obj.current_progress = progress;
-        obj.notify('ProgressChange', Grasppe.Prototypes.EventData(obj, ... 
+        obj.notify('ProgressChange', Grasppe.Prototypes.Events.Data(obj, ... 
           struct('LastValue', currentProgress, 'NewValue', progress)));
       end
     end

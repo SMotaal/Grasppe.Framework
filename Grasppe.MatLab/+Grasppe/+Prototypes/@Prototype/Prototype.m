@@ -82,34 +82,12 @@ classdef (HandleCompatible) Prototype
       debugStamp(['Initializing@' obj.ClassName], 5, obj);
     end
     
-    function varargout = static(obj, methodName, varargin)
-      
-      methodCall                = [obj.ClassName '.' methodName];
-      
-      switch(nargout)
-        case 0  % Good Practice
-          feval(methodCall, varargin{:});
-        case 1  % Good Practice
-          [v1]                  = feval(methodCall, varargin{:});
-        case 2  % Bad Practice
-          [v1 v2]               = feval(methodCall, varargin{:});
-        case 3  % Bad Practice
-          [v1 v2 v3]            = feval(methodCall, varargin{:});
-        case 4  % Bad Practice
-          [v1 v2 v3 v4]         = feval(methodCall, varargin{:});
-        case 5  % Bad Practice
-          [v1 v2 v3 v4 v5]      = feval(methodCall, varargin{:});
-        case 6  % Bad Practice
-          [v1 v2 v3 v4 v5 v6]   = feval(methodCall, varargin{:});
-      end
-      
-      for m = 1:nargout
-        varargout{m}            = eval(['v' int2str(m)']);
-      end
+    function varargout = static(obj, methodName, varargin)      
+      [varargout{:}]    = feval([obj.ClassName '.' methodName], varargin{:});
     end
     
     
-    [names values]              = setOptions(obj, varargin);    
+    [names values]              = setOptions(obj, varargin);
   end
   
 end

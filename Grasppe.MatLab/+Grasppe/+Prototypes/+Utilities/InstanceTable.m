@@ -3,7 +3,7 @@ classdef (Sealed) InstanceTable < handle  % containers.Map
   %   Detailed explanation goes here
   
   properties (Transient)
-    % Table = Grasppe.Prototypes.InstanceTable.GetTable;
+    % Table = Grasppe.Prototypes.Utilities.InstanceTable.GetTable;
     Map     = containers.Map;
   end
   
@@ -19,9 +19,9 @@ classdef (Sealed) InstanceTable < handle  % containers.Map
   
   methods (Static)  % Instance Functions
     function [id base idx] = RegisterInstance(id, instance)
-      map                 = Grasppe.Prototypes.InstanceTable.GetMap;
+      map                 = Grasppe.Prototypes.Utilities.InstanceTable.GetMap;
       
-      if isempty(id), id  = class(instance); end; %Grasppe.Prototypes.InstanceTable.GenerateInstanceID(class(instance)); end
+      if isempty(id), id  = class(instance); end; %Grasppe.Prototypes.Utilities.InstanceTable.GenerateInstanceID(class(instance)); end
       
       instanceID          = regexprep(id, '(\w+\.)|\.', '');
       
@@ -33,14 +33,14 @@ classdef (Sealed) InstanceTable < handle  % containers.Map
         newID             = [instanceID '-' int2str(newIndex)];
       end
       
-      instanceRecord      = Grasppe.Prototypes.InstanceTable.CreateInstanceRecord(newID, instance);
+      instanceRecord      = Grasppe.Prototypes.Utilities.InstanceTable.CreateInstanceRecord(newID, instance);
       
       if isstruct(instanceRecord)
         map(newID)        = instanceRecord;
       end
       
       if mod(map.length, 10)==0
-        Grasppe.Prototypes.InstanceTable.Clean();
+        Grasppe.Prototypes.Utilities.InstanceTable.Clean();
       end
       
       if nargout>0, id    = newID;          end
@@ -59,7 +59,7 @@ classdef (Sealed) InstanceTable < handle  % containers.Map
     end
     
     function instance = GetInstance(id)
-      map             = Grasppe.Prototypes.InstanceTable.GetMap;
+      map             = Grasppe.Prototypes.Utilities.InstanceTable.GetMap;
       instanceID      = regexprep(id, '(\w+\.)|\.', '');
       instnaceFound   = map.isKey(instanceID);
       instance        = [];
@@ -70,7 +70,7 @@ classdef (Sealed) InstanceTable < handle  % containers.Map
     end
     
     function instanceRecord = GetInstanceRecord(id)
-      map             = Grasppe.Prototypes.InstanceTable.GetMap;
+      map             = Grasppe.Prototypes.Utilities.InstanceTable.GetMap;
       instanceID      = regexprep(id, '(\w+\.)|\.', '');
       instnaceFound   = map.isKey(instanceID);
       
@@ -78,7 +78,7 @@ classdef (Sealed) InstanceTable < handle  % containers.Map
     end
     
     function UnregisterInstance(id, instance)
-      map             = Grasppe.Prototypes.InstanceTable.GetMap;
+      map             = Grasppe.Prototypes.Utilities.InstanceTable.GetMap;
       instanceID      = regexprep(id, '(\w+\.)|\.', '');
       instanceFound   = map.isKey(instanceID);
       
@@ -94,7 +94,7 @@ classdef (Sealed) InstanceTable < handle  % containers.Map
     end
     
     function id = GenerateInstanceID(target, id)
-      map             = Grasppe.Prototypes.InstanceTable.GetMap;
+      map             = Grasppe.Prototypes.Utilities.InstanceTable.GetMap;
       index           = 0;
       
       if ~ischar(target)
@@ -120,7 +120,7 @@ classdef (Sealed) InstanceTable < handle  % containers.Map
   methods(Static) % Table Functions
     
     function Clean()
-      map           = Grasppe.Prototypes.InstanceTable.GetMap;
+      map           = Grasppe.Prototypes.Utilities.InstanceTable.GetMap;
       keys          = map.keys;
       
       for m = 1:numel(keys)
@@ -143,15 +143,15 @@ classdef (Sealed) InstanceTable < handle  % containers.Map
       table             = getappdata(0, 'GrasppeInstanceTable');
       
       try
-        if ~isa(table, 'Grasppe.Prototypes.InstanceTable') || ~table.isAlive==true
+        if ~isa(table, 'Grasppe.Prototypes.Utilities.InstanceTable') || ~table.isAlive==true
           error(...
             'Grasppe:InstanceTable:InvalidTable', ...
             'This object is not a valid instance table' ...
             );
         end
       catch err
-        table           = Grasppe.Prototypes.InstanceTable();
-        Grasppe.Prototypes.InstanceTable.CreateMap(table);
+        table           = Grasppe.Prototypes.Utilities.InstanceTable();
+        Grasppe.Prototypes.Utilities.InstanceTable.CreateMap(table);
       end
       
       setappdata(0, 'GrasppeInstanceTable', table);
@@ -160,10 +160,10 @@ classdef (Sealed) InstanceTable < handle  % containers.Map
     end
     
     function map = GetMap()
-      table             = Grasppe.Prototypes.InstanceTable.GetTable;
+      table             = Grasppe.Prototypes.Utilities.InstanceTable.GetTable;
       
       if ~isa(table.Map, 'containers.Map') || ~isvalid(table.Map)
-        Grasppe.Prototypes.InstanceTable.CreateMap(table);
+        Grasppe.Prototypes.Utilities.InstanceTable.CreateMap(table);
       end
       
       map               = table.Map;
@@ -171,14 +171,14 @@ classdef (Sealed) InstanceTable < handle  % containers.Map
     
     function CreateMap(table)
       tableID         = 'InstanceTable';
-      tableRecord     = Grasppe.Prototypes.InstanceTable.CreateInstanceRecord(tableID, table);
+      tableRecord     = Grasppe.Prototypes.Utilities.InstanceTable.CreateInstanceRecord(tableID, table);
       table.Map       = containers.Map(tableID, tableRecord);
     end
     
     
     function ClearAll()
       
-      map             = Grasppe.Prototypes.InstanceTable.GetMap;
+      map             = Grasppe.Prototypes.Utilities.InstanceTable.GetMap;
       
       try
         keys          = map.keys;
@@ -192,17 +192,17 @@ classdef (Sealed) InstanceTable < handle  % containers.Map
           try map.remove(id); end
         end
       catch err
-        debugStamp(err, 1, Grasppe.Prototypes.InstanceTable.GetInstance);
+        debugStamp(err, 1, Grasppe.Prototypes.Utilities.InstanceTable.GetInstance);
       end
       
       try delete(map); end
       try rmappdata(0, 'GrasppeInstanceTable'); end
       try evalin('base','clear GrasppeInstanceTable'); end
-      try delete(Grasppe.Prototypes.InstanceTable.GetTable); end
+      try delete(Grasppe.Prototypes.Utilities.InstanceTable.GetTable); end
     end
     
     function Display()
-      map               = Grasppe.Prototypes.InstanceTable.GetMap;
+      map               = Grasppe.Prototypes.Utilities.InstanceTable.GetMap;
       
       records           = {};
       header            = {'ID',  'Time', 'Size', 'Class'};
@@ -251,7 +251,7 @@ classdef (Sealed) InstanceTable < handle  % containers.Map
       end
       %end
       records = records';
-      disp(Grasppe.Prototypes.InstanceTable.GetTable);
+      disp(Grasppe.Prototypes.Utilities.InstanceTable.GetTable);
       disp(sprintf('\n\t%s', 'Records:'));
       
       headerStr         = sprintf( ...

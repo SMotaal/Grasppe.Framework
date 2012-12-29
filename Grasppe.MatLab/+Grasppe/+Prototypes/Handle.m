@@ -1,4 +1,4 @@
-classdef HandleClass < Grasppe.Prototypes.Prototype & dynamicprops
+classdef Handle < Grasppe.Prototypes.Prototype & dynamicprops
   %HANDLECLASS Prototype 2 SuperClass for Handle, Property & Event Listener functionality
   %   HandleClass...
   
@@ -9,7 +9,7 @@ classdef HandleClass < Grasppe.Prototypes.Prototype & dynamicprops
   end
   
   methods
-    function obj=HandleClass(varargin)
+    function obj= Handle(varargin)
       obj@Grasppe.Prototypes.Prototype(varargin{:});      
     end
     
@@ -82,8 +82,8 @@ classdef HandleClass < Grasppe.Prototypes.Prototype & dynamicprops
       % source object is evt.AffectedObject (src is metaProperty)
       
       dbTag               = 'PropertyEvent';
-      try dbTag           = [obj.ID ':Handle' evt.EventName]; end
-      try dbTag           = [dbTag ':' evt.AffectedObject.ID]; end
+      try dbTag           = [obj.InstanceID ':Handle' evt.EventName]; end
+      try dbTag           = [dbTag ':' evt.AffectedObject.InstanceID]; end
       try dbTag           = [dbTag ':' src.Name]; end
       
       debugStamp( dbTag, 5, obj );
@@ -93,10 +93,10 @@ classdef HandleClass < Grasppe.Prototypes.Prototype & dynamicprops
     
     function handleEvent(obj, src, evt)
       dbTag               = 'Event';
-      try dbTag           = [obj.ID ':Handle' evt.EventName]; end
+      try dbTag           = [obj.InstanceID ':Handle' evt.EventName]; end
       % try dbTag           = ['Grasppe' ':' evt.EventName]; end
-      try dbTag           = [dbTag ':' evt.AffectedObject.ID]; end
-      try dbTag           = [dbTag ':' src.ID]; end
+      try dbTag           = [dbTag ':' evt.AffectedObject.InstanceID]; end
+      try dbTag           = [dbTag ':' src.InstanceID]; end
       
       debugStamp( dbTag, 5, obj );
       

@@ -1,4 +1,4 @@
-classdef ProgressData < Grasppe.Prototypes.ValueClass
+classdef ProgressModel < Grasppe.Prototypes.Value
   %TASKMODEL Summary of this class goes here
   %   Detailed explanation goes here
   

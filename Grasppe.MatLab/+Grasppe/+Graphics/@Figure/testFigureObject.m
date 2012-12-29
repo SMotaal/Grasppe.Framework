@@ -14,7 +14,7 @@ function obj = testFigureObject(hObject)
         object      = handle(fb); %ancestor(hb,'figure'));
       end
       
-      obj           = Grasppe.Prototypes.HandleGraphicsComponent.ComponentFactory(objectType, object, parent, 'Name', 'Test Figure!');
+      obj           = Grasppe.Graphics.GraphicsHandle.ComponentFactory(objectType, object, parent, 'Name', 'Test Figure!');
       
       obj.inspect;
       

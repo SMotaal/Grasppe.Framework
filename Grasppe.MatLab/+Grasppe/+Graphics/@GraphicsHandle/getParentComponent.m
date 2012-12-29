@@ -9,9 +9,9 @@ function component = getParentComponent(obj)
     parent              = handle(obj.Object.Parent);
     component           = getappdata(parent, 'HandleComponent');
     
-    if isempty(component) || ~isa(component, 'Grasppe.Prototypes.HandleGraphicsComponent')
+    if isempty(component) || ~isa(component, 'Grasppe.Graphics.GraphicsHandle')
       parentType        = get(parent, 'Type');
-      component         = Grasppe.Prototypes.HandleGraphicsComponent.ComponentFactory(parent, []);
+      component         = Grasppe.Graphics.GraphicsHandle.ComponentFactory(parent, []);
     end
     
   catch err

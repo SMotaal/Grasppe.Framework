@@ -33,9 +33,13 @@ function defineModelSchema( obj )
 end
 
 function packageSchema = getPackageSchema(packageName)
-  packageSchema               = findpackage(packageName);
-  if isempty(packageSchema)
-    packageSchema             = schema.package(packageName);
+  try
+    packageSchema               = findpackage(packageName);
+    if isempty(packageSchema)
+      packageSchema             = schema.package(packageName);
+    end
+  catch err
+    rethrow(err);
   end
 end
 

@@ -1,10 +1,10 @@
-classdef EventData < Grasppe.Prototypes.EventData
+classdef Data < Grasppe.Prototypes.Events.Data
   %EVENTDATA Grasppe Graphics Superclass
   %   Detailed explanation goes here
   
   methods
-    function data = EventData(varargin) %, varargin)
-      data = data@Grasppe.Prototypes.EventData(varargin{:});
+    function data = Data(varargin) %, varargin)
+      data = data@Grasppe.Prototypes.Events.Data(varargin{:});
     end
   end
   
@@ -14,7 +14,7 @@ classdef EventData < Grasppe.Prototypes.EventData
     end
     
     function data = DataFactory(eventType, sourceData, varargin)
-      data    = Grasppe.Prototypes.EventData.DataFactory(eventType, sourceData, varargin);
+      data    = Grasppe.Prototypes.Events.Data.DataFactory(eventType, sourceData, varargin);
     end
   end
   

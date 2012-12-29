@@ -22,6 +22,10 @@ classdef DynamicDelegator < handle
     Overloads
   end
   
+  events
+    DelegateEvent
+  end
+  
   properties (GetAccess=private, SetAccess=private, Hidden)
     delegate
     overloads = {};
@@ -65,9 +69,10 @@ classdef DynamicDelegator < handle
         delegate            = obj.delegate; %builtin('subsref', obj, substruct('.', 'delegate'));
         
         isStructDelegate    = isstruct(delegate);
-        isObjectDelegate    = isobject(delegate);
+        isUDDDelegate       = ~isStructDelegate && ishandle(delegate) && ~isnumeric(delegate);  % isHGDelegate        = ishghandle(delegate)  && ~isnumeric(delegate);
+        isObjectDelegate    = ~isStructDelegate && isobject(delegate);
         
-        hasDelegate         = isStructDelegate || isObjectDelegate;
+        hasDelegate         = isStructDelegate || isObjectDelegate || isUDDDelegate;
         
         objClass            = class(obj);
         objClassName        = regexprep(objClass, '.*?\.?([^\.]+$)', '$1');
@@ -79,15 +84,36 @@ classdef DynamicDelegator < handle
           dispf('  <a href="matlab:help %s">%s</a>  DynamicDelegator\n  Package: %s\n', objClass, objClass, objPackageName);
           dispf('  Delegate:');
           
-          delegateClassName = regexprep(class(delegate), '.*?\.?([^\.]+$)', '$1');
-          delegateDisp      = regexprep(evalc('disp(delegate)'),  ...
-            '(>)(Methods|Events|Superclasses)(<)', ['$1' delegateClassName ' $2$3']); % t = evalc('disp(delegate)'); % t = regexprep(t, '(\n  )(Package:|Properties:)', '$1Delegate $2');
+          delegateClass     = class(delegate);
+          delegateClassName = regexprep(delegateClass, '.*?\.?([^\.]+$)', '$1');
           
-          if isstruct(delegate)
+          if isUDDDelegate
+            delegateDisp    = evalc('get(delegate)');
+          else
+            delegateDisp    = regexprep(evalc('disp(delegate)'),  ...
+              '(>)(Methods|Events|Superclasses)(<)', ['$1' delegateClassName ' $2$3']); % t = evalc('disp(delegate)'); % t = regexprep(t, '(\n  )(Package:|Properties:)', '$1Delegate $2');
+          end
+          
+          if isStructDelegate %isstruct(delegate)
             dispf('    <a href="matlab:help struct">struct</a>\n\n    Fields:');
+          elseif isUDDDelegate
+            delegatePackage = get(get(classhandle(delegate), 'Package'), 'Name');
+            dispf([ ...
+              '    <a href="matlab:help %s">%s</a>\t\tUDDObject\n' ...
+              '    Package: %s\n\n' ...
+              '    Properties:'], delegateClass, [delegatePackage '.' delegateClass], delegatePackage);
           end
           
           disp(regexprep(['    ' delegateDisp(1:end-1)], '\n', '\n    '));
+          
+          if isUDDDelegate
+          dispf(['\n' ...
+            '    <a href="matlab:methods %s">%s Methods</a>,' ...
+            ' <a href="matlab:events %s">%s Events</a>,' ... '
+            ' <a href="matlab:superclasses %s">%s Superclasses</a>'], ...
+            delegateClass, delegateClassName, delegateClass, delegateClassName, delegateClass, delegateClassName);            
+          end
+          
           disp(' ');
           
           try
@@ -128,7 +154,8 @@ classdef DynamicDelegator < handle
     end
     
     function delete(obj)
-      if any(~isvalid(obj)), error(message('MATLAB:class:InvalidHandle'));      end
+      if all(~isvalid(obj)), return; end
+      % if any(~isvalid(obj)) && any(isvalid(obj)), error(message('MATLAB:class:InvalidHandle'));      end
       if isobject(obj.delegate) && isvalid(obj.delegate), delete(obj.delegate); end
     end
     
@@ -136,8 +163,16 @@ classdef DynamicDelegator < handle
       selfNotify            = any(strcmp(eventName, events(obj)));
       delegateNotify        = any(strcmp(eventName, events(obj.delegate)));
       
-      if delegateNotify,                obj.delegate.notify(eventName, varargin{:});  end
-      if ~delegateNotify || selfNotify, obj.notify@handle(eventName, varargin{:});    end
+      if delegateNotify,    obj.delegate.notify(eventName, varargin{:});  end
+      
+      if ~delegateNotify
+        if selfNotify
+          obj.notify@handle(eventName, varargin{:});
+        else
+          obj.notify@handle('DelegateEvent', ...
+            Grasppe.Prototypes.Events.Data(obj, eventName, varargin{:}));
+        end
+      end
     end
     
     function lh = addlistener(obj, varargin)
@@ -147,24 +182,43 @@ classdef DynamicDelegator < handle
     
   end
   
-  methods (Sealed)
-    function value = subsref(obj, subs)
-      try value             = [];
+  methods %(Sealed)
+    function varargout = subsref(obj, subs)
+      if nargout>0, varargout = cell(1,nargout); end
+      try
         field               = subs(1).subs;
         
-        reference           = @(x, s    ) builtin('subsref',  x, s    );
+        reference           = @(x, s    ) [builtin('subsref',  x, s    )];
         
+        %% Immediate Subscripts
+        if numel(subs) == 1 && isequal(subs(1).type, '()')
+          if nargout > 0, 
+            [varargout{:}]  = reference(obj, subs);
+          else
+            reference(obj, subs)
+          end
+          return;
+        end
+        
+        %% TODO: Heterogeneous Subscripts
+        
+        %% Everything Else
         delegate            = reference(obj, substruct('.', 'delegate'));
         
-        reserving           = ~any(strcmp(field, obj.reserves));
+        reserving           = any(strcmp(field, obj.reserves));
         overloading         = ~reserving && any(strcmp(field, obj.overloads));
-        delegateField       = ~isprop(obj, field)   && (isprop(delegate, field)   || isstruct(delegate));
-        delegateMethod      = ~ismethod(obj, field) && (ismethod(delegate, field));
+        
+        selfMethod          = ismethod(obj, field);
+        selfField           = isprop(obj, field);
+        delegateField       = ~selfField  && (isprop(delegate, field)   || isstruct(delegate));
+        delegateMethod      = ~selfMethod && (ismethod(delegate, field));
         
         if ~reserving && (overloading || delegateField || delegateMethod)
-          value             = reference(delegate, subs);
+          if nargout > 0, [varargout{:}]  = reference(delegate, subs);
+          else reference(delegate, subs); end
         else
-          value             = reference(obj, subs);
+          if nargout > 0, [varargout{:}]  = reference(obj, subs);
+          else reference(obj, subs); end
         end
       catch err
         throwAsCaller(err);
@@ -178,6 +232,17 @@ classdef DynamicDelegator < handle
         
         assign              = @(x, s, v ) builtin('subsasgn', x, s, v );
         reference           = @(x, s    ) builtin('subsref',  x, s    );
+        
+        %% Immediate Subscripts
+        if numel(subs) == 1 && isequal(subs(1).type, '()')
+          obj               = assign(obj, subs, value);
+          return;
+        end    
+        
+        %% TODO: Heterogeneous Subscripts
+        
+        
+        %% Everything Else
         
         delegate            = reference(obj, substruct('.', 'delegate'));
         

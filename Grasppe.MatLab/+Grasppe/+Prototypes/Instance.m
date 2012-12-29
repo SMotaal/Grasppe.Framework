@@ -1,9 +1,9 @@
-classdef (ConstructOnLoad) Instance < Grasppe.Prototypes.HandleClass
+classdef (ConstructOnLoad) Instance < Grasppe.Prototypes.Handle
   %INSTANCE Superclass for Grasppe Core Prototypes 2
   %   Detailed explanation goes here
   
   properties (SetAccess=immutable, Transient)
-    ID
+    InstanceID
   end
   
   properties(SetAccess=private, GetAccess=protected, Transient, Hidden) %, GetAccess=protected)
@@ -25,19 +25,19 @@ classdef (ConstructOnLoad) Instance < Grasppe.Prototypes.HandleClass
       instanceID              = [];
       instanceOptions         = varargin;
       try
-        idIndex               = find(strcmp(instanceOptions, 'ID'),1,'last');
+        idIndex               = find(strcmp(instanceOptions, 'InstanceID'),1,'last');
         if isscalar(idIndex)
           instanceID          = instanceOptions{idIndex+1};
           instanceOptions     = [instanceOptions(1:idIndex-1) instanceOptions(idIndex+2:end)];
         end
       end
       
-      obj                     = obj@Grasppe.Prototypes.HandleClass(instanceOptions{:});
+      obj                     = obj@Grasppe.Prototypes.Handle(instanceOptions{:});
       obj.isAlive             = true;
       
-      [id base idx]           = Grasppe.Prototypes.InstanceTable.RegisterInstance(instanceID, obj);
+      [id base idx]           = Grasppe.Prototypes.Utilities.InstanceTable.RegisterInstance(instanceID, obj);
       
-      obj.ID                  = id;
+      obj.InstanceID          = id;
       obj.id_base             = base;
       obj.id_index            = idx;
       obj.instance_options    = varargin;
@@ -49,7 +49,7 @@ classdef (ConstructOnLoad) Instance < Grasppe.Prototypes.HandleClass
       if isvalid(obj)
         obj.isAlive           = false;
         debugStamp(['Deleting@' obj.ClassName], 5, obj);
-        try Grasppe.Prototypes.InstanceTable.UnregisterInstance(obj.ID); end
+        try Grasppe.Prototypes.Utilities.InstanceTable.UnregisterInstance(obj.InstanceID); end
       end
     end
     
@@ -59,7 +59,7 @@ classdef (ConstructOnLoad) Instance < Grasppe.Prototypes.HandleClass
   methods (Access=protected)
     function initialize(obj)
       debugStamp(['Initializing@' obj.ClassName], 5, obj);
-      obj.initialize@Grasppe.Prototypes.HandleClass;
+      obj.initialize@Grasppe.Prototypes.Handle;
     end
   end
 end

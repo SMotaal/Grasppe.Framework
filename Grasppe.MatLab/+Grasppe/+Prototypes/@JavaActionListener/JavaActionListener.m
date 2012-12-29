@@ -57,13 +57,13 @@ classdef JavaActionListener < Grasppe.Prototypes.Instance
     
     function fireCallbackEvent(obj, source, event)
       try
-        callback.Object.ID    = obj.ID;
+        callback.Object.ID      = obj.InstanceID;
       end
       
-      callback.Object.Class   = class(obj);
+      callback.Object.Class     = class(obj);
       %callback.Classes.Source   = class(source);
       %callback.Classes.Event    = class(event);
-      %callback.Object         	= struct(obj);
+      %callback.Object           = struct(obj);
       try
         callback.Source         = struct(get(source));
       catch err
@@ -90,14 +90,14 @@ classdef JavaActionListener < Grasppe.Prototypes.Instance
       
       % structTree(callback)
       
-      obj.notify('JavaEvent', Grasppe.Prototypes.EventData(source, char(callback.Data.Name), callback));
+      obj.notify('JavaEvent', Grasppe.Prototypes.Events.Data(source, char(callback.Data.Name), callback));
     end
     
     function fireAction(obj, actionName, data, matadata)
       
       if ~exist('actionName', 'var') || isempty(actionName) || ~ischar(actionName)
         try
-          actionName = obj.ID; % regexprep(, '\w+\.','');
+          actionName = obj.InstanceID; % regexprep(, '\w+\.','');
         catch err
           actionName = regexprep(class(obj), '\w+\.','');
         end

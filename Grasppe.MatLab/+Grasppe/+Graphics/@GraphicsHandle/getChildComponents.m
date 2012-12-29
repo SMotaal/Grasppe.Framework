@@ -8,18 +8,18 @@ function components = getChildComponents(obj)
     if ~ishandle(obj.Object), return; end
     
     children            = obj.Object.Children;
-    components          = Grasppe.Prototypes.HandleGraphicsComponent.empty;
+    components          = Grasppe.Graphics.GraphicsHandle.empty;
     
     for m = 1:numel(children)
       child           = handle(children(m));
       component       = getappdata(child, 'HandleComponent');
       
-      if isempty(component) || ~isa(component, 'Grasppe.Prototypes.HandleGraphicsComponent')
+      if isempty(component) || ~isa(component, 'Grasppe.Graphics.GraphicsHandle')
         childType     = get(child, 'Type');
-        component     = Grasppe.Prototypes.HandleGraphicsComponent.CreateComponentFromObject(child, obj);
+        component     = Grasppe.Graphics.GraphicsHandle.CreateComponentFromObject(child, obj);
       end
       
-      if isa(component, 'Grasppe.Prototypes.HandleGraphicsComponent')
+      if isa(component, 'Grasppe.Graphics.GraphicsHandle')
         components(end+1) = component;
       end
     end

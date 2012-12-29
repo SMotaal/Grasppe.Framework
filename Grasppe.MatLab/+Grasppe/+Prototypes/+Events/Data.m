@@ -1,4 +1,4 @@
-classdef EventData < event.EventData & dynamicprops
+classdef Data < event.EventData & dynamicprops
   %EVENTDATA Grasppe Graphics Superclass
   %   Detailed explanation goes here
   
@@ -15,7 +15,7 @@ classdef EventData < event.EventData & dynamicprops
   end
   
   methods
-    function data = EventData(affectedObject, eventType, eventData) %, varargin)
+    function data = Data(affectedObject, eventType, eventData) %, varargin)
       
       if ~exist('affectedObject', 'var'),   affectedObject  = []; end
       if ~exist('eventType', 'var'),        eventType       = []; end

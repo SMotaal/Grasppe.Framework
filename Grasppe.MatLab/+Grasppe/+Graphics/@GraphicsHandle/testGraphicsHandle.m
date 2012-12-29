@@ -1,5 +1,5 @@
-function obj = testHandleGraphicsComponent(hObject)
-  %TESTHANDLEGRAPHICSCOMPONENT Create Dummy Test Figure
+function obj = testHandleGraphicsClass(hObject)
+  %TESTHandleGraphicsClass Create Dummy Test Figure
   %   Detailed explanation goes here      
       
       objectType    = 'figure';
@@ -13,7 +13,7 @@ function obj = testHandleGraphicsComponent(hObject)
         object      = handle(ancestor(hb,'figure'));
       end
       
-      obj           = Grasppe.Prototypes.HandleGraphicsComponent.ComponentFactory(objectType, object, parent);
+      obj           = Grasppe.Graphics.GraphicsHandle.ComponentFactory(objectType, object, parent);
       
       obj.inspect;
       
