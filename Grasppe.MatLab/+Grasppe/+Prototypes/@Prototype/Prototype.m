@@ -82,7 +82,9 @@ classdef (HandleCompatible) Prototype
       debugStamp(['Initializing@' obj.ClassName], 5, obj);
     end
     
-    function varargout = static(obj, methodName, varargin)      
+    function varargout = static(obj, methodName, varargin)
+      varargout         = cell(1,nargout);
+      %if nargout>0, varargout = cell(1,nargout); end
       [varargout{:}]    = feval([obj.ClassName '.' methodName], varargin{:});
     end
     
