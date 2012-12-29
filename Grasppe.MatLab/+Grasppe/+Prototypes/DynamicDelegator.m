@@ -221,6 +221,7 @@ classdef DynamicDelegator < handle
           else reference(obj, subs); end
         end
       catch err
+        debugStamp(err, 1, obj);
         throwAsCaller(err);
       end
     end
@@ -246,7 +247,7 @@ classdef DynamicDelegator < handle
         
         delegate            = reference(obj, substruct('.', 'delegate'));
         
-        reserving           = ~any(strcmp(field, obj.reserves));
+        reserving           = any(strcmp(field, obj.reserves));
         overloading         = ~reserving && any(strcmp(field, obj.overloads));
         delegateField       = ~isprop(obj, field)   && (isprop(delegate, field)   || isstruct(delegate));
         delegateMethod      = ~ismethod(obj, field) && (ismethod(delegate, field));
@@ -258,6 +259,7 @@ classdef DynamicDelegator < handle
           obj               = assign(obj, subs, value);
         end
       catch err
+        debugStamp(err, 1, obj);
         throwAsCaller(err);
       end
     end
