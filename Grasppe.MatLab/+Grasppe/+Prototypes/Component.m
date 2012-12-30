@@ -2,7 +2,7 @@ classdef Component < Grasppe.Prototypes.Instance
   %COMPONENT Instance Superclass for Grasppe Core Prototypes 2
   %   Detailed explanation goes here
   
-  properties(SetAccess=protected, GetAccess=public, Transient) %, GetAccess=protected)
+  properties(SetAccess=public, GetAccess=public, Transient) %, GetAccess=protected)
     Model
     View
     Controller
@@ -95,13 +95,13 @@ classdef Component < Grasppe.Prototypes.Instance
       
     end
     
-    function privateSet(obj, propertyName, value)
-      try
-        if ~isequal(obj.(propertyName), value), obj.(propertyName) = value; end
-      catch err
-        obj.privateSet@Grasppe.Prototypes.Instance(propertyName, value);
-      end
-    end
+%     function privateSet(obj, propertyName, value)
+%       try
+%         if ~isequal(obj.(propertyName), value), obj.(propertyName) = value; end
+%       catch err
+%         obj.privateSet@Grasppe.Prototypes.Instance(propertyName, value);
+%       end
+%     end
     
     function initializeModel(obj)
     end

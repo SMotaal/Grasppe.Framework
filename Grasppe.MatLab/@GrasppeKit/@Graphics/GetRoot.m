@@ -2,6 +2,6 @@ function component = GetRoot()
   %GETROOT Summary of this function goes here
   %   Detailed explanation goes here
   
-  component = Grasppe.Graphics.Root.GetRoot;
+  component = Grasppe.Graphics.GraphicsHandle.CreateGraphicsPrototype('root');
 end
 

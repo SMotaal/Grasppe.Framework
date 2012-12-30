@@ -1,4 +1,4 @@
-function object = Graphics()
+function object = Utilities()
   %OBJECT constructor for the simple.object class
   %
   %   SIMPLEOBJECT = OBJECT(NAME, VALUE) creates an instance of the
@@ -37,12 +37,13 @@ function object = Graphics()
   
   % TODO add java interface
   
-  switch nargin
-    %     case 0
-    %       simpleObject.dialog;
-    case 1
-      object.Root = Grasppe.Graphics.Root.GetRoot;
-    case 2
-  end
+%   switch nargin
+%     %     case 0
+%     %       simpleObject.dialog;
+%     case 1
+%     case 2
+%     otherwise
+%       return;
+%   end
   
 end
