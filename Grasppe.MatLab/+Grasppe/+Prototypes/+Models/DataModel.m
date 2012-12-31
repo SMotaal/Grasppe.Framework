@@ -1,4 +1,4 @@
-classdef DataModel < Grasppe.Prototypes.Instance
+classdef DataModel < Grasppe.Prototypes.Model
   %MODEL Component Superclass for Grasppe Core Prototypes 2
   %   Detailed explanation goes here
   
@@ -7,7 +7,7 @@ classdef DataModel < Grasppe.Prototypes.Instance
   
   methods
     function obj=DataModel(varargin)
-      obj = obj@Grasppe.Prototypes.Instance(varargin{:});
+      obj = obj@Grasppe.Prototypes.Model(varargin{:});
     end      
   end
   

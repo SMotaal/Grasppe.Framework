@@ -8,6 +8,7 @@ classdef (ConstructOnLoad) Instance < Grasppe.Prototypes.Handle
   
   properties(SetAccess=private, GetAccess=protected, Transient, Hidden) %, GetAccess=protected)
     isAlive = true;
+    isRegistered = false;
   end
   
   properties(SetAccess=private, GetAccess=private)
@@ -24,6 +25,7 @@ classdef (ConstructOnLoad) Instance < Grasppe.Prototypes.Handle
     function obj = Instance(varargin)
       instanceID              = [];
       instanceOptions         = varargin;
+           
       try
         idIndex               = find(strcmp(instanceOptions, 'InstanceID'),1,'last');
         if isscalar(idIndex)
@@ -35,12 +37,18 @@ classdef (ConstructOnLoad) Instance < Grasppe.Prototypes.Handle
       obj                     = obj@Grasppe.Prototypes.Handle(instanceOptions{:});
       obj.isAlive             = true;
       
-      [id base idx]           = Grasppe.Prototypes.Utilities.InstanceTable.RegisterInstance(instanceID, obj);
       
-      obj.InstanceID          = id;
-      obj.id_base             = base;
-      obj.id_index            = idx;
-      obj.instance_options    = varargin;
+      if ~obj.isRegistered  
+        [id base idx]         = Grasppe.Prototypes.Utilities.InstanceTable.RegisterInstance(instanceID, obj, obj.id_base, obj.id_index);
+        
+        obj.InstanceID        = id;
+        obj.id_base           = base;
+        obj.id_index          = idx;
+        
+        obj.isRegistered      = true;
+      end
+      
+        obj.instance_options  = varargin;
     end
         
     function delete(obj)

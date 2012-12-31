@@ -1,4 +1,4 @@
-classdef ProgressModel < Grasppe.Prototypes.Value
+classdef ProgressValue < Grasppe.Prototypes.Value
   %TASKMODEL Summary of this class goes here
   %   Detailed explanation goes here
   
@@ -10,7 +10,9 @@ classdef ProgressModel < Grasppe.Prototypes.Value
   end
   
   methods
-
+    function obj=ProgressValue(varargin)
+      obj@Grasppe.Prototypes.Value(varargin{:});
+    end
   end
   
 end

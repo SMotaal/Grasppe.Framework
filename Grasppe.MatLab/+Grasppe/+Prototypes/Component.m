@@ -27,8 +27,8 @@ classdef Component < Grasppe.Prototypes.Instance
     end
     
     function model = get.Model(obj)
-      if isa(obj, 'Grasppe.Prototypes.Model')
-        % if isa(obj, 'Grasppe.Prototypes.UDDModel'), model = obj.ModelData; end
+      if isa(obj, 'Grasppe.Prototypes.Components.Model')
+        % if isa(obj, 'Grasppe.Prototypes.Models.UDDModel'), model = obj.ModelData; end
         model = obj;
       else
         model         = obj.Model;
@@ -37,7 +37,7 @@ classdef Component < Grasppe.Prototypes.Instance
     end
     
     function view = get.View(obj)
-      if isa(obj, 'Grasppe.Prototypes.View')
+      if isa(obj, 'Grasppe.Prototypes.Components.View')
         view = obj;
       else
         view          = obj.View;
@@ -46,8 +46,8 @@ classdef Component < Grasppe.Prototypes.Instance
     end
     
     function controller = get.Controller(obj)
-      if ~isa(obj.Controller, 'Grasppe.Prototypes.Controller') && ...
-          isa(obj, 'Grasppe.Prototypes.Controller')
+      if ~isa(obj.Controller, 'Grasppe.Prototypes.Components.Controller') && ...
+          isa(obj, 'Grasppe.Prototypes.Components.Controller')
         controller = obj;
       else
         controller = obj.Controller;

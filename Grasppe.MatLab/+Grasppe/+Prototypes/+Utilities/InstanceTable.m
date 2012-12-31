@@ -18,8 +18,10 @@ classdef (Sealed) InstanceTable < handle  % containers.Map
   
   
   methods (Static)  % Instance Functions
-    function [id base idx] = RegisterInstance(id, instance)
+    function [id base idx] = RegisterInstance(id, instance, base, idx)
       map                 = Grasppe.Prototypes.Utilities.InstanceTable.GetMap;
+      
+      if any(cellfun(@(x)isequal(x, instance), map.values)), return; end
       
       if isempty(id), id  = class(instance); end; %Grasppe.Prototypes.Utilities.InstanceTable.GenerateInstanceID(class(instance)); end
       

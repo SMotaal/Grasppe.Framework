@@ -1,4 +1,4 @@
-classdef Module < Grasppe.Prototypes.Controller & Grasppe.Prototypes.Process
+classdef Module < Grasppe.Prototypes.Components.Controller & Grasppe.Prototypes.Process
   %APPLICATION Superclass for Grasppe Core Prototypes 2
   %   Detailed explanation goes here
   
@@ -28,7 +28,7 @@ classdef Module < Grasppe.Prototypes.Controller & Grasppe.Prototypes.Process
   
   methods
     function obj = Module(name, path, varargin)
-      obj           = obj@Grasppe.Prototypes.Controller(varargin{:});
+      obj           = obj@Grasppe.Prototypes.Components.Controller(varargin{:});
       
       % debugStamp('Constructing', 1, obj);
       
@@ -47,7 +47,7 @@ classdef Module < Grasppe.Prototypes.Controller & Grasppe.Prototypes.Process
         case 'status'
           obj.displayStatus();
         otherwise
-          obj.handlePropertyEvent@Grasppe.Prototypes.Controller(src, evt);
+          obj.handlePropertyEvent@Grasppe.Prototypes.Components.Controller(src, evt);
       end
     end
     
@@ -59,7 +59,7 @@ classdef Module < Grasppe.Prototypes.Controller & Grasppe.Prototypes.Process
       try
         if ~isequal(obj.(propertyName), value), obj.(propertyName) = value; end
       catch err
-        obj.privateSet@Grasppe.Prototypes.Controller(propertyName, value);
+        obj.privateSet@Grasppe.Prototypes.Components.Controller(propertyName, value);
       end
     end
     
@@ -71,7 +71,7 @@ classdef Module < Grasppe.Prototypes.Controller & Grasppe.Prototypes.Process
       
       obj.initializePaths();
       
-      obj.initialize@Grasppe.Prototypes.Controller;
+      obj.initialize@Grasppe.Prototypes.Components.Controller;
       
       obj.initializeComponents();
       
@@ -147,10 +147,10 @@ classdef Module < Grasppe.Prototypes.Controller & Grasppe.Prototypes.Process
         % if isfield(obj, 'Controller')
         if exist(obj.ControllerClass, 'class')
           controller  = obj.initializeComponent('Controller', 'Module', obj);
-        elseif isa(obj, 'Grasppe.Prototypes.Controller')
+        elseif isa(obj, 'Grasppe.Prototypes.Components.Controller')
           controller  = obj;
         end
-        %         if ~exist(obj.ControllerClass, 'class') && isa(obj, 'Grasppe.Prototypes.Controller')
+        %         if ~exist(obj.ControllerClass, 'class') && isa(obj, 'Grasppe.Prototypes.Components.Controller')
         %           controller      = obj;
         %           obj.Controller  = controller;
         %         else
@@ -158,7 +158,7 @@ classdef Module < Grasppe.Prototypes.Controller & Grasppe.Prototypes.Process
         %         end
         % if isfield(obj, 'Model')
         
-        if isa(controller, 'Grasppe.Prototypes.Controller') && isvalid(controller)
+        if isa(controller, 'Grasppe.Prototypes.Components.Controller') && isvalid(controller)
           obj.Controller.setModel(obj.initializeComponent('Model', 'Module', obj, 'Controller', controller));
           obj.Controller.setView(obj.initializeComponent('View',  'Module', obj, 'Controller', controller));
         end
@@ -175,7 +175,7 @@ classdef Module < Grasppe.Prototypes.Controller & Grasppe.Prototypes.Process
     function createModules(obj)
       controller            = obj.Controller;
       
-      if ~isa(controller, 'Grasppe.Prototypes.Controller') || ~isvalid(controller), return; end
+      if ~isa(controller, 'Grasppe.Prototypes.Components.Controller') || ~isvalid(controller), return; end
       
       modelProperties       = {controller.MetaClass.PropertyList(:).Name}; %properties(model);
            

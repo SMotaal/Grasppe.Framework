@@ -27,7 +27,7 @@ classdef Task < Grasppe.Prototypes.Instance & matlab.mixin.Heterogeneous
   end
   
   properties
-    ProgressData  = Grasppe.Prototypes.Models.ProgressModel;
+    ProgressData  = Grasppe.Prototypes.Models.ProgressValue;
   end
   
   methods
@@ -67,7 +67,7 @@ classdef Task < Grasppe.Prototypes.Instance & matlab.mixin.Heterogeneous
     end
     
     function reset(obj)
-      obj.ProgressData  = Grasppe.Prototypes.Models.ProgressModel;
+      obj.ProgressData  = Grasppe.Prototypes.Models.ProgressValue;
     end
     
     

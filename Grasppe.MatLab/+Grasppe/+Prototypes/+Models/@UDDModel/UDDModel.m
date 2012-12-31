@@ -1,4 +1,4 @@
-classdef (ConstructOnLoad) UDDModel < Grasppe.Prototypes.Model
+classdef (ConstructOnLoad) UDDModel < Grasppe.Prototypes.Components.Model
   %UDDMODEL Custom UDD-Based Model Data Objects
   %   Detailed explanation goes here
   
@@ -62,7 +62,7 @@ classdef (ConstructOnLoad) UDDModel < Grasppe.Prototypes.Model
         options               = varargin; % {}; %varargin;
       end
       
-      obj                     = obj@Grasppe.Prototypes.Model(options{:});
+      obj                     = obj@Grasppe.Prototypes.Components.Model(options{:});
       
       debugStamp('Constructing', 1, obj);
       
@@ -179,7 +179,7 @@ classdef (ConstructOnLoad) UDDModel < Grasppe.Prototypes.Model
     
     function obj = saveobj(obj)
       try
-        obj = Grasppe.Prototypes.UDDModel.UDDModel2Struct(obj);
+        obj = Grasppe.Prototypes.Models.UDDModel.UDDModel2Struct(obj);
       catch err
         debugStamp(err, 1, obj)
       end
@@ -202,7 +202,7 @@ classdef (ConstructOnLoad) UDDModel < Grasppe.Prototypes.Model
         
         debugStamp(['Loading ' sObj.Class], 1);
         
-        obj                   = Grasppe.Prototypes.UDDModel.Struct2UDDModel(sObj);
+        obj                   = Grasppe.Prototypes.Models.UDDModel.Struct2UDDModel(sObj);
         
         %         %modelProperties       = sObj.Schema.property_table(:,1)';
         %         %property_table        = sObj.Schema(strmatch('property_table', sObj.Schema(1:2:end))*2);
@@ -214,15 +214,15 @@ classdef (ConstructOnLoad) UDDModel < Grasppe.Prototypes.Model
         %         %   propertyName        = modelFields{m};
         %         %   propertyValue       = modelValues{m};
         %         %
-        %         %   if isa(propertyValue, 'Grasppe.Prototypes.UDDModel')
+        %         %   if isa(propertyValue, 'Grasppe.Prototypes.Models.UDDModel')
         %         %     propertyValue     =
         %         %   end
         %         % end
         %
         %         try
-        %           obj                 = Grasppe.Prototypes.UDDModel.NewModel(sObj.Class, sObj);%feval(sObj.Class, sObj);
+        %           obj                 = Grasppe.Prototypes.Models.UDDModel.NewModel(sObj.Class, sObj);%feval(sObj.Class, sObj);
         %         catch err
-        %           obj                 = Grasppe.Prototypes.UDDModel.NewModel('', sObj);
+        %           obj                 = Grasppe.Prototypes.Models.UDDModel.NewModel('', sObj);
         %         end
         %
         %         if isfield(sObj, 'UDDModel')
@@ -236,7 +236,7 @@ classdef (ConstructOnLoad) UDDModel < Grasppe.Prototypes.Model
     end
     
     function uddObj = NewUDDModel(className, varargin)
-      obj                     = Grasppe.Prototypes.UDDModel.NewModel(className, varargin{:});
+      obj                     = Grasppe.Prototypes.Models.UDDModel.NewModel(className, varargin{:});
       uddObj                  = obj.ModelData;
     end
     
@@ -293,7 +293,7 @@ classdef (ConstructOnLoad) UDDModel < Grasppe.Prototypes.Model
           
           if isUDDModel
             uddModelObj         = obj.(propertyName).Prototype;
-            modelValues{m}      = Grasppe.Prototypes.UDDModel.UDDModel2Struct(uddModelObj);
+            modelValues{m}      = Grasppe.Prototypes.Models.UDDModel.UDDModel2Struct(uddModelObj);
           else
             modelValues{m}      = obj.ModelData.(propertyName);
           end
@@ -322,7 +322,7 @@ classdef (ConstructOnLoad) UDDModel < Grasppe.Prototypes.Model
           fieldName           = modelFields{m};
           fieldValue          = modelValues{m};
           if isstruct(fieldValue) && isfield(fieldValue, 'Format') && isequal(fieldValue.Format, 'Grasppe:UDDModel:R1')
-            uddModelObj       = Grasppe.Prototypes.UDDModel.Struct2UDDModel(fieldValue);
+            uddModelObj       = Grasppe.Prototypes.Models.UDDModel.Struct2UDDModel(fieldValue);
             modelValues{m}    = uddModelObj.ModelData;
           end
         end
@@ -331,7 +331,7 @@ classdef (ConstructOnLoad) UDDModel < Grasppe.Prototypes.Model
         newModel(2:2:end)     = modelValues;
         
         %% Initialize Prototype UDDModel
-        obj                   = Grasppe.Prototypes.UDDModel.NewModel(st.Class, 'InstanceID', st.ID, 'ModelData', newModel);
+        obj                   = Grasppe.Prototypes.Models.UDDModel.NewModel(st.Class, 'InstanceID', st.ID, 'ModelData', newModel);
         modelData             = obj.ModelData;
         
         %         %% Populate Model Data
@@ -339,7 +339,7 @@ classdef (ConstructOnLoad) UDDModel < Grasppe.Prototypes.Model
         %           fieldName           = modelFields{m};
         %           fieldValue          = modelValues{m};
         %           if isstruct(fieldValue) && isfield(fieldValue, 'Format') && isequal(fieldValue.Format, 'Grasppe:UDDModel:R1')
-        %             uddModelObj       = Grasppe.Prototypes.UDDModel.Struct2UDDModel(fieldValue);
+        %             uddModelObj       = Grasppe.Prototypes.Models.UDDModel.Struct2UDDModel(fieldValue);
         %             fieldValue        = uddModelObj.ModelData;
         %             modelData.(fieldName) = uddModelObj.ModelData;
         %           else
@@ -369,7 +369,7 @@ classdef (ConstructOnLoad) UDDModel < Grasppe.Prototypes.Model
   methods (Access=protected, Sealed)
     function initialize(obj)
       obj.notify('Initializing');
-      obj.initialize@Grasppe.Prototypes.Model;
+      obj.initialize@Grasppe.Prototypes.Components.Model;
       obj.notify('Initialized');
     end
   end

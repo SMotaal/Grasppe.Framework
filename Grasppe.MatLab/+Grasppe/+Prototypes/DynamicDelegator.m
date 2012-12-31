@@ -77,7 +77,6 @@ classdef DynamicDelegator < handle
         objClass            = class(obj);
         objClassName        = regexprep(objClass, '.*?\.?([^\.]+$)', '$1');
         objMetaClass        = metaclass(obj);
-        
         objPackageName      = objMetaClass.ContainingPackage.Name;
         
         if hasDelegate
@@ -204,17 +203,18 @@ classdef DynamicDelegator < handle
         
         %% Everything Else
         delegate            = reference(obj, substruct('.', 'delegate'));
+        hasDelegate         = ~isempty(delegate) || isstruct(delegate) || isobject(delegate);
         
         reserving           = any(strcmp(field, obj.reserves));
         overloading         = ~reserving && any(strcmp(field, obj.overloads));
         
         selfMethod          = ismethod(obj, field);
         selfField           = isprop(obj, field);
-        delegateField       = ~selfField  && (isprop(delegate, field)   || isstruct(delegate));
-        delegateMethod      = ~selfMethod && (ismethod(delegate, field));
+        delegateField       = hasDelegate && ~selfField  && (isprop(delegate, field)   || isstruct(delegate));
+        delegateMethod      = hasDelegate && ~selfMethod && (ismethod(delegate, field));
         
-        if ~reserving && (overloading || delegateField || delegateMethod)
-          if nargout > 0, [varargout{:}]  = reference(delegate, subs);
+        if hasDelegate && (overloading || ~reserving) %&& (overloading || ~selfMethod || ~selfField)
+          if nargout > 0, [varargout{:}]  = subsref(delegate, subs);
           else reference(delegate, subs); end
         else
           if nargout > 0, [varargout{:}]  = reference(obj, subs);
@@ -246,14 +246,15 @@ classdef DynamicDelegator < handle
         %% Everything Else
         
         delegate            = reference(obj, substruct('.', 'delegate'));
+        hasDelegate         = ~isempty(delegate) || isstruct(delegate) || isobject(delegate);
         
         reserving           = any(strcmp(field, obj.reserves));
         overloading         = ~reserving && any(strcmp(field, obj.overloads));
-        delegateField       = ~isprop(obj, field)   && (isprop(delegate, field)   || isstruct(delegate));
-        delegateMethod      = ~ismethod(obj, field) && (ismethod(delegate, field));
+        delegateField       = hasDelegate && ~isprop(obj, field)   && (isprop(delegate, field)   || isstruct(delegate));
+        delegateMethod      = hasDelegate && ~ismethod(obj, field) && (ismethod(delegate, field));
         
-        if ~reserving && (overloading || delegateField || delegateMethod)
-          delegate          = assign(delegate, subs, value);
+        if hasDelegate && ~reserving % && (overloading || delegateField || delegateMethod)
+          delegate          = subsasgn(delegate, subs, value);
           obj               = assign(obj, substruct('.', 'delegate'), delegate);
         else
           obj               = assign(obj, subs, value);

@@ -89,7 +89,7 @@ function propertySchema = defineProperties(obj, classSchema, modelPoperties, mod
 end
 
 function setUDDObject(obj, propertyName, value)
-  if isa(value, 'Grasppe.Prototypes.UDDModel')
+  if isa(value, 'Grasppe.Prototypes.Models.UDDModel')
     value                           = value.ModelData;
   end
   
@@ -124,7 +124,7 @@ function propertySchema = defineProperty(classSchema, name, type, description, a
       if typeExists
         prototype                     = type(2:end);
         type                          = 'com.mathworks.jmi.bean.UDDObject';
-        defaultValue                  = []; %Grasppe.Prototypes.UDDModel.NewUDDModel(prototype);
+        defaultValue                  = []; %Grasppe.Prototypes.Models.UDDModel.NewUDDModel(prototype);
       end
       
       propertySchema                  = schema.prop(classSchema, name, type);
