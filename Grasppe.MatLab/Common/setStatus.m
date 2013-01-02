@@ -23,7 +23,7 @@ function [ h ] = setStatus( status )
       disp('starting');
       
       if isempty(statusTimer) || ~isscalar(statusTimer) || ~isa(statusTimer, 'timer') || ~isvalid(statusTimer)
-        statusTimer = GrasppeKit.DelayedCall(@(s, e) setStatus(), 0.1, 'hold');
+        statusTimer = GrasppeKit.Utilities.DelayedCall(@(s, e) setStatus(), 0.1, 'hold');
       end
       try start(statusTimer); end
     end

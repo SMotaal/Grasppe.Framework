@@ -1,4 +1,4 @@
-classdef (ConstructOnLoad) Instance < Grasppe.Prototypes.Handle
+classdef Instance < Grasppe.Prototypes.Handle % (ConstructOnLoad)
   %INSTANCE Superclass for Grasppe Core Prototypes 2
   %   Detailed explanation goes here
   

@@ -323,7 +323,7 @@ function saveSpaceData(space, name, data)
 %   try
 %     stop(recycleTimers.(space));
 %   catch err
-%     recycleTimers.(space) = GrasppeKit.DelayedCall(@(s, e) recycleSpace(space), 5, 'hold');
+%     recycleTimers.(space) = GrasppeKit.Utilities.DelayedCall(@(s, e) recycleSpace(space), 5, 'hold');
 %   end
 %   
 %   try
@@ -344,7 +344,7 @@ function queueRecycleSpace(space)
   
   try stop(recycleTimers.(space)); end
   try delete(recycleTimers.(space)); end
-  try recycleTimers.(space) = GrasppeKit.DelayedCall(@(s, e) recycleSpace(space), 30, 'start');
+  try recycleTimers.(space) = GrasppeKit.Utilities.DelayedCall(@(s, e) recycleSpace(space), 30, 'start');
   catch err, recycleSpace(space); end  
 end
 

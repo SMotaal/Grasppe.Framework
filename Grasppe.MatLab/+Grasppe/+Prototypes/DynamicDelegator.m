@@ -62,6 +62,8 @@ classdef DynamicDelegator < handle
     end    
         
     function disp(obj)
+      global DebugDispOverloads;
+      if isequal(DebugDispOverloads, true), debugStamp('DISP', 1); end
       
       try
         if any(~isvalid(obj)), error(message('MATLAB:class:InvalidHandle')); end
@@ -143,29 +145,47 @@ classdef DynamicDelegator < handle
     end
     
     function fieldNames = fieldnames(obj)
+      global DebugFieldsOverloads;
+      if isequal(DebugFieldsOverloads, true), debugStamp('FIELDNAMES', 1); end      
+      try set(0,'HideUndocumented','off'); end
+      try 
+        assert(isvalid(obj));
+      catch err
+        fielNames           = obj.fieldnames@handle();
+      end
       fieldNames            = obj.fieldnames@handle();
       try fieldNames        = [fieldNames; fieldnames(obj.delegate)]; end
+      try set(0,'HideUndocumented','on'); end
     end
     
     function isField = isfield(obj, fieldName)
+      global DebugFieldsOverloads;
+      if isequal(DebugFieldsOverloads, true), debugStamp('ISFIELD', 1); end      
+      
       isField               = false;  % obj is no struct anyway
       try isField           = isfield(obj.delegate, fieldName); end
     end
     
     function delete(obj)
+      global DebugDeleteOverloads;
+      if isequal(DebugDeleteOverloads, true), debugStamp('DELETE', 1); end            
+      
       if all(~isvalid(obj)), return; end
       % if any(~isvalid(obj)) && any(isvalid(obj)), error(message('MATLAB:class:InvalidHandle'));      end
       if isobject(obj.delegate) && isvalid(obj.delegate), delete(obj.delegate); end
     end
     
     function obj = notify(obj, eventName, varargin)
+      global DebugHandleOverloads;
+      if isequal(DebugHandleOverloads, true), debugStamp('NOTIFY', 1); end            
+      
       selfNotify            = any(strcmp(eventName, events(obj)));
       delegateNotify        = any(strcmp(eventName, events(obj.delegate)));
       
       if delegateNotify,    obj.delegate.notify(eventName, varargin{:});  end
       
       if ~delegateNotify
-        if selfNotify
+        if selfNotify || uddNotify
           obj.notify@handle(eventName, varargin{:});
         else
           obj.notify@handle('DelegateEvent', ...
@@ -175,6 +195,9 @@ classdef DynamicDelegator < handle
     end
     
     function lh = addlistener(obj, varargin)
+      global DebugHandleOverloads;
+      if isequal(DebugHandleOverloads, true), debugStamp('ADDLISTENER', 1); end            
+      
       try lh                = obj.delegate.addlistener(varargin{:}); return; end
       lh                    = obj.addlistener@handle(varargin{:});
     end
@@ -183,11 +206,25 @@ classdef DynamicDelegator < handle
   
   methods %(Sealed)
     function varargout = subsref(obj, subs)
+      global DebugSubsOverloads;
+      if isequal(DebugSubsOverloads, true), debugStamp('SUBSREF', 1); end      
+      
       if nargout>0, varargout = cell(1,nargout); end
+            
       try
+        
         field               = subs(1).subs;
         
         reference           = @(x, s    ) [builtin('subsref',  x, s    )];
+        
+        %% Failsafe
+        try
+          assert(all(isvalid(obj)));
+        catch err
+          if nargout > 0, [varargout{:}]  = reference(obj, subs);
+          else reference(obj, subs); end
+          return;
+        end   
         
         %% Immediate Subscripts
         if numel(subs) == 1 && isequal(subs(1).type, '()')
@@ -204,35 +241,55 @@ classdef DynamicDelegator < handle
         %% Everything Else
         delegate            = reference(obj, substruct('.', 'delegate'));
         hasDelegate         = ~isempty(delegate) || isstruct(delegate) || isobject(delegate);
-        
-        reserving           = any(strcmp(field, obj.reserves));
-        overloading         = ~reserving && any(strcmp(field, obj.overloads));
-        
+                
         selfMethod          = ismethod(obj, field);
         selfField           = isprop(obj, field);
+        
+        reserving           = selfField || selfMethod || any(strcmp(field, obj.reserves));
+        overloading         = ~reserving && any(strcmp(field, obj.overloads));        
         delegateField       = hasDelegate && ~selfField  && (isprop(delegate, field)   || isstruct(delegate));
         delegateMethod      = hasDelegate && ~selfMethod && (ismethod(delegate, field));
         
         if hasDelegate && (overloading || ~reserving) %&& (overloading || ~selfMethod || ~selfField)
           if nargout > 0, [varargout{:}]  = subsref(delegate, subs);
-          else reference(delegate, subs); end
+          else
+            if delegateField
+              disp(reference(delegate, subs));
+            else
+              reference(delegate, subs); 
+            end
+          end
         else
           if nargout > 0, [varargout{:}]  = reference(obj, subs);
           else reference(obj, subs); end
         end
+        
+        return;
       catch err
-        debugStamp(err, 1, obj);
+        debugStamp(err, 3, obj);
         throwAsCaller(err);
       end
+      
     end
     
     
     function obj = subsasgn(obj, subs, value)
+      global DebugSubsOverloads;
+      if isequal(DebugSubsOverloads, true), debugStamp('SUBSASGN', 1); end
+      
       try
         field               = subs(1).subs;
         
         assign              = @(x, s, v ) builtin('subsasgn', x, s, v );
         reference           = @(x, s    ) builtin('subsref',  x, s    );
+        
+        %% Failsafe
+        try
+          assert(all(isvalid(obj)));
+        catch err
+          obj               = assign(obj, subs, value);
+          return;
+        end        
         
         %% Immediate Subscripts
         if numel(subs) == 1 && isequal(subs(1).type, '()')
@@ -248,7 +305,9 @@ classdef DynamicDelegator < handle
         delegate            = reference(obj, substruct('.', 'delegate'));
         hasDelegate         = ~isempty(delegate) || isstruct(delegate) || isobject(delegate);
         
-        reserving           = any(strcmp(field, obj.reserves));
+        selfMethod          = ismethod(obj, field);
+        selfField           = isprop(obj, field);
+        reserving           = selfField || selfMethod || any(strcmp(field, obj.reserves));        
         overloading         = ~reserving && any(strcmp(field, obj.overloads));
         delegateField       = hasDelegate && ~isprop(obj, field)   && (isprop(delegate, field)   || isstruct(delegate));
         delegateMethod      = hasDelegate && ~ismethod(obj, field) && (ismethod(delegate, field));
@@ -260,7 +319,7 @@ classdef DynamicDelegator < handle
           obj               = assign(obj, subs, value);
         end
       catch err
-        debugStamp(err, 1, obj);
+        debugStamp(err, 3, obj);
         throwAsCaller(err);
       end
     end

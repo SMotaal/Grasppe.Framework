@@ -1,9 +1,13 @@
-classdef GraphicsHandle < Grasppe.Prototypes.Instance & dynamicprops & matlab.mixin.Heterogeneous
-  %HandleGraphicsClass Summary of this class goes here
+classdef GraphicsHandle < Grasppe.Prototypes.Instance & ...
+    Grasppe.Prototypes.DynamicDelegator % & hgsetget  % & matlab.mixin.Heterogeneous % & dynamicprops
+  %GRAPHICSHANDLE Summary of this class goes here
   %   Detailed explanation goes here
   
   properties(SetAccess=immutable, Hidden) %, GetAccess=protected)
-    ObjectType
+    UDDEvents             = { ...
+      'ObjectBeingDestroyed', 'ObjectParentChanged', 'ObjectChildAdded', 'ObjectChildRemoved', ...
+      % 'ClassInstanceCreated',  'PropertyPreGet', 'PropertyPostGet', 'PropertyPreSet', 'PropertyPostSet' ...
+      };
   end
   
   events
@@ -26,155 +30,159 @@ classdef GraphicsHandle < Grasppe.Prototypes.Instance & dynamicprops & matlab.mi
     DoubleClick
   end
   
-  properties
+  events(Hidden) % UDD Events
+    UDDClassInstanceCreated
+    UDDObjectBeingDestroyed
+    UDDObjectChildAdded
+    UDDObjectChildRemoved
+    UDDObjectParentChanged
+    UDDPropertyPreGet
+    UDDPropertyPostGet
+    UDDPropertyPreSet
+    UDDPropertyPostSet    
   end
   
   properties (SetAccess=protected)
-    DefaultOptions
-    Object                    % Schema.Class Object
     ParentComponent           % HandleGraphicsClass Object
     ChildComponents
-    HandlePropertyListeners
     HandleFunctions
-    HandleProperties  = []
+    
   end
   
-  properties(Dependent)
+  properties(Dependent, Hidden)
     Handle                    % Handle Object
-  end
-  
-  
-  methods(Access=protected)
-    function obj = GraphicsHandle(objectType, object, parent, varargin)
-      
-      if ~exist('objectType', 'var'), objectType  = []; end
-      try  if isempty(objectType),    objectType  = get(object, 'Type'); end; end
-      
-      instanceOptions = {};
-      
-      if ischar(objectType)
-        instanceOptions   = {'InstanceID', [upper(objectType(1)) objectType(2:end) 'Component']};
-      end
-      
-      obj = obj@Grasppe.Prototypes.Instance(instanceOptions{:});
-      
-      debugStamp('Constructing', 5, obj);
-      
-      if isequal(mfilename('class'),  obj.ClassName), obj.initialize();   end
-      if (nargin > 0),                obj.setOptions(varargin{:});        end
-      if exist('objectType', 'var'),  obj.ObjectType      = objectType;   end
-      
-      if exist('parent', 'var'),  obj.ParentComponent = parent; end
-      
-      if exist('object', 'var') && any(ishandle(object))
-        obj.ObjectType              = get(object, 'Type');
-        handleOptions               = obj.getDefaultHandleOptions(varargin{:});
-        
-        set(object, handleOptions{:});
-        
-        obj.Object                  = handle(object);
-      else
-        obj.createHandleObject(varargin{:});
-      end
-      
-    end
-  end
-  
-  methods
-    
-    function delete(obj)
-      if ~isequal(obj.ObjectType, 'root');
-        try
-          obj.deleteRecursively(obj.ChildComponents);
-        catch err
-          debugStamp(err, 1);
-        end
-      else
-        debugStamp('NotDeletingRoot', 1, obj);
-      end
-    end
-    
-    function h = get.Handle(obj)
-      h = [];
-      try h = findobj(obj.Object); end
-    end
-    
+    Object
+    GraphicsHandleObject
+    GraphicsHandleDelegator
   end
   
   methods (Access=protected)
-    [names values]    = setOptions(obj, varargin);
+    function obj = GraphicsHandle(delegate, varargin)
+      
+      thisClass               = mfilename('class');
+      
+      try
+        %% Eliminate Delegator Redudancy
+        while isa(delegate, thisClass) && ...
+            isequal(class(delegate), thisClass) && ...
+            ~isequal(class(delegate.Delegate), thisClass)
+          delegate            = delegate.Delegate;
+        end
+        
+        %% Create Primitive On-Demand
+        if ischar(delegate)
+          delegate            = Grasppe.Graphics.GraphicsHandle.CreateHandleGraphicsObject(delegate, 'Visible', 'off', varargin{:});
+        end
+        
+        %% Customize InstanceID
+        id                    = 'GraphicsHandle';
+        
+        if isa(delegate, thisClass)
+          try id              = [delegate.InstanceID '-Handle']; end
+        else
+          try id                = regexprep(class(delegate), '.*?\.?([^\.]+$)', '$1'); end
+          id                    = [upper(id(1)) id(2:end)];
+        end
+        
+      catch err
+        debugStamp(err, 1); rethrow(err);
+      end
+      
+      obj                     = obj@Grasppe.Prototypes.Instance('InstanceID', id);
+      obj                     = obj@Grasppe.Prototypes.DynamicDelegator(delegate);
+      
+      try
+        %% Set Options
+        if (numel(varargin) > 0), obj.setOptions(varargin{:}); end
+        
+        %% Set Primitive Prototype to Object
+        if ishghandle(delegate), setappdata(delegate, 'Prototype',obj); end
+        
+        obj.attachUDDEvents();
+        obj.attachHandleEvents();
+        obj.initialize();
+        
+      catch err
+        debugStamp(err, 1, obj); rethrow(err);
+      end
+    end
   end
   
-  %% Populate Handle Properties and Functions
-  methods %(Access=private)
+  methods (Access=protected)
     
-    function set.Object(obj, object)
+    function attachHandleEvents(obj)
+      %% Attach Primitive Events
+      delegateSchema        = classhandle(obj.Object);
+      delegateProperties    = delegateSchema.Properties;
+      %delegateEvents        = delegateSchema.Events;
       
-      if ~isempty(obj.Object), return; end
-      
-      obj.Object                    = handle(object);
-      
-      obj.attachHandleObject();
-    end
-    
-    function createHandleObject(obj, varargin)
-      if isempty(obj.Object) || ~ishandle(obj.Object) || ~isequal(obj.ObjectType, obj.Object.Type)
-        try delete(obj.Object); end
-        
-        handleOptions               = obj.getDefaultHandleOptions(varargin{:});
-        obj.Object                  = feval(obj.ObjectType, handleOptions{:});
-        
-      end
-      obj.attachHandleObject();
-    end
-    
-    function handleOptions = getDefaultHandleOptions(obj, varargin)
-      options                       = varargin;
-      
-      if rem(numel(varargin),2)==1
-        optiovararginns                     = varargin(1:end-1);
-      end
-      
-      if isstruct(obj.DefaultOptions)
-        options                     = [{obj.DefaultOptions}, varargin];
-      end
-      
-      [names values paired pairs]   = Grasppe.Prototypes.Utilities.ParseOptions(options{:});
-      handleOptions                 = cell(1, numel(names)*2);
-      handleOptions(1:2:end)        = names;
-      handleOptions(2:2:end)        = values;
-    end
-    
-    function attachHandleObject(obj)
-      if ~ishandle(obj.Object), return; end
-      
-      setappdata(obj.Object, 'HandleComponent', obj)
-      obj.createDynamicProperties;
-    end
-    
-    function component = get.ParentComponent(obj)
-      if ~isobject(obj.Object), component = obj.ParentComponent;
-      else component                     = getParentComponent(obj);
+      for m = 1:numel(delegateProperties)
+        try
+          if isscalar(regexp(delegateSchema.Properties(m).Name, 'Fcn$'))
+            obj.createCallbackFunction(delegateSchema.Properties(m));
+          end
+        end
       end
     end
     
-    function components = get.ChildComponents(obj)
-      components                    =  obj.getChildComponents();
+    function attachUDDEvents(obj)
+      delegateSchema        = classhandle(obj.Object);
+      delegateProperties    = delegateSchema.Properties;
+
+      uddEvents             = obj.UDDEvents;
+      
+      for m = 1:numel(uddEvents)
+        try
+          obj.createCallbackFunction(struct('Name',uddEvents{m}), ['UDD' uddEvents{m}]);
+        end
+      end
+    end
+  end
+  
+  %% Event Handling
+  
+  methods
+    
+    function onDelegateEvent(obj, src, evt)      
+      Grasppe.Prototypes.Utilities.StampEvent(obj, src, evt);
+      disp(evt);      
     end
     
-    function handleHandlePropertyEvent(obj, src, evt)
-      propertyEvent                 = struct(evt);
-      propertyEvent.EventName       = regexprep(evt.Type, '^Property', '');
-      propertyEvent.PrimitiveObject = evt.AffectedObject;
-      propertyEvent.AffectedObject  = obj;
-      obj.handlePropertyEvent(src, propertyEvent);
+    function onScroll(obj, src, evt)
+      Grasppe.Prototypes.Utilities.StampEvent(obj, src, evt);
     end
     
-    function inspect(obj)
-      obj.inspectHandle();
+    function onSwipe(obj, src, evt)
+      Grasppe.Prototypes.Utilities.StampEvent(obj, src, evt);
+    end
+    
+    function onClick(obj, src, evt)
+      Grasppe.Prototypes.Utilities.StampEvent(obj, src, evt);
+    end
+    
+    function onDoubleClick(obj, src, evt)
+      Grasppe.Prototypes.Utilities.StampEvent(obj, src, evt);
+    end
+    
+    function onUDDObjectChildAdded(obj, src, evt)
+      global DebugUDDEvents;
+      
+      
+      try if isequal(DebugUDDEvents, true), structDisplay(evt.SourceData); end; end
+
+      Grasppe.Prototypes.Utilities.StampEvent(obj, src, evt);
+      
+      try 
+        Grasppe.Graphics.GraphicsHandle.CreateGraphicsPrototype(evt.SourceData.Child, evt.SourceData.Source);
+      catch err
+        debugStamp(err, 1, obj);
+      end
     end
     
     function handleHandleEvent(obj, src, evt, eventData)
+      
+      if ~all(isvalid(obj)), return; end
+           
       try
         try
           %           try, if isequal(evt.EventName, 'CloseRequest')
@@ -198,69 +206,195 @@ classdef GraphicsHandle < Grasppe.Prototypes.Instance & dynamicprops & matlab.mi
         debugStamp( dbTag, 1, obj );
       end
     end
+  end
+  
+  %% Getters & Setters
+  
+  methods
     
-    metaProperty                    = createDynamicProperty(obj, schemaProperty);
-    callbackFunction                = createCallbackFunction( obj, schemaProperty );
-    components                      = getChildComponents(obj);
-    component                       = getParentComponent(obj);
-    
-    createDynamicProperties(obj);
-    
-    function onScroll(obj, src, evt)
-      Grasppe.Prototypes.Utilities.StampEvent(obj, src, evt);
+    function h = get.Handle(obj)
+      h                     = findobj(obj.Object, 'flat');
+      if numel(h) > 1, h    = h(1); end
     end
     
-    function onSwipe(obj, src, evt)
-      Grasppe.Prototypes.Utilities.StampEvent(obj, src, evt);
+    function newObj = get.GraphicsHandleObject(obj)
+      newObj                = obj;
+      if ~isequal(class(newObj, 'Grasppe.Graphics.GraphicsHandle'))
+        newObj              = Grasppe.Graphics.GraphicsHandle(newObj);
+      end
     end
     
-    function onClick(obj, src, evt)
-      Grasppe.Prototypes.Utilities.StampEvent(obj, src, evt);
-    end
-    
-    function onDoubleClick(obj, src, evt)
-      Grasppe.Prototypes.Utilities.StampEvent(obj, src, evt);
-    end
-    
-    
-    function component = getComponentFromHandle(obj, h)
-        object                      = handle(h);
-        component                   = getappdata(object, 'HandleComponent');
-        
-        if isempty(component) || ~isa(component, 'Grasppe.Graphics.GraphicsHandle')
-          objectType                = get(object, 'Type');
-          component                 = Grasppe.Graphics.GraphicsHandle.CreateComponentFromObject(object, obj);
-        end
+    function delegator = get.GraphicsHandleDelegator(obj)
+      delegator             = obj;
+      while isa(delegator.Delegate, 'Grasppe.Graphics.GraphicsHandle')
+        delegator           = delegator.Delegate;
+      end
       
     end
     
+    function primitive = get.Object(obj)
+      delegate              = obj.Delegate;
+      
+      while isa(delegate, mfilename('class')) %'Grasppe.Prototypes.DynamicDelegate')
+        delegate            = delegate.Delegate;
+      end
+      
+      primitive             = delegate;
+    end
+    
+    function parentComponent = get.ParentComponent(obj)
+      parentComponent       = [];
+      try parentComponent   = Grasppe.Graphics.GraphicsHandle.CreateGraphicsPrototype(obj.Object.Parent); end
+    end
+    
+    function childComponents = get.ChildComponents(obj)
+      childComponents       = [];
+      try childComponents   = Grasppe.Graphics.GraphicsHandle.CreateGraphicsPrototype(obj.Object.Children); end
+    end
+  end
+  
+  %% Overload Behaviour
+  
+  methods
+    
+    function varargout = subsref(obj, subs)
+      global DebugSubsOverloads;
+      if isequal(DebugSubsOverloads, true), debugStamp('SUBSREF', 1); end
+      
+      %% Failsafe
+      try
+        assert(all(isvalid(obj)));
+      catch err
+        if nargout>0, [varargout{:}]  = builtin('subsref', obj, subs);
+        else builtin('subsref', obj, subs); end
+        return;
+      end
+      
+      
+      if nargout>0, varargout = cell(1,nargout); end
+      if isa(obj.Delegate, 'Grasppe.Graphics.GraphicsHandle')
+        if nargout>0, [varargout{:}]  = obj.Delegate.subsref(subs);
+        else obj.Delegate.subsref(subs); end
+      else
+        if nargout>0, [varargout{:}]  = obj.subsref@Grasppe.Prototypes.DynamicDelegator(subs);
+        else obj.subsref@Grasppe.Prototypes.DynamicDelegator(subs); end
+      end
+    end
+    
+    function obj = subsasgn(obj, subs, value)
+      global DebugSubsOverloads;
+      if isequal(DebugSubsOverloads, true), debugStamp('SUBSASGN', 1); end
+      
+      %% Failsafe
+      try
+        assert(all(isvalid(obj)));
+      catch err
+        obj        = builtin('assign', obj, subs, value);
+        return;
+      end
+      
+      if isa(obj.Delegate, 'Grasppe.Graphics.GraphicsHandle')
+        obj         = obj.Delegate.subsasgn(subs, value);
+      else
+        %disp(value)
+        obj         = obj.subsasgn@Grasppe.Prototypes.DynamicDelegator(subs, value);
+      end
+    end
+    
+    function obj = notify(obj, eventName, varargin)
+      global DebugHandleOverloads DebugUDDEvents;
+      if isequal(DebugHandleOverloads, true), debugStamp('NOTIFY', 1); end    
+      
+      uddEvents             	= obj.UDDEvents;
+      
+      uddNotify               = any(strcmp(eventName, uddEvents));
+      
+      if uddNotify
+        if isequal(DebugUDDEvents, true)
+          Grasppe.Prototypes.Utilities.StampEvent(obj, obj, struct('EventName', eventName));
+          for m = 1:numel(varargin), disp(varargin{m}); end
+        end
+        obj.notify@handle(['UDD' eventName], varargin{:});
+      else
+        obj.notify@Grasppe.Prototypes.DynamicDelegator(eventName, varargin{:});
+      end
+    end    
+    
+    function lh = addlistener(obj, varargin)
+      global DebugHandleOverloads;
+      if isequal(DebugHandleOverloads, true), debugStamp('ADDLISTENER', 1); end
+      
+      try
+        lh                    = obj.addlistener@handle(varargin{:});
+        
+        % TODO: Tie to Grasppe.Prototypes.Handle
+        
+        % TODO: Implement UDD/OBJ handle.listener callbacks
+        %       try
+        %         uddHandle   = classhandle(obj.Self.Object);
+        %
+        %         uddEvents   = get(get(classhandle(h), 'Events'), 'Name');
+        %
+        %       end
+        
+        
+      catch err
+        debugStamp(err, 1, obj);
+      end
+    end
+    
+    
+    function inspect(obj)
+      global DebugHandleOverloads;
+      if isequal(DebugHandleOverloads, true), debugStamp('INSPECT', 1); end
+      
+      obj.inspectHandle();
+    end
+    
+    function newObj = horzcat(varargin)
+      global DebugCatOverloads;
+      if isequal(DebugCatOverloads, true), debugStamp('HORZCAT', 1); end
+      
+      newObj                = horzcat(cellfun(@(obj) obj.GraphicsHandleObject, varargin));
+    end
+    
+    function newObj = vertcat(varargin)
+      global DebugCatOverloads;
+      if isequal(DebugCatOverloads, true), debugStamp('VERTCAT', 1); end
+      
+      newObj                = vertcat(cellfun(@(obj) obj.GraphicsHandleObject, varargin));
+    end
+    
+    function newObj = cat(varargin)
+      global DebugCatOverloads;
+      if isequal(DebugCatOverloads, true), debugStamp('CAT', 1); end
+      
+      newObj                = cat(cellfun(@(obj) obj.GraphicsHandleObject, varargin));
+    end
+    
+    function delete(obj)
+      global DebugDeleteOverloads;
+      if isequal(DebugDeleteOverloads, true), debugStamp('DELETE', 1); end
+      
+      isInstance;
+      if all(~isvalid(obj)), return; end
+      if ~isequal(class(obj.Delegate), 'root');
+        try
+          obj.deleteRecursively(obj.ChildComponents);
+        catch err
+          debugStamp(err, 1);
+        end
+      else
+        debugStamp('NotDeletingRoot', 1, obj);
+      end
+    end
     
   end
   
-  methods(Static)
-    component                       = ComponentFactory(objectType, object, parent, varargin);
-  end
-  
-  methods(Static, Hidden)
-    obj                             = testGraphicsHandle(hObject);
-    
-    function component = CreateComponent(objectType, object, parent, varargin)
-      component = feval(mfilename('class'), objectType, object, parent, varargin{:});
-    end
-    
-    function component = CreateNewComponent(objectType, parent, varargin)
-      component = feval(mfilename('class'), objectType, [], parent, varargin{:});
-    end
-    
-    function component = CreateComponentFromObject(object, parent, varargin)
-      component = feval(mfilename('class'), [], object, parent, varargin{:});
-    end
-  end
   
   methods (Access=protected)
-    function initialize(obj)
-      debugStamp(['Initializing@' obj.ClassName], 5, obj);
-      obj.initialize@Grasppe.Prototypes.Instance;
+    function privateSet(obj, propertyName, value)
+      if ~isequal(obj.Delegate.(propertyName), value), obj.Delegate.(propertyName) = value; end
     end
     
     function inspectHandle(obj)
@@ -268,6 +402,17 @@ classdef GraphicsHandle < Grasppe.Prototypes.Instance & dynamicprops & matlab.mi
         inspect(obj.Handle);
       end
     end
+    
+  end
+  
+  methods (Static)
+    obj   = CreateGraphicsPrototype(varargin)
+    obj   = CreateHandleGraphicsObject(varargin)
+    
+    function obj = Create(varargin)
+      obj           = feval(mfilename('class'), varargin{:});
+    end
+    
   end
 end
 

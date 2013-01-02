@@ -47,10 +47,18 @@ classdef Figure < Grasppe.Graphics.GraphicsHandle
   end
   
   
-  methods % (Access=protected)
-    function obj = Figure(object, parent, varargin)
+  methods %(Access=protected)
+    function obj = Figure(primitive, varargin) %(object, parent, 
+      
       figureDefaults  = {'NumberTitle', 'off', 'ToolBar', 'none', 'Renderer', 'opengl', 'PaperOrientation', 'landscape'};
-      obj             = obj@Grasppe.Graphics.GraphicsHandle('figure', object, parent, figureDefaults{:}, varargin{:});
+      
+      %if ~exist('primitive', 'var') || ~ishghandle(primitive)
+      
+      if ~exist('primitive', 'var') || ~ischar(primitive) || (isscalar(primitive) && ~ishghandle(primitive))
+        primitive = 'figure';
+      end
+      
+      obj             = obj@Grasppe.Graphics.GraphicsHandle(primitive, figureDefaults{:}, varargin{:}); % object, parent,
       
       debugStamp('Constructing', 5, obj);
       
@@ -70,9 +78,22 @@ classdef Figure < Grasppe.Graphics.GraphicsHandle
   
   methods
     function javaFrame = get.JavaFrame(obj)
-      javaFrame           = [];
-      try javaFrame       = get(obj.Object, 'JavaFrame'); end
+      javaFrame                   = [];
+      try javaFrame               = get(obj.Object, 'JavaFrame'); end
     end
+    
+%     function varargout = subsref(obj, subs)
+%       if nargout > 0
+%           [varargout{:}]          = obj.subsref@Grasppe.Graphics.GraphicsHandle(subs);
+%       else
+%           obj.subsref@Grasppe.Graphics.GraphicsHandle(subs);
+%       end
+%     end
+        
+    function obj = subsasgn(obj, subs, value)      
+      obj                 = obj.subsasgn@Grasppe.Graphics.GraphicsHandle(subs, value);
+    end    
+    
     
     function gestureEventCallback(obj, src, evt)
       e                         = [];
@@ -83,9 +104,9 @@ classdef Figure < Grasppe.Graphics.GraphicsHandle
       try evt.addField('Direction', direction); end
       
       currentObject             = []; 
-      try if isempty(currentObject) || isequal(currentObject, obj), currentObject = obj.getComponentFromHandle(obj.CurrentObject);  end; end
+      try if isempty(currentObject) || isequal(currentObject, obj), currentObject = obj.getComponentFromHandle(obj.Object.CurrentObject);  end; end
       try if isempty(currentObject) || isequal(currentObject, obj), currentObject = obj.getComponentFromHandle(hittest(obj.Object)); end; end
-      try if isempty(currentObject) || isequal(currentObject, obj), currentObject = obj.getComponentFromHandle(obj.CurrentAxes);  end; end
+      try if isempty(currentObject) || isequal(currentObject, obj), currentObject = obj.getComponentFromHandle(obj.Object.CurrentAxes);  end; end
 
       try evt.addField('TargetObject', currentObject); end
       
@@ -148,6 +169,9 @@ classdef Figure < Grasppe.Graphics.GraphicsHandle
     end
     
     function panAxes(obj, plotAxes, panXY, panLength) % (obj, source, event)
+      
+      if isempty(plotAxes), return; end
+      
       % persistent lastPanXY
       lastPanXY = [];
       % obj.bless;
@@ -160,7 +184,7 @@ classdef Figure < Grasppe.Graphics.GraphicsHandle
 %         deltaPanXY  = [0 0];
 %       else
         deltaPanXY  = panXY; % - lastPanXY;
-        position    = obj.Position;
+        position    = obj.Object.Position;
         panFactor   = position([3 4])./panWidthReference;
         deltaPanXY  = round(deltaPanXY ./ (panFactor));
 %       end
@@ -203,7 +227,7 @@ classdef Figure < Grasppe.Graphics.GraphicsHandle
     
     function targetHandle = getTargetAxesHandle(obj, targetObject)
       
-        targetHandle = obj.CurrentAxes;
+        targetHandle = obj.Object.CurrentAxes;
         
         while(isa(targetObject, 'Grasppe.Prototypes.HandleGraphicsComponen') && ...
             any(strcmp(targetObject.ObjectType, {'axes', 'root', 'figure'})))
@@ -274,7 +298,7 @@ classdef Figure < Grasppe.Graphics.GraphicsHandle
       if lastVisible
         % obj.MouseRobot.waitForIdle();
         try obj.GestureComponent.setVisible(true); end;
-        % GrasppeKit.DelayedCall(@(s, e)obj.GestureComponent.setVisible(true),1,'start');
+        % GrasppeKit.Utilities.DelayedCall(@(s, e)obj.GestureComponent.setVisible(true),1,'start');
       end
       
     end
@@ -306,7 +330,7 @@ classdef Figure < Grasppe.Graphics.GraphicsHandle
       
       persistent clickTimer lastButton;
 %       if isempty(clickTimer) || ~isa(clickTimer, 'timer') || ~isvalid(clickTimer)
-%         clickTimer = GrasppeKit.DelayedCall(@(s, e)obj.notify('Click', evt.addField('Button', 'Primary')), 0.25,'hold');
+%         clickTimer = GrasppeKit.Utilities.DelayedCall(@(s, e)obj.notify('Click', evt.addField('Button', 'Primary')), 0.25,'hold');
 %       end
       
       try stop(clickTimer);   end;
@@ -314,7 +338,7 @@ classdef Figure < Grasppe.Graphics.GraphicsHandle
       switch(lower(obj.Object.SelectionType))
         case 'normal'     % Click left mouse button
           try delete(clickTimer); end;
-          clickTimer = GrasppeKit.DelayedCall(@(s, e)obj.notify('Click', evt.addField('Button', 'Primary')), 0.20,'start');
+          clickTimer = GrasppeKit.Utilities.DelayedCall(@(s, e)obj.notify('Click', evt.addField('Button', 'Primary')), 0.20,'start');
           lastButton = 1;
         case 'open'       % Double-click any mouse button
           if ~isequal(lastButton, 1)
@@ -356,9 +380,14 @@ classdef Figure < Grasppe.Graphics.GraphicsHandle
         switch evt.Character
           case 'i'
             if isequal({'COMMAND'}, sort(upper(evt.Modifier)))
-              obj.inspect();
+              try 
+                if ishandle(obj.Object.CurrentObject), inspect(obj.Object.CurrentObject); end
+              catch err
+                obj.inspect();
+              end
+              
             elseif isequal({'COMMAND', 'SHIFT'}, sort(upper(evt.Modifier)))
-              obj.inspectHandle();
+              obj.inspect();
             end
             return;
         end
@@ -386,7 +415,7 @@ classdef Figure < Grasppe.Graphics.GraphicsHandle
     function onWindowScrollWheel(obj, src, evt)
       obj.GestureComponent.setVisible(true);
       
-      GrasppeKit.DelayedCall(@(s, e)obj.GestureComponent.setVisible(false), 1,'start');
+      GrasppeKit.Utilities.DelayedCall(@(s, e)obj.GestureComponent.setVisible(false), 1,'start');
       
       %       persistent lastSwipe lastScroll;
       %
@@ -433,11 +462,11 @@ classdef Figure < Grasppe.Graphics.GraphicsHandle
     end
     
     function showFigure(obj)
-      try obj.Visible = true; end
+      try obj.Object.Visible = 'on'; end
     end
     
     function hideFigure(obj)
-      try obj.Visible = false; end
+      try obj.Object.Visible = 'off'; end
     end
     
     
@@ -474,12 +503,20 @@ classdef Figure < Grasppe.Graphics.GraphicsHandle
     
     function inspectHandle(obj)
       try
-        inspect(obj.Object.CurrentObject);
+        inspect(obj.Object); %.CurrentObject);
       catch err
         obj.inspect();
       end
     end
     
   end
+  
+  
+  methods (Static)
+    function obj = Create(varargin)
+      obj           = feval(mfilename('class'), varargin{:});
+    end
+  end
+  
   
 end

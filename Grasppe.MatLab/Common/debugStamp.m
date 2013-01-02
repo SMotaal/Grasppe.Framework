@@ -30,13 +30,13 @@ function st = debugStamp( tag, level, obj )
       str = '';
       
       obj = [];
-      try obj = evalin('caller', 'obj'); end
-      if isempty(obj), try obj = evalin('caller', 'evt'); end; end
-      if isempty(obj), try obj = evalin('caller', 'val'); end; end
+      %try obj = evalin('caller', 'obj'); end
+      %if isempty(obj), try obj = evalin('caller', 'evt'); end; end
+      %if isempty(obj), try obj = evalin('caller', 'val'); end; end
       
       if ~isempty(obj) && isscalar(obj) && isobject(obj)
         objID = class(obj);
-        try objID = obj.InstanceID; end
+        try objID = builtin('subsref', substruct('.', 'InstanceID')); end
         str = [str objID];
       end
             
@@ -83,7 +83,7 @@ function st = debugStamp( tag, level, obj )
       if nargin==2
         obj = level;
         level = tag; tag = '';
-        try tag = obj.InstanceID; end
+        try tag = builtin('subsref', substruct('.', 'InstanceID')); end
         try if isempty(tag), tag = class(obj); end; end
       else
         level = tag; tag = '';
@@ -126,7 +126,7 @@ function st = debugStamp( tag, level, obj )
     
     try
       try if nargin>2 && isa(obj, 'Grasppe.Prototypes.Instance')
-          tag = [obj.InstanceID '.' tag]; end; end
+          tag = [builtin('subsref', substruct('.', 'InstanceID')) '.' tag]; end; end
       
       nextstack = sprintf('\n%s',[errorID tag dbstamp]);
     catch
@@ -210,7 +210,7 @@ function wait(suspend)
     
     set(getCommandWindowHandle, 'KeyPressedCallback', @commandKeyPress);
     
-    % t = GrasppeKit.DelayedCall(@(s, e)resume(), 5, 'start');
+    % t = GrasppeKit.Utilities.DelayedCall(@(s, e)resume(), 5, 'start');
     commandwindow;
     try 
       %for m = 1:2
@@ -252,7 +252,7 @@ end
 %     try delete(t); end
 %   else
 %     try delete(t); end
-%     t = GrasppeKit.DelayedCall(@(s, e)resume(), 5, 'start');
+%     t = GrasppeKit.Utilities.DelayedCall(@(s, e)resume(), 5, 'start');
 %   end
 % end
 

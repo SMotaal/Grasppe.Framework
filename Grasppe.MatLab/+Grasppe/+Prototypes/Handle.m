@@ -6,6 +6,7 @@ classdef Handle < Grasppe.Prototypes.Prototype & dynamicprops
     EventListeners          = struct();
     PropertyEventListeners  = struct();
     SelfListeners           = struct();
+    HandleListeners         = struct();
   end
   
   methods
