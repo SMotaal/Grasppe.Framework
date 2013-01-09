@@ -20,15 +20,17 @@ classdef Handle < Grasppe.Prototypes.Prototype & dynamicprops
       obj.deleteRecursively(obj.SelfListeners);
     end
     
-    function deleteRecursively(obj, items)
-      if isobject(items)
-        try delete(items); end
-      elseif iscell(items)
-        for m = numel(items):-1:1   % LIFO
-          try obj.deleteRecursively(items{m}); end
+    function deleteRecursively(obj, children)
+      if isobject(children)
+        for m = 1:numel(children)
+          try delete(children(m)); end
         end
-      elseif isstruct(items)
-        try obj.deleteRecursively(struct2cell(items)); end
+      elseif iscell(children)
+        for m = numel(children):-1:1   % LIFO
+          try obj.deleteRecursively(children{m}); end
+        end
+      elseif isstruct(children)
+        try obj.deleteRecursively(struct2cell(children)); end
       end
     end
     
@@ -114,6 +116,40 @@ classdef Handle < Grasppe.Prototypes.Prototype & dynamicprops
       obj.attachPropertyListeners();
       obj.attachEventListeners();
     end
+    
+    function value = getProperty(obj, field, currentValue)
+      value                 = [];
+      methodNames           = methods(obj);
+      methodIndex           = strcmpi(['get' field], methodNames);
+      
+      if ~any(methodIndex) % assert(any(methodIndex), 'Grasppe:PropertyGetter:NotDefined', 'No property getter is defined for %s', char(field));
+        value               = obj.(field);
+      else
+        try
+          value             = feval(methodNames{methodIndex}, obj);
+        catch err
+          GrasppeKit.Utilities.DisplayError(obj, 1, err);
+          rethrow(err);
+        end
+      end
+    end
+    
+    function success = setProperty(obj, field, value)
+      success               = false;
+      methodNames           = methods(obj);
+      methodIndex           = strcmpi(['set' field], methodNames);
+      
+      if any(methodIndex)
+        success             = true;
+        try assert(any(methodIndex), 'Grasppe:PropertySetter:NotDefined', 'No property setter is defined for %s', char(field));
+          feval(methodNames{methodIndex}, obj, value);
+        catch err
+          GrasppeKit.Utilities.DisplayError(obj, 1, err);
+          rethrow(err);
+        end
+      end
+    end
+    
   end
   
   methods (Access=private)
@@ -145,7 +181,7 @@ classdef Handle < Grasppe.Prototypes.Prototype & dynamicprops
         
       end
       
-    end
+    end    
     
     function attachPropertyListeners(obj)
       metaProperties      = obj.MetaClass.PropertyList;

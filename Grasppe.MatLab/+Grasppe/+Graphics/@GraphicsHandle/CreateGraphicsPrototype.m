@@ -6,6 +6,11 @@ function obj = CreateGraphicsPrototype(primitive, parent, varargin)
   
   options                   = varargin;
   
+  try
+    obj                     = getappdata(handle(primitive), 'Prototype');
+    if isa(obj, 'Grasppe.Graphics.GraphicsHandle') && isvalid(childComponent), return;  end
+  end
+  
   if exist('parent', 'var')
     parentHandle            = getHandleGraphicsObject(parent);
     options                 = [options {'Parent', parentHandle}];
@@ -38,7 +43,7 @@ function obj = CreateGraphicsPrototype(primitive, parent, varargin)
         obj(end+1)          = createGraphicsHandle(handle(primitive(m)), varargin{:});
       end
     catch err
-      debugStamp(err, 1, obj);
+      GrasppeKit.Utilities.DisplayError(obj, 1, err);
     end
   end
   
@@ -47,16 +52,48 @@ end
 
 function obj = createGraphicsHandle(primitive, varargin)
   
-  obj                       = primitive;
+  persistent hgPrototypes uiPrototypes;
   
-  switch class(primitive)
-    case 'figure'
-      obj                   = Grasppe.Graphics.Figure.Create(primitive, varargin{:});
-    case 'root'
-      obj                   = Grasppe.Graphics.Root.Create();
-    otherwise
-      obj                   = Grasppe.Graphics.GraphicsHandle.Create(primitive);
+  
+  if isempty(hgPrototypes), hgPrototypes  = struct( ...
+      'figure', 'Figure', 'root', 'Root', 'axes', 'Axes'); end
+  
+  if isempty(uiPrototypes), uiPrototypes  = struct( ...
+      'uitoolbar', 'UIToolbar', 'uimenu', 'UIMenu', ...
+      'uicontextmenu', 'UIContextMenu'); end
+  
+  obj                       = [];
+  
+  primitiveClass            = lower(class(primitive));
+  prototypeClass            = 'Grasppe.Graphics.GraphicsHandle';
+  
+  % try prototypeClass        = ['Grasppe.Graphics.'  hgPrototypes.(primitiveClass)]; end
+  % try prototypeClass        = ['Grasppe.Graphics.'  uiPrototypes.(primitiveClass)]; end
+  
+  if isfield(hgPrototypes, primitiveClass)
+    prototypeClass          = ['Grasppe.Graphics.'  hgPrototypes.(primitiveClass)];
+  elseif isfield(uiPrototypes, primitiveClass)
+    prototypeClass          = ['Grasppe.UI.'        uiPrototypes.(primitiveClass)];
   end
+  
+  obj                       = feval([prototypeClass '.Create'], primitive, varargin{:});
+  
+  %   switch primitiveClass
+  %     case 'figure'
+  %       obj                   = Grasppe.Graphics.Figure.Create(primitive, varargin{:});
+  %     case 'axes'
+  %       obj                   = Grasppe.Graphics.Axes.Create(primitive, varargin{:});
+  %     case 'root'
+  %       obj                   = Grasppe.Graphics.Root.Create();
+  %     case 'uitoolbar'
+  %       obj                   = Grasppe.UI.UIToolbar.Create(primitive, varargin{:});
+  %     case 'uimenu'
+  %       obj                   = Grasppe.UI.UIMenu.Create(primitive, varargin{:});
+  %     case 'uicontextmenu'
+  %       obj                   = Grasppe.UI.UIContextMenu.Create(primitive, varargin{:});
+  %     otherwise
+  %       obj                   = Grasppe.Graphics.GraphicsHandle.Create(primitive);
+  %   end
   
 end
 

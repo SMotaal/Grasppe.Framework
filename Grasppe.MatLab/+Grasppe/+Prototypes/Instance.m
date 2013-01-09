@@ -12,12 +12,12 @@ classdef Instance < Grasppe.Prototypes.Handle % (ConstructOnLoad)
   end
   
   properties(SetAccess=private, GetAccess=private)
-    id_base
-    instance_options
+    idBase
+    instanceOptions
   end
     
   properties(SetAccess=private, GetAccess=private, Transient)    
-    id_index
+    idIndex
   end
   
   
@@ -38,17 +38,19 @@ classdef Instance < Grasppe.Prototypes.Handle % (ConstructOnLoad)
       obj.isAlive             = true;
       
       
-      if ~obj.isRegistered  
-        [id base idx]         = Grasppe.Prototypes.Utilities.InstanceTable.RegisterInstance(instanceID, obj, obj.id_base, obj.id_index);
-        
-        obj.InstanceID        = id;
-        obj.id_base           = base;
-        obj.id_index          = idx;
-        
-        obj.isRegistered      = true;
+      if ~obj.isRegistered
+        try
+          [id base idx]         = Grasppe.Prototypes.Utilities.InstanceTable.RegisterInstance(instanceID, obj, obj.idBase, obj.idIndex);
+          
+          obj.InstanceID        = id;
+          obj.idBase            = base;
+          obj.idIndex          = idx;
+          
+          obj.isRegistered      = true;
+        end
       end
       
-        obj.instance_options  = varargin;
+        obj.instanceOptions  = varargin;
     end
         
     function delete(obj)

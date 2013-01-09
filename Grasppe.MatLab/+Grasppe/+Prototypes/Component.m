@@ -79,11 +79,36 @@ classdef Component < Grasppe.Prototypes.Instance
             p           = addprop(obj, moduleProperties{m});
             p.GetMethod = @(obj)obj.Module.(moduleProperties{m});
           catch err
-            debugStamp(err, 1, obj);
+            GrasppeKit.Utilities.DisplayError(obj, 1, err);
           end
         end
       end
     end
+    
+    function component = initializeComponent(obj, componentName, varargin)
+      component                   = [];
+      try
+        if isprop(obj,([componentName 'Class']))
+          componentClass          = obj.([componentName 'Class']);
+          if isempty(obj.(componentName)) || isequal(obj, obj.(componentName)) || ~isa(obj.(componentName), componentClass) || ~isvalid(obj.(componentName))
+            if exist(componentClass, 'class')>0
+              component           = feval(componentClass, varargin{:});
+              obj.(componentName) = component;
+            end
+          end
+        elseif exist(componentName, 'class')>0
+          componentClass          = componentName;
+          componentName           = [];
+          component               = feval(componentClass, varargin{:});
+        end
+        
+        
+      catch err
+        GrasppeKit.Utilities.DisplayError(obj, 1, err);
+      end
+      
+    end
+    
     
   end
   

@@ -3,13 +3,13 @@ function defineModelSchema( obj )
   %   Detailed explanation goes here
   
   %% Get Model Parameters
-  packageName                 = obj.package_name;
-  className                   = obj.class_name;
-  userTypes                   = obj.user_type_table;
-  enumTypes                   = obj.enum_type_table;
-  modelPoperties              = obj.property_table;
-  modelDefaults               = obj.defaults_table;
-  modelAttributes             = obj.property_attributes;
+  packageName                 = obj.packageName;
+  className                   = obj.className;
+  userTypes                   = obj.userTypeTable;
+  enumTypes                   = obj.enumTypeTable;
+  modelPoperties              = obj.propertyTable;
+  modelDefaults               = obj.defaultsTable;
+  modelAttributes             = obj.propertyAttributes;
   
   %% Append Base Properties
   modelPoperties(end+1, :)    = {'Prototype', 'MATLAB array',   'Handle of the defining Prototype-based Model'};
@@ -17,18 +17,18 @@ function defineModelSchema( obj )
   modelAttributes(end+1, :)   = {'Prototype',        {'Visible', 'off'}};
   
   %% Define Enumeration and User Types
-  obj.enum_type_schema        = defineEnumTypes(enumTypes);
-  obj.user_type_schema        = defineUserTypes(userTypes);
+  obj.enumTypeSchema        = defineEnumTypes(enumTypes);
+  obj.userTypeSchema        = defineUserTypes(userTypes);
   
   %% Define Model Package and Class
   packageSchema               = getPackageSchema(packageName);
   classSchema                 = getClassSchema(className, packageSchema);
   
-  obj.package_schema          = packageSchema;
-  obj.class_schema            = classSchema;
+  obj.packageSchema          = packageSchema;
+  obj.classSchema            = classSchema;
   
   %% Define Model Properties
-  obj.property_schema         = defineProperties(obj, classSchema, modelPoperties, modelAttributes, modelDefaults);
+  obj.propertySchema         = defineProperties(obj, classSchema, modelPoperties, modelAttributes, modelDefaults);
   
 end
 

@@ -8,7 +8,7 @@ classdef (Sealed) Root < Grasppe.Graphics.GraphicsHandle
    
   
   methods (Access=protected)
-    function obj = Root()
+    function obj = Root(varargin)
       obj                   = obj@Grasppe.Graphics.GraphicsHandle(handle(0));
       obj.initialize();
       
@@ -27,7 +27,11 @@ classdef (Sealed) Root < Grasppe.Graphics.GraphicsHandle
   
   methods (Static)
     function obj = Create(varargin)
-      obj           = feval(mfilename('class'), varargin{:});
+      thisClass             = mfilename('class');
+      obj                   = getappdata(0, 'Prototype');
+      if ~isscalar(obj) || ~isvalid(obj) || ~isa(obj, thisClass)
+        obj                 = feval(thisClass);
+      end
     end
   end
   

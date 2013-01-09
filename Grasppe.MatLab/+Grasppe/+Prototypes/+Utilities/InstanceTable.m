@@ -4,7 +4,7 @@ classdef (Sealed) InstanceTable < handle  % containers.Map
   
   properties (Transient)
     % Table = Grasppe.Prototypes.Utilities.InstanceTable.GetTable;
-    Map     = containers.Map;
+    Map         = containers.Map;
   end
   
   properties (SetAccess=private, GetAccess=protected, Transient, Hidden)
@@ -21,9 +21,11 @@ classdef (Sealed) InstanceTable < handle  % containers.Map
     function [id base idx] = RegisterInstance(id, instance, base, idx)
       map                 = Grasppe.Prototypes.Utilities.InstanceTable.GetMap;
       
-      if any(cellfun(@(x)isequal(x, instance), map.values)), return; end
+      if any(cellfun(@(x)isequal(x, instance), map.values))
+        error('Grasppe:InstanceTable:DuplicateEntry', 'Instance already in table!');
+      end
       
-      if isempty(id), id  = class(instance); end; %Grasppe.Prototypes.Utilities.InstanceTable.GenerateInstanceID(class(instance)); end
+      if isempty(id), id  = class(instance); end;
       
       instanceID          = regexprep(id, '(\w+\.)|\.', '');
       
@@ -41,7 +43,7 @@ classdef (Sealed) InstanceTable < handle  % containers.Map
         map(newID)        = instanceRecord;
       end
       
-      if mod(map.length, 10)==0
+      if mod(map.length, 3)==0
         Grasppe.Prototypes.Utilities.InstanceTable.Clean();
       end
       

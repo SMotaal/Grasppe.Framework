@@ -1,7 +1,5 @@
 function component = GetRoot()
-  %GETROOT Summary of this function goes here
-  %   Detailed explanation goes here
+  %GETROOT Get Root Grasppe GraphicsHandleComponent Wrapper
   
-  component = Grasppe.Graphics.GraphicsHandle.CreateGraphicsPrototype('root');
+  component = Grasppe.Graphics.Root.Create();
 end
-

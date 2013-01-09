@@ -18,7 +18,7 @@ classdef Task < Grasppe.Prototypes.Instance & matlab.mixin.Heterogeneous
   end
   
   properties(SetAccess=private, GetAccess=private)
-    current_progress
+    currentProgress
   end
   
   events
@@ -125,10 +125,10 @@ classdef Task < Grasppe.Prototypes.Instance & matlab.mixin.Heterogeneous
     end
     
     function updateProgress(obj)
-      currentProgress   = obj.current_progress;
+      currentProgress   = obj.currentProgress;
       progress          = obj.getProgress;
       if ~isequal(currentProgress, progress)
-        obj.current_progress = progress;
+        obj.currentProgress = progress;
         obj.notify('ProgressChange', Grasppe.Prototypes.Events.Data(obj, ... 
           struct('LastValue', currentProgress, 'NewValue', progress)));
       end

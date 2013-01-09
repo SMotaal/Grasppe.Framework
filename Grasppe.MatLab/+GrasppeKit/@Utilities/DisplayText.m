@@ -1,5 +1,7 @@
-function DisplayText(ProductID, varargin)
+function message = DisplayText(ProductID, varargin)
   %ProductID                	= 'GRASPPE ~LIBRARY LOADER';
+  
+  if nargout >0 message    = []; end
    
   nargs                     = numel(varargin);
   
@@ -37,15 +39,13 @@ function DisplayText(ProductID, varargin)
     end
   end
 
+  if nargout > 0
+    message                 = messageText;
+    return;
+  end
+  
   disp(' ');
   disp(messageText);
     
 
-%     marg                    = varargin{m};
-%     if iscell(marg)
-%       listText              = [listText; {marg}];%vertcat(listText, marg(:));
-%     elseif ischar(marg)
-%       listText              = [listText; {marg}];
-%     end
-%   end
 end

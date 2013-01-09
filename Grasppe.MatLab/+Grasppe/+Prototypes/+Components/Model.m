@@ -4,8 +4,8 @@ classdef Model < Grasppe.Prototypes.Component & Grasppe.Prototypes.Model ...
   %   Detailed explanation goes here
   
   properties (SetAccess=private, GetAccess=private)
-    model_fields              = {};
-    construct_fields          = {};
+    modelFields              = {};
+    constructFields          = {};
   end
   
   methods
@@ -14,8 +14,8 @@ classdef Model < Grasppe.Prototypes.Component & Grasppe.Prototypes.Model ...
     end
     
     % function s = saveobj(obj)
-    %   s.id_base               = obj.id_base;
-    %   s.instance_options      = obj.instance_options;
+    %   s.idBase               = obj.idBase;
+    %   s.instanceOptions      = obj.instanceOptions;
     %   obj = s;
     % end
   end 
@@ -37,13 +37,13 @@ classdef Model < Grasppe.Prototypes.Component & Grasppe.Prototypes.Model ...
   
   methods (Access=protected)
     function addModelField(obj, fieldname)
-      obj.model_fields(end+1)       = fieldname;
-      obj.model_fields              = unique(obj.model_fields);
+      obj.modelFields(end+1)       = fieldname;
+      obj.modelFields              = unique(obj.modelFields);
     end
     
     function addConstructField(obj, fieldname)
-      obj.construct_fields(end+1)   = fieldname;
-      obj.construct_fields          = unique(obj.construct_fields);      
+      obj.constructFields(end+1)   = fieldname;
+      obj.constructFields          = unique(obj.constructFields);      
     end
     
     % function removeModelField(obj, fieldname)

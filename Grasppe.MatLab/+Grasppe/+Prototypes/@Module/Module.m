@@ -7,7 +7,7 @@ classdef Module < Grasppe.Prototypes.Components.Controller & Grasppe.Prototypes.
     Path
   end
   
-  properties(SetAccess=protected, GetAccess=protected) %, GetAccess=protected)
+  properties(SetAccess=protected, GetAccess=public, Hidden, Transient) %, GetAccess=protected)
     ModelClass
     ViewClass
     ControllerClass
@@ -99,7 +99,7 @@ classdef Module < Grasppe.Prototypes.Components.Controller & Grasppe.Prototypes.
   methods(Access=private)
     
     function initializePaths(obj)
-      import(obj.Imports{:});
+      try import(obj.Imports{:}); end
       
       obj.ResourcePath      =  Utilities.FindFolder(obj.Path, 'Resources');   %fullfile(obj.Path, 'Resources');
       obj.ComponentPath     =  Utilities.FindFolder(obj.Path, 'Components');  %fullfile(obj.Path, 'Components');
@@ -128,8 +128,10 @@ classdef Module < Grasppe.Prototypes.Components.Controller & Grasppe.Prototypes.
       
     end
     
-    function initializeComponents(obj)
-      import(obj.Imports{:});
+    function components = initializeComponents(obj, componentTable)
+      try import(obj.Imports); end
+      
+      components              = struct;
       
       %% Populate Component Classes
       for m = {'Model', 'View', 'Controller'}
@@ -138,39 +140,36 @@ classdef Module < Grasppe.Prototypes.Components.Controller & Grasppe.Prototypes.
             obj.([char(m) 'Class']) = [obj.ClassName char(m)];
           end
         catch err
-          Grasppe.Prototypes.Utilities.StampError(err, 1, obj);
+          GrasppeKit.Utilities.DisplayError(obj, 1, err);
         end
-      end      
+      end
       
       
       try
-        % if isfield(obj, 'Controller')
         if exist(obj.ControllerClass, 'class')
           controller  = obj.initializeComponent('Controller', 'Module', obj);
         elseif isa(obj, 'Grasppe.Prototypes.Components.Controller')
           controller  = obj;
         end
-        %         if ~exist(obj.ControllerClass, 'class') && isa(obj, 'Grasppe.Prototypes.Components.Controller')
-        %           controller      = obj;
-        %           obj.Controller  = controller;
-        %         else
-        %           controller = obj.initializeComponent('Controller', 'Module', obj);
-        %         end
-        % if isfield(obj, 'Model')
         
         if isa(controller, 'Grasppe.Prototypes.Components.Controller') && isvalid(controller)
           obj.Controller.setModel(obj.initializeComponent('Model', 'Module', obj, 'Controller', controller));
           obj.Controller.setView(obj.initializeComponent('View',  'Module', obj, 'Controller', controller));
         end
         
+        if nargout>0
+          try components.Controller   = obj.Controller;       end
+          try components.Model        = obj.Controller.Model; end
+          try components.View         = obj.Controller.View;  end
+        end
+        
       catch err
-        Grasppe.Prototypes.Utilities.StampError(err, 1, obj);
+        GrasppeKit.Utilities.DisplayError(obj, 1, err);
         rethrow(err);
       end
       %obj.Controller.setView  = obj.initializeComponent('View',   'Controller', obj.Controller); %,   'Model', obj.Model);
-      
-      
     end
+        
     
     function createModules(obj)
       controller            = obj.Controller;
@@ -193,34 +192,26 @@ classdef Module < Grasppe.Prototypes.Components.Controller & Grasppe.Prototypes.
           
           if ischar(mClass) && exist(mClass, 'class')>0
             mModule                 = obj.createModule(mName, mClass);
-            controller.(mProperty)  = mModule;
+            
+            try
+              if ~isprop(controller, mProperty)
+                controller.addprop(mProperty);
+                controller.(mProperty)  = mModule;
+              else
+                controller.privateSet(mProperty, mModule);
+              end
+            end
           end
           
           % if isempty(obj.(mName)) || ~isobject(obj.(mName)) || ~isvalid(obj.(mName))
           %   feval(obj.(mProperty));
           % end
         catch err
-          Grasppe.Prototypes.Utilities.StampError(err, 1, obj);
+          GrasppeKit.Utilities.DisplayError(obj, 1, err);
         end
       end      
     end
     
-    function component = initializeComponent(obj, componentName, varargin)
-      component               = [];
-      try
-        componentClass        = obj.([componentName 'Class']);
-        if isempty(obj.(componentName)) || isequal(obj, obj.(componentName)) || ~isa(obj.(componentName), componentClass) || ~isvalid(obj.(componentName))
-          if exist(componentClass, 'class')>0
-            component           = feval(componentClass, varargin{:});
-          end
-          obj.(componentName) = component;
-        end
-        %component             = obj.(componentName);
-      catch err
-        Grasppe.Prototypes.Utilities.StampError(obj, 1, err);
-      end
-      
-    end
     
     function getComponentPath(componentName)
       

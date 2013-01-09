@@ -11,7 +11,7 @@ classdef Data < event.EventData & dynamicprops
   end
   
   properties(Access=private)
-    event_data
+    eventData
   end
   
   methods
@@ -23,7 +23,7 @@ classdef Data < event.EventData & dynamicprops
       
       data                        = data@event.EventData(); %'EventName', 'abc');
       
-      data.event_data             = struct;
+      data.eventData             = struct;
       
       data.AffectedObject         = affectedObject;
       data.EventType              = eventType;
@@ -159,9 +159,9 @@ classdef Data < event.EventData & dynamicprops
         
         fieldMeta.SetAccess       = 'protected';
         
-        data.event_data.(field)   = value;
+        data.eventData.(field)   = value;
         
-        fieldMeta.GetMethod       = @(data) data.event_data.(field);
+        fieldMeta.GetMethod       = @(data) data.eventData.(field);
         
         %data.(field)              = value;
         

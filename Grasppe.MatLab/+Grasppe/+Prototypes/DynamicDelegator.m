@@ -177,7 +177,9 @@ classdef DynamicDelegator < handle
     
     function obj = notify(obj, eventName, varargin)
       global DebugHandleOverloads;
-      if isequal(DebugHandleOverloads, true), debugStamp('NOTIFY', 1); end            
+      if isequal(DebugHandleOverloads, true), debugStamp('NOTIFY', 1); end
+      
+      try if all(~isvalid(obj)), return; end; end
       
       selfNotify            = any(strcmp(eventName, events(obj)));
       delegateNotify        = any(strcmp(eventName, events(obj.delegate)));
@@ -213,25 +215,37 @@ classdef DynamicDelegator < handle
             
       try
         
-        field               = subs(1).subs;
+        field                 = subs(1).subs;
         
-        reference           = @(x, s    ) [builtin('subsref',  x, s    )];
+        reference             = @(x, s    ) builtin('subsref',  x, s    );
         
         %% Failsafe
         try
           assert(all(isvalid(obj)));
         catch err
-          if nargout > 0, [varargout{:}]  = reference(obj, subs);
-          else reference(obj, subs); end
+          if nargout > 0
+            [varargout{:}]    = reference(obj, subs);
+          else
+            [varargout{1}]    = reference(obj, subs);
+          end
           return;
         end   
         
         %% Immediate Subscripts
-        if numel(subs) == 1 && isequal(subs(1).type, '()')
+        if isequal(subs(1).type, '()') % numel(subs) == 1 &&
+          nSubsRange          = numel(subs(1).subs);
           if nargout > 0, 
-            [varargout{:}]  = reference(obj, subs);
+            assert(nSubsRange==1, 'Grasppe:Delegate:ReferencingUnsupported', 'Attempting to access a subref (n~=1) which is not yet supported!');
+            [varargout{:}]    = reference(obj, subs);
           else
-            reference(obj, subs)
+            varargout         = cell(1, nSubsRange);
+            for m = 1:nSubsRange
+              if numel(subs)==1
+                varargout{1}  = obj(m);
+              else
+                varargout{m}  = reference(obj(m), subs(2:end));
+              end
+            end
           end
           return;
         end
@@ -242,32 +256,42 @@ classdef DynamicDelegator < handle
         delegate            = reference(obj, substruct('.', 'delegate'));
         hasDelegate         = ~isempty(delegate) || isstruct(delegate) || isobject(delegate);
                 
-        selfMethod          = ismethod(obj, field);
-        selfField           = isprop(obj, field);
+        selfMethod          = ismethod(obj(1), field);
+        selfField           = isprop(obj(1), field);
         
-        reserving           = selfField || selfMethod || any(strcmp(field, obj.reserves));
-        overloading         = ~reserving && any(strcmp(field, obj.overloads));        
-        delegateField       = hasDelegate && ~selfField  && (isprop(delegate, field)   || isstruct(delegate));
-        delegateMethod      = hasDelegate && ~selfMethod && (ismethod(delegate, field));
+        reserving           = selfField || selfMethod || any(strcmp(field, obj(1).reserves));
+        overloading         = ~reserving && any(strcmp(field, obj(1).overloads));        
+        delegateField       = hasDelegate && (isprop(delegate, field)   || isstruct(delegate));
+        delegateMethod      = hasDelegate && (ismethod(delegate, field));
         
         if hasDelegate && (overloading || ~reserving) %&& (overloading || ~selfMethod || ~selfField)
           if nargout > 0, [varargout{:}]  = subsref(delegate, subs);
           else
             if delegateField
-              disp(reference(delegate, subs));
+              % assignin('caller', 'ans', reference(delegate, subs));
+              varargout{1}        = subsref(delegate, subs);
             else
-              reference(delegate, subs); 
+              subsref(delegate, subs(2:end));
             end
           end
         else
-          if nargout > 0, [varargout{:}]  = reference(obj, subs);
-          else reference(obj, subs); end
+          if nargout > 0
+            [varargout{:}]        = builtin('subsref', obj, subs);
+          else
+            if selfField && numel(subs)>1
+              %assignin('caller', 'ans', reference(obj, subs));
+              varargout{1}        = subsref(obj.(field), subs(2:end));
+            else
+              builtin('subsref', obj, subs);
+              %reference(obj, subs);
+            end
+          end
         end
         
         return;
       catch err
-        debugStamp(err, 3, obj);
-        throwAsCaller(err);
+        GrasppeKit.Utilities.DisplayError(obj, 1, err);
+        rethrow(err);
       end
       
     end
@@ -283,19 +307,39 @@ classdef DynamicDelegator < handle
         assign              = @(x, s, v ) builtin('subsasgn', x, s, v );
         reference           = @(x, s    ) builtin('subsref',  x, s    );
         
+        
         %% Failsafe
         try
           assert(all(isvalid(obj)));
         catch err
-          obj               = assign(obj, subs, value);
+            obj             = assign(obj, subs, value);
           return;
-        end        
+        end   
         
         %% Immediate Subscripts
-        if numel(subs) == 1 && isequal(subs(1).type, '()')
-          obj               = assign(obj, subs, value);
+        if isequal(subs(1).type, '()') % numel(subs) == 1 &&
+          nSubsRange          = numel(subs(1).subs);
+          for m = 1:nSubsRange
+            thisObject      = obj(m);
+            obj(m)          = thisObject.subsasgn(subs(2:end), value);
+          end
           return;
-        end    
+        end
+        
+        
+%         %% Failsafe
+%         try
+%           assert(all(isvalid(obj)));
+%         catch err
+%           obj               = assign(obj, subs, value);
+%           return;
+%         end        
+%         
+%         %% Immediate Subscripts
+%         if numel(subs) == 1 && isequal(subs(1).type, '()')
+%           obj               = assign(obj, subs, value);
+%           return;
+%         end    
         
         %% TODO: Heterogeneous Subscripts
         
@@ -305,22 +349,26 @@ classdef DynamicDelegator < handle
         delegate            = reference(obj, substruct('.', 'delegate'));
         hasDelegate         = ~isempty(delegate) || isstruct(delegate) || isobject(delegate);
         
-        selfMethod          = ismethod(obj, field);
-        selfField           = isprop(obj, field);
-        reserving           = selfField || selfMethod || any(strcmp(field, obj.reserves));        
-        overloading         = ~reserving && any(strcmp(field, obj.overloads));
-        delegateField       = hasDelegate && ~isprop(obj, field)   && (isprop(delegate, field)   || isstruct(delegate));
-        delegateMethod      = hasDelegate && ~ismethod(obj, field) && (ismethod(delegate, field));
+        selfMethod          = ismethod(obj(1), field);
+        selfField           = isprop(obj(1), field);
+        reserving           = selfField || selfMethod || any(strcmp(field, obj(1).reserves));        
+        overloading         = ~reserving && any(strcmp(field, obj(1).overloads));
+        delegateField       = hasDelegate && ~isprop(obj(1), field)   && (isprop(delegate, field)   || isstruct(delegate));
+        delegateMethod      = hasDelegate && ~ismethod(obj(1), field) && (ismethod(delegate, field));
         
         if hasDelegate && ~reserving % && (overloading || delegateField || delegateMethod)
           delegate          = subsasgn(delegate, subs, value);
           obj               = assign(obj, substruct('.', 'delegate'), delegate);
         else
-          obj               = assign(obj, subs, value);
+          if selfField &&            numel(subs)>1
+            subsasgn(obj.(field), subs(2:end), value);
+          else
+            obj             = assign(obj, subs, value);
+          end
         end
       catch err
-        debugStamp(err, 3, obj);
-        throwAsCaller(err);
+        GrasppeKit.Utilities.DisplayError(obj, 3, err);
+        rethrow(err);
       end
     end
     

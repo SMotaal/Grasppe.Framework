@@ -3,39 +3,39 @@ classdef (ConstructOnLoad) UDDModel < Grasppe.Prototypes.Components.Model
   %   Detailed explanation goes here
   
   properties (SetAccess='immutable', GetAccess='private')
-    package_name            = [];
-    class_name              = [];
+    packageName            = [];
+    className              = [];
     
-    user_type_table         = {
+    userTypeTable         = {
       %       'PositiveNumeral',      'double',           @(x)x(:); %assert(x>=0, error('Grasppe:PositiveNumeral', 'Value must be zero or a positive number'));
       }
     
-    enum_type_table         = {
+    enumTypeTable         = {
       %       'one/two/three',        {'one', 'two', 'three'};
       };
     
-    property_table          = {
+    propertyTable          = {
       %       'Name',                 'string',           'Define the name of the model';
       };
     
-    defaults_table          = {
+    defaultsTable          = {
       %       'Index',                1;
       };
     
-    property_attributes     = {
+    propertyAttributes     = {
       %      'Prototype',        {'Hidden'}
       };
     
   end
   
   properties (SetAccess='private', GetAccess='private', Transient)
-    package_schema
-    class_schema
-    property_schema
-    user_type_schema
-    enum_type_schema
-    udd_property_listeners
-    udd_children_listeners
+    packageSchema
+    classSchema
+    propertySchema
+    userTypeSchema
+    enumTypeSchema
+    uddPropertyListeners
+    uddChildrenListeners
   end
   
   properties(GetAccess=public, SetAccess=public)
@@ -73,17 +73,17 @@ classdef (ConstructOnLoad) UDDModel < Grasppe.Prototypes.Components.Model
           end
           initializeSchema    = false;
         catch err
-          debugStamp(err, 1, obj);
+          GrasppeKit.Utilities.DisplayError(obj, 1, err);
         end
       end
       
       if initializeSchema
-        obj.package_name      = obj.getUDDProperty('package_name');
-        obj.class_name        = obj.getUDDProperty('class_name');
-        obj.user_type_table   = obj.getUDDProperty('user_type_table');
-        obj.enum_type_table   = obj.getUDDProperty('enum_type_table');
-        obj.property_table    = obj.getUDDProperty('property_table');
-        obj.defaults_table    = obj.getUDDProperty('defaults_table');
+        obj.packageName      = obj.getUDDProperty('packageName');
+        obj.className        = obj.getUDDProperty('className');
+        obj.userTypeTable   = obj.getUDDProperty('userTypeTable');
+        obj.enumTypeTable   = obj.getUDDProperty('enumTypeTable');
+        obj.propertyTable    = obj.getUDDProperty('propertyTable');
+        obj.defaultsTable    = obj.getUDDProperty('defaultsTable');
       end
       
       try
@@ -92,7 +92,7 @@ classdef (ConstructOnLoad) UDDModel < Grasppe.Prototypes.Components.Model
         % if numel(
         
       catch err
-        debugStamp(err, 1, obj);
+        GrasppeKit.Utilities.DisplayError(obj, 1, err);
         beep;
       end
       
@@ -109,28 +109,28 @@ classdef (ConstructOnLoad) UDDModel < Grasppe.Prototypes.Components.Model
         end
       end
       
-      for m = 1:numel(obj.property_table(:,1)) %fieldnames(obj.ModelData))
+      for m = 1:numel(obj.propertyTable(:,1)) %fieldnames(obj.ModelData))
         try
-          fieldName             = obj.property_table{m,1};
+          fieldName             = obj.propertyTable{m,1};
           fieldSchema           = obj.ModelData.findprop(fieldName);
           
           hl = handle.listener(obj.ModelData, fieldSchema, 'PropertyPostSet', @obj.notifyUDDPropertyChanged);
-          if isempty(obj.udd_property_listeners)
-            obj.udd_property_listeners = hl;
+          if isempty(obj.uddPropertyListeners)
+            obj.uddPropertyListeners = hl;
           else
-            obj.udd_property_listeners(end+1) = hl;
+            obj.uddPropertyListeners(end+1) = hl;
           end
           
           %           if isequal(fieldSchema.DataType, 'com.mathworks.jmi.bean.UDDObject')
           %             hl = obj.ModelData.(fieldName).Prototype.addlistener('PropertyChanged', @obj.notifyUDDPropertyChanged); %hl = handle.listener(obj.ModelData, fieldSchema, 'PropertyPostSet', @obj.notifyUDDPropertyChanged);
-          %             if isempty(obj.udd_children_listeners)
-          %               obj.udd_children_listeners = hl;
+          %             if isempty(obj.uddChildrenListeners)
+          %               obj.uddChildrenListeners = hl;
           %             else
-          %               obj.udd_children_listeners(end+1) = hl;
+          %               obj.uddChildrenListeners(end+1) = hl;
           %             end
           %           end
         catch err
-          debugStamp(err, 1, obj);
+          GrasppeKit.Utilities.DisplayError(obj, 1, err);
         end
       end
       
@@ -143,7 +143,7 @@ classdef (ConstructOnLoad) UDDModel < Grasppe.Prototypes.Components.Model
       %           end
       %           %set(obj.ModelData, sObj.Model{:});
       %         catch err
-      %           debugStamp(err, 1, obj);
+      %           GrasppeKit.Utilities.DisplayError(obj, 1, err);
       %         end
       %       else
       %       end
@@ -170,7 +170,7 @@ classdef (ConstructOnLoad) UDDModel < Grasppe.Prototypes.Components.Model
     end
     
     function modelClass = get.ModelClass(obj)
-      modelClass = [obj.package_name '.' obj.class_name];
+      modelClass = [obj.packageName '.' obj.className];
     end
     
     function delete(obj)
@@ -181,8 +181,7 @@ classdef (ConstructOnLoad) UDDModel < Grasppe.Prototypes.Components.Model
       try
         obj = Grasppe.Prototypes.Models.UDDModel.UDDModel2Struct(obj);
       catch err
-        debugStamp(err, 1, obj)
-      end
+        GrasppeKit.Utilities.DisplayError(obj, 1, err);end
       return;
       
     end
@@ -204,8 +203,8 @@ classdef (ConstructOnLoad) UDDModel < Grasppe.Prototypes.Components.Model
         
         obj                   = Grasppe.Prototypes.Models.UDDModel.Struct2UDDModel(sObj);
         
-        %         %modelProperties       = sObj.Schema.property_table(:,1)';
-        %         %property_table        = sObj.Schema(strmatch('property_table', sObj.Schema(1:2:end))*2);
+        %         %modelProperties       = sObj.Schema.propertyTable(:,1)';
+        %         %propertyTable        = sObj.Schema(strmatch('propertyTable', sObj.Schema(1:2:end))*2);
         %
         %         modelFields           = sObj.Model(1:2:end);
         %         modelValues           = sObj.Model(2:2:end);
@@ -256,7 +255,7 @@ classdef (ConstructOnLoad) UDDModel < Grasppe.Prototypes.Components.Model
       %% Identifier and MatLab Class
       
       st                      = struct;
-      st.ID                   = sObj.id_base;
+      st.ID                   = sObj.idBase;
       st.Class                = class(obj);
       st.Format               = 'Grasppe:UDDModel:R1';
       
@@ -265,8 +264,8 @@ classdef (ConstructOnLoad) UDDModel < Grasppe.Prototypes.Components.Model
       %% UDD Schema
       
       schemaFields            = {
-        'package_name', 'class_name', ...
-        'user_type_table', 'enum_type_table', 'property_table', 'defaults_table'
+        'packageName', 'className', ...
+        'userTypeTable', 'enumTypeTable', 'propertyTable', 'defaultsTable'
         };
       
       schemaValues            = cell(1, numel(schemaFields));
@@ -280,7 +279,7 @@ classdef (ConstructOnLoad) UDDModel < Grasppe.Prototypes.Components.Model
       
       %% ModelData
       
-      modelFields             = sObj.property_table(:,1)';
+      modelFields             = sObj.propertyTable(:,1)';
       modelValues             = cell(1, numel(modelFields));
       
       try
@@ -300,7 +299,7 @@ classdef (ConstructOnLoad) UDDModel < Grasppe.Prototypes.Components.Model
         end
         
       catch err
-        debugStamp(err, 1, obj);
+        GrasppeKit.Utilities.DisplayError(obj, 1, err);
         beep;
       end
       

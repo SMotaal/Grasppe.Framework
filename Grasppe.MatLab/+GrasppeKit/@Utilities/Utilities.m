@@ -13,7 +13,8 @@ classdef (Sealed) Utilities
   
   methods (Static)
     SafeExit(terminateCallback, abortCallback, forceCallback, cancelCallback);
-    DisplayText(ProductID, varargin);
+    message                     = DisplayText(ProductID, varargin);
+    message                     = DisplayError(varargin);
     
     delayTimer                  = DelayedCall(callback, delay, mode)
     [names values paired pairs] = ParseOptions(varargin)

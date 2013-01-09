@@ -46,7 +46,13 @@ classdef GraphicsHandle < Grasppe.Prototypes.Instance & ...
     ParentComponent           % HandleGraphicsClass Object
     ChildComponents
     HandleFunctions
-    
+    DefaultState            = {};
+  end
+  
+  properties (SetAccess=protected, GetAccess=protected)
+    parentComponent
+    childComponents         = Grasppe.Graphics.GraphicsHandle.empty();
+    uddIsBeingDestroyed     = false;
   end
   
   properties(Dependent, Hidden)
@@ -54,6 +60,7 @@ classdef GraphicsHandle < Grasppe.Prototypes.Instance & ...
     Object
     GraphicsHandleObject
     GraphicsHandleDelegator
+    HandleClass
   end
   
   methods (Access=protected)
@@ -71,7 +78,7 @@ classdef GraphicsHandle < Grasppe.Prototypes.Instance & ...
         
         %% Create Primitive On-Demand
         if ischar(delegate)
-          delegate            = Grasppe.Graphics.GraphicsHandle.CreateHandleGraphicsObject(delegate, 'Visible', 'off', varargin{:});
+          delegate            = Grasppe.Graphics.GraphicsHandle.CreateHandleGraphicsObject(delegate, 'Visible', 'off');
         end
         
         %% Customize InstanceID
@@ -80,39 +87,49 @@ classdef GraphicsHandle < Grasppe.Prototypes.Instance & ...
         if isa(delegate, thisClass)
           try id              = [delegate.InstanceID '-Handle']; end
         else
-          try id                = regexprep(class(delegate), '.*?\.?([^\.]+$)', '$1'); end
-          id                    = [upper(id(1)) id(2:end)];
+          try id              = regexprep(class(delegate), '.*?\.?([^\.]+$)', '$1'); end
+          id                  = [upper(id(1)) id(2:end)];
         end
         
       catch err
-        debugStamp(err, 1); rethrow(err);
+        debugStamp(err, 1);
+        rethrow(err);
       end
       
       obj                     = obj@Grasppe.Prototypes.Instance('InstanceID', id);
       obj                     = obj@Grasppe.Prototypes.DynamicDelegator(delegate);
       
-      try
-        %% Set Options
-        if (numel(varargin) > 0), obj.setOptions(varargin{:}); end
-        
+      try        
         %% Set Primitive Prototype to Object
-        if ishghandle(delegate), setappdata(delegate, 'Prototype',obj); end
+        if ishghandle(delegate), setappdata(delegate, 'Prototype', obj); end
         
-        obj.attachUDDEvents();
-        obj.attachHandleEvents();
+        %% Set Options
+        if (numel(varargin) > 0), obj.setOptions('Visible', 'on', varargin{:}); end
+        
+        obj.attachHandleEvents();        
+        obj.attachUDDEvents();        
+        
         obj.initialize();
         
       catch err
-        debugStamp(err, 1, obj); rethrow(err);
+        GrasppeKit.Utilities.DisplayError(obj, 1, err);
+        rethrow(err);
       end
+      
+      %% Make final intializations
+      if isempty(obj.childComponents), childComponents = Grasppe.Graphics.GraphicsHandle.empty(); end
     end
   end
   
   methods (Access=protected)
     
     function attachHandleEvents(obj)
+      
+      if ~all(isvalid(obj)), return; end
+      if isequal(obj.uddIsBeingDestroyed, true), return; end
+      
       %% Attach Primitive Events
-      delegateSchema        = classhandle(obj.Object);
+      delegateSchema        = classhandle(handle(obj.Object));
       delegateProperties    = delegateSchema.Properties;
       %delegateEvents        = delegateSchema.Events;
       
@@ -126,7 +143,10 @@ classdef GraphicsHandle < Grasppe.Prototypes.Instance & ...
     end
     
     function attachUDDEvents(obj)
-      delegateSchema        = classhandle(obj.Object);
+      if ~all(isvalid(obj)), return; end
+      if isequal(obj.uddIsBeingDestroyed, true), return; end
+      
+      delegateSchema        = classhandle(handle(obj.Object));
       delegateProperties    = delegateSchema.Properties;
 
       uddEvents             = obj.UDDEvents;
@@ -167,21 +187,84 @@ classdef GraphicsHandle < Grasppe.Prototypes.Instance & ...
     function onUDDObjectChildAdded(obj, src, evt)
       global DebugUDDEvents;
       
+      if ~all(isvalid(obj)), return; end
+      if isequal(obj.uddIsBeingDestroyed, true), return; end
       
       try if isequal(DebugUDDEvents, true), structDisplay(evt.SourceData); end; end
 
-      Grasppe.Prototypes.Utilities.StampEvent(obj, src, evt);
+      try if isequal(DebugUDDEvents, true), Grasppe.Prototypes.Utilities.StampEvent(obj, src, evt); end; end
       
       try 
-        Grasppe.Graphics.GraphicsHandle.CreateGraphicsPrototype(evt.SourceData.Child, evt.SourceData.Source);
+        childComponent        = getappdata(evt.SourceData.Child, 'Prototype');
+        
+        if ~isscalar(childComponent) || ~isvalid(childComponent)
+          childComponent      = Grasppe.Graphics.GraphicsHandle.CreateGraphicsPrototype(evt.SourceData.Child, evt.SourceData.Source); 
+        end
+        
+        componentIndex        = find(childComponent==obj.childComponents);
+        
+        if ~any(componentIndex),  obj.childComponents(end+1) = childComponent; end
+        
       catch err
-        debugStamp(err, 1, obj);
+        GrasppeKit.Utilities.DisplayError(obj, 1, err);
       end
     end
+    
+    function onUDDObjectChildRemoved(obj, src, evt)
+      global DebugUDDEvents;
+      
+      if ~all(isvalid(obj)), return; end
+      if isequal(obj.uddIsBeingDestroyed, true), return; end
+      
+      try if isequal(DebugUDDEvents, true), structDisplay(evt.SourceData); end; end
+      
+      try if isequal(DebugUDDEvents, true), Grasppe.Prototypes.Utilities.StampEvent(obj, src, evt); end; end
+      
+      try
+        childComponent        = getappdata(evt.SourceData.Child, 'Prototype');
+        obj.childComponents   = obj.childComponents(childComponent~=obj.childComponents);
+        
+      catch err
+        GrasppeKit.Utilities.DisplayError(obj, 1, err);
+      end
+    end
+    
+    function onUDDObjectParentChanged(obj, src, evt)
+      global DebugUDDEvents;
+      
+      if ~all(isvalid(obj)), return; end
+      if isequal(obj.uddIsBeingDestroyed, true), return; end
+      
+      try if isequal(DebugUDDEvents, true), structDisplay(evt.SourceData); end; end
+      
+      try if isequal(DebugUDDEvents, true), Grasppe.Prototypes.Utilities.StampEvent(obj, src, evt); end; end
+      
+      try
+        parentComponent       = getappdata(evt.SourceData.NewParent, 'Prototype');
+        if ~isscalar(parentComponent) || ~isvalid(parentComponent)
+          parentComponent     = Grasppe.Graphics.GraphicsHandle.CreateGraphicsPrototype(evt.SourceData.NewParent, evt.SourceData.Source);
+        end
+        
+        obj.parentComponent   = parentComponent;
+      catch err
+        GrasppeKit.Utilities.DisplayError(obj, 1, err);
+      end
+    end
+    
+    function onUDDObjectBeingDestroyed(obj, src, evt)
+      if ~all(isvalid(obj)), return; end
+      if ~isequal(obj.uddIsBeingDestroyed, true)
+        obj.uddIsBeingDestroyed = true;
+        try delete(obj.Object.Children); end
+        try delete(obj); end
+      end
+    end
+
     
     function handleHandleEvent(obj, src, evt, eventData)
       
       if ~all(isvalid(obj)), return; end
+      if isequal(obj.uddIsBeingDestroyed, true), return; end
            
       try
         try
@@ -244,12 +327,31 @@ classdef GraphicsHandle < Grasppe.Prototypes.Instance & ...
     
     function parentComponent = get.ParentComponent(obj)
       parentComponent       = [];
-      try parentComponent   = Grasppe.Graphics.GraphicsHandle.CreateGraphicsPrototype(obj.Object.Parent); end
+      if ~all(isvalid(obj)), return; end
+      if isequal(obj.uddIsBeingDestroyed, true), return; end
+
+      if isempty(obj.parentComponent)
+        try obj.parentComponent   = Grasppe.Graphics.GraphicsHandle.CreateGraphicsPrototype(obj.Object.Parent); end
+      end
+      parentComponent       = obj.parentComponent;      
     end
     
     function childComponents = get.ChildComponents(obj)
       childComponents       = [];
-      try childComponents   = Grasppe.Graphics.GraphicsHandle.CreateGraphicsPrototype(obj.Object.Children); end
+      if ~all(isvalid(obj)), return; end
+      if isequal(obj.uddIsBeingDestroyed, true), return; end
+
+      if isempty(obj.childComponents)
+        try obj.childComponents   = Grasppe.Graphics.GraphicsHandle.CreateGraphicsPrototype(obj.Object.Children); end
+      end
+      
+      childComponents       = obj.childComponents;
+    end
+    
+    function handleClass = get.HandleClass(obj)
+      handleClass           = [];
+      try handleClass       = classhandle(obj.Object); end
+      try if isempty(handleClass), handleClass = metaclass(obj.Object); end; end
     end
   end
   
@@ -257,53 +359,84 @@ classdef GraphicsHandle < Grasppe.Prototypes.Instance & ...
   
   methods
     
-    function varargout = subsref(obj, subs)
-      global DebugSubsOverloads;
-      if isequal(DebugSubsOverloads, true), debugStamp('SUBSREF', 1); end
-      
-      %% Failsafe
-      try
-        assert(all(isvalid(obj)));
-      catch err
-        if nargout>0, [varargout{:}]  = builtin('subsref', obj, subs);
-        else builtin('subsref', obj, subs); end
-        return;
-      end
-      
-      
-      if nargout>0, varargout = cell(1,nargout); end
-      if isa(obj.Delegate, 'Grasppe.Graphics.GraphicsHandle')
-        if nargout>0, [varargout{:}]  = obj.Delegate.subsref(subs);
-        else obj.Delegate.subsref(subs); end
-      else
-        if nargout>0, [varargout{:}]  = obj.subsref@Grasppe.Prototypes.DynamicDelegator(subs);
-        else obj.subsref@Grasppe.Prototypes.DynamicDelegator(subs); end
-      end
-    end
+%     function varargout = subsref(obj, subs)
+%       global DebugSubsOverloads;
+%       if isequal(DebugSubsOverloads, true), debugStamp('SUBSREF', 1); end
+%       
+% %       if nargout>0
+% %         varargout = cell(1,nargout);
+% %       end
+%       
+% %       %% Failsafe
+% %       try
+% %         assert(all(isvalid(obj)));
+% %       catch err
+% %         if nargout>0
+% %           [varargout{:}]      = builtin('subsref', obj, subs);
+% %         else
+% %           %[varargout{1}]      = 
+% %           varargout           = builtin('subsref', obj, subs);
+% %           if exist('ans', 'var'), assignin('caller', 'ans', ans); end
+% %         end
+% %         return;
+% %       end
+% %       
+% %       %      allGraphicsHandles = 
+% %       
+% %       if nargout>0, varargout = cell(1,nargout); end
+% %       
+% %       if isa(obj(1).Delegate, 'Grasppe.Graphics.GraphicsHandle')
+% %         if nargout>0
+% %           [varargout{:}]      = obj(:).Delegate.subsref(subs);
+% %         else
+% %           %[varargout{1}]      = 
+% %           obj.Delegate.subsref(subs);
+% %           if exist('ans', 'var'), assignin('caller', 'ans', ans); end
+% %         end
+% %       else
+% %         if nargout>0
+% %           [varargout{:}]      = obj(:).subsref@Grasppe.Prototypes.DynamicDelegator(subs);
+% %         else
+% %           %[varargout{1}]      = 
+% %           varargout{1}        = obj.subsref@Grasppe.Prototypes.DynamicDelegator(subs);
+% %           if exist('ans', 'var'), assignin('caller', 'ans', ans); end
+% %         end
+% %       end
+%     end
     
-    function obj = subsasgn(obj, subs, value)
-      global DebugSubsOverloads;
-      if isequal(DebugSubsOverloads, true), debugStamp('SUBSASGN', 1); end
-      
-      %% Failsafe
-      try
-        assert(all(isvalid(obj)));
-      catch err
-        obj        = builtin('assign', obj, subs, value);
-        return;
-      end
-      
-      if isa(obj.Delegate, 'Grasppe.Graphics.GraphicsHandle')
-        obj         = obj.Delegate.subsasgn(subs, value);
-      else
-        %disp(value)
-        obj         = obj.subsasgn@Grasppe.Prototypes.DynamicDelegator(subs, value);
-      end
-    end
+%     function obj = subsasgn(obj, subs, value)
+%       global DebugSubsOverloads;
+%       if isequal(DebugSubsOverloads, true), debugStamp('SUBSASGN', 1); end
+%       
+%       try
+%         
+%         %% Failsafe
+%         try
+%           assert(all(isvalid(obj)));
+%         catch err
+%           obj        = builtin('assign', obj, subs, value);
+%           return;
+%         end
+%         
+%         if isa(obj(1).Delegate, 'Grasppe.Graphics.GraphicsHandle')
+%           obj         = obj.Delegate.subsasgn(subs, value);
+%         else
+%           %disp(value)
+%           obj         = obj.subsasgn@Grasppe.Prototypes.DynamicDelegator(subs, value);
+%         end
+%         
+%       catch err
+%         GrasppeKit.Utilities.DisplayError(obj, 1, err);
+%         rethrow(err);
+%       end
+%     end
     
     function obj = notify(obj, eventName, varargin)
       global DebugHandleOverloads DebugUDDEvents;
-      if isequal(DebugHandleOverloads, true), debugStamp('NOTIFY', 1); end    
+      if isequal(DebugHandleOverloads, true), debugStamp('NOTIFY', 1); end  
+      
+      if ~all(isvalid(obj)), return; end
+      if isequal(obj.uddIsBeingDestroyed, true), return; end
       
       uddEvents             	= obj.UDDEvents;
       
@@ -322,6 +455,12 @@ classdef GraphicsHandle < Grasppe.Prototypes.Instance & ...
     
     function lh = addlistener(obj, varargin)
       global DebugHandleOverloads;
+      
+      lh                      = [];
+      
+      if ~all(isvalid(obj)), return; end
+      if isequal(obj.uddIsBeingDestroyed, true), return; end
+      
       if isequal(DebugHandleOverloads, true), debugStamp('ADDLISTENER', 1); end
       
       try
@@ -339,7 +478,7 @@ classdef GraphicsHandle < Grasppe.Prototypes.Instance & ...
         
         
       catch err
-        debugStamp(err, 1, obj);
+        GrasppeKit.Utilities.DisplayError(obj, 1, err);
       end
     end
     
@@ -376,16 +515,31 @@ classdef GraphicsHandle < Grasppe.Prototypes.Instance & ...
       global DebugDeleteOverloads;
       if isequal(DebugDeleteOverloads, true), debugStamp('DELETE', 1); end
       
-      isInstance;
-      if all(~isvalid(obj)), return; end
-      if ~isequal(class(obj.Delegate), 'root');
+      try if all(~isvalid(obj)), return; end; end
+      
+      validObject             = obj(isvalid(obj));
+      
+      for m = 1:numel(validObject)
         try
-          obj.deleteRecursively(obj.ChildComponents);
+          thisObject          = validObject(m);
+          
+          if ~isvalid(thisObject), continue; end
+          
+          if ~isequal(thisObject.uddIsBeingDestroyed, true) && ...
+              ~isequal(class(thisObject.Object), 'root')
+            try delete(thisObject.Object); end
+          end
+          
+          handleFunctions     = struct2cell(thisObject.HandleFunctions);
+          
+          for n = 1:numel(handleFunctions)
+            try delete(handleFunctions{n}.Listener); end
+          end
+          
+          thisObject.deleteRecursively(thisObject.ChildComponents);
         catch err
-          debugStamp(err, 1);
+          GrasppeKit.Utilities.DisplayError(thisObject, 1, err);
         end
-      else
-        debugStamp('NotDeletingRoot', 1, obj);
       end
     end
     
@@ -398,7 +552,7 @@ classdef GraphicsHandle < Grasppe.Prototypes.Instance & ...
     end
     
     function inspectHandle(obj)
-      if ishandle(obj.Handle)
+      if ishandle(obj(1).Handle)
         inspect(obj.Handle);
       end
     end

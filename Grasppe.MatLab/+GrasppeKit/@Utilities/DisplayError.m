@@ -1,4 +1,4 @@
-function StampError(obj, level, err)
+function message = DisplayError(obj, level, err)
   %STAMPEVENT Print Event Stamp fto Console
   %   Detailed explanation goes here
   try

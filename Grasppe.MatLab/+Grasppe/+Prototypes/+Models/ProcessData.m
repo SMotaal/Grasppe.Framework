@@ -11,6 +11,16 @@ classdef ProcessData < Grasppe.Prototypes.Model
     Variables             = struct;    
   end
   
+  properties
+    input
+    output
+    type
+    name
+    parameters
+    variables             = struct;    
+  end
+  
+  
   methods
     function obj = ProcessData(type, name, parameters, varargin)
       obj = obj@Grasppe.Prototypes.Model(varargin{:});

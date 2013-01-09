@@ -1,26 +1,21 @@
 function [names values] = setOptions(obj, varargin)
   
-  % import(obj.Imports{:});
+  [names values] = Grasppe.Prototypes.Utilities.ParseOptions(varargin{:});
   
-  [names values paired pairs] = Grasppe.Prototypes.Utilities.ParseOptions(varargin{:});
-  
-  if (paired)
-    for i=1:numel(names)
-      
+  for i=1:numel(names)
+    try
+      obj.privateSet(names{i}, values{i})
+    catch err
       try
-        obj.privateSet(names{i}, values{i})
+        if ~isequal(obj.(names{i}), values{i}), obj.(names{i}) = values{i}; end
       catch err
-        try
-          if ~isequal(obj.(names{i}), values{i}), obj.(names{i}) = values{i}; end
-        catch err
-          if ~strcontains(err.identifier, 'noSetMethod')
-            try debugStamp(obj.InstanceID, 5); end
-            disp(['Could not set ' names{i} ' for ' class(obj) '. ' err.message]);
-          end
+        if ~strcontains(err.identifier, 'noSetMethod')
+          try debugStamp(obj.InstanceID, 5); end
+          disp(['Could not set ' names{i} ' for ' class(obj) '. ' err.message]);
+          try GrasppeKit.Utilities.DisplayError(obj, 1, err); end
         end
       end
     end
-    
   end
   
 end

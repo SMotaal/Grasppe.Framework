@@ -30,9 +30,9 @@ function st = debugStamp( tag, level, obj )
       str = '';
       
       obj = [];
-      %try obj = evalin('caller', 'obj'); end
-      %if isempty(obj), try obj = evalin('caller', 'evt'); end; end
-      %if isempty(obj), try obj = evalin('caller', 'val'); end; end
+      try obj = evalin('caller', 'obj'); end
+      if isempty(obj), try obj = evalin('caller', 'evt'); end; end
+      if isempty(obj), try obj = evalin('caller', 'val'); end; end
       
       if ~isempty(obj) && isscalar(obj) && isobject(obj)
         objID = class(obj);
