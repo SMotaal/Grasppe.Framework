@@ -37,17 +37,21 @@ classdef Handle < Grasppe.Prototypes.Prototype & dynamicprops
     
     function addEventListener(obj, eventName, listener)
       
-      if ~isfield(obj.EventListeners, eventName)
+      if  ~isfield(obj.EventListeners, eventName)
         obj.EventListeners.(eventName) = {};
       end
       
       listeners           = obj.EventListeners.(eventName);
       
+      if ~isa(listener, 'function_handle') && ishandle(listener) && isvalid(listener) && ismethod(listener, 'handleEvent')
+        listener          = @listener.handleEvent;
+      end
+      
       try
         if any(cellfun(@(x)isequal(x, listener), listeners(:,1))), return; end %lidx = cellfun(@(x)isequal(x, listener), listeners(:,1)); if any(lidx), return; end
       end
       
-      lh                  = obj.addlistener(eventName, @listener.handleEvent); ...
+      lh                  = obj.addlistener(eventName, listener); ...
         % Callback: obj ==> src, listener ==> obj, EventData ==> evt
       
       listeners(end+1,:)  = {listener, lh};
