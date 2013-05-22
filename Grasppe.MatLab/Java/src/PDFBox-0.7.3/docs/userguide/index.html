@@ -1,0 +1,454 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<head>
+<META http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<meta content="Apache Forrest" name="Generator">
+<meta name="Forrest-version" content="0.8-dev">
+<meta name="Forrest-skin-name" content="pelt">
+<title>PDFBox - User Guide</title>
+<link type="text/css" href="../skin/basic.css" rel="stylesheet">
+<link media="screen" type="text/css" href="../skin/screen.css" rel="stylesheet">
+<link media="print" type="text/css" href="../skin/print.css" rel="stylesheet">
+<link type="text/css" href="../skin/profile.css" rel="stylesheet">
+<script src="../skin/getBlank.js" language="javascript" type="text/javascript"></script><script src="../skin/getMenu.js" language="javascript" type="text/javascript"></script><script src="../skin/fontsize.js" language="javascript" type="text/javascript"></script>
+<link rel="shortcut icon" href="../">
+</head>
+<body onload="init()">
+<script type="text/javascript">ndeSetTextSize();</script>
+<div id="top">
+<!--+
+    |header
+    +-->
+<div class="header">
+<!--+
+    |start group logo
+    +-->
+<div class="grouplogo">
+<a href="http://www.pdfbox.org"><img class="logoImage" alt="" src="../images/Logo.gif" title="PDFBox: Java PDF Library"></a>
+</div>
+<!--+
+    |end group logo
+    +-->
+<!--+
+    |start Project Logo
+    +-->
+<div class="projectlogoA1">
+<a href=""></a>
+</div>
+<!--+
+    |end Project Logo
+    +-->
+<!--+
+    |start Tabs
+    +-->
+<ul id="tabs">
+<li class="current">
+<a class="base-selected" href=".././index.html">Home</a>
+</li>
+</ul>
+<!--+
+    |end Tabs
+    +-->
+</div>
+</div>
+<div id="main">
+<div id="publishedStrip">
+<!--+
+    |start Subtabs
+    +-->
+<div id="level2tabs"></div>
+<!--+
+    |end Endtabs
+    +-->
+<script type="text/javascript"><!--
+document.write("Last Published: " + document.lastModified);
+//  --></script>
+</div>
+<!--+
+    |breadtrail
+    +-->
+<div class="breadtrail">
+             
+             &nbsp;
+           </div>
+<!--+
+    |start Menu, mainarea
+    +-->
+<!--+
+    |start Menu
+    +-->
+<div id="menu">
+<div onclick="SwitchMenu('menu_1.1', '../skin/')" id="menu_1.1Title" class="menutitle">About</div>
+<div id="menu_1.1" class="menuitemgroup">
+<div class="menuitem">
+<a href="../index.html" title="Welcome to PDFBox">Index</a>
+</div>
+<div class="menuitem">
+<a href="http://sourceforge.net/project/showfiles.php?group_id=78314" title="Download PDFBox">Download</a>
+</div>
+<div class="menuitem">
+<a href="http://www.pdfbox.org/dist/" title="Download a nightly release of PDFBox">Nightly Build</a>
+</div>
+<div class="menuitem">
+<a href="http://sourceforge.net/forum/?group_id=78314" title="Discuss PDFBox">Forums</a>
+</div>
+<div class="menuitem">
+<a href="http://sourceforge.net/tracker/?group_id=78314&atid=552832" title="Submit an issue">Issues</a>
+</div>
+<div class="menuitem">
+<a href="http://www.sf.net/projects/pdfbox" title="SourceForge Site">SourceForge</a>
+</div>
+<div class="menuitem">
+<a href="../references.html" title="References">References</a>
+</div>
+<div class="menuitem">
+<a href="../donations.html" title="Donations">Donations</a>
+</div>
+<div class="menuitem">
+<a href="../changes.html" title="Release Notes">Release Notes</a>
+</div>
+</div>
+<div onclick="SwitchMenu('menu_1.2', '../skin/')" id="menu_1.2Title" class="menutitle">Command Line Utilities</div>
+<div id="menu_1.2" class="menuitemgroup">
+<div class="menuitem">
+<a href="../commandlineutilities/index.html" title="Index">Index</a>
+</div>
+<div class="menuitem">
+<a href="../commandlineutilities/Decrypt.html" title="Decrypt">Decrypt</a>
+</div>
+<div class="menuitem">
+<a href="../commandlineutilities/Encrypt.html" title="Encrypt">Encrypt</a>
+</div>
+<div class="menuitem">
+<a href="../commandlineutilities/ExtractText.html" title="ExtractText">ExtractText</a>
+</div>
+<div class="menuitem">
+<a href="../commandlineutilities/PDFToImage.html" title="PDFToImage">PDFToImage</a>
+</div>
+<div class="menuitem">
+<a href="../commandlineutilities/PrintPDF.html" title="PrintPDF">PrintPDF</a>
+</div>
+<div class="menuitem">
+<a href="../commandlineutilities/ConvertColorspace.html" title="Convert PDF colorspace, ie RGB to CMYK">ConvertColorspace</a>
+</div>
+<div class="menuitem">
+<a href="../commandlineutilities/TextToPDF.html" title="TextToPDF">TextToPDF</a>
+</div>
+</div>
+<div onclick="SwitchMenu('menu_selected_1.3', '../skin/')" id="menu_selected_1.3Title" class="menutitle" style="background-image: url('../skin/images/chapter_open.gif');">Developers Guide</div>
+<div id="menu_selected_1.3" class="selectedmenuitemgroup" style="display: block;">
+<div class="menupage">
+<div class="menupagetitle">Index</div>
+</div>
+<div class="menuitem">
+<a href="../userguide/bookmarks.html" title="PDF Bookmarks">Bookmarks</a>
+</div>
+<div class="menuitem">
+<a href="../userguide/building_pdfbox.html" title="Building PDFBox">Building PDFBox</a>
+</div>
+<div class="menuitem">
+<a href="../userguide/faq.html" title="Answers to Questions about PDFBox">FAQ</a>
+</div>
+<div class="menuitem">
+<a href="../userguide/file_references.html" title="Documentation on embedded and externally referenced files">File References</a>
+</div>
+<div class="menuitem">
+<a href="../userguide/fonts.html" title="Fonts in PDFBox">Fonts</a>
+</div>
+<div class="menuitem">
+<a href="../userguide/highlighting.html" title="Highlighting text in a PDF">Highlighting</a>
+</div>
+<div class="menuitem">
+<a href=".././javadoc/index.html" title="Javadoc API">Javadoc</a>
+</div>
+<div class="menuitem">
+<a href="../userguide/metadata.html" title="XMP Metadata">Metadata</a>
+</div>
+<div class="menuitem">
+<a href="../userguide/dot_net.html" title=".NET Version">.NET Version</a>
+</div>
+<div class="menuitem">
+<a href="../userguide/text_extraction.html" title="PDF Text Extraction">Text Extraction</a>
+</div>
+</div>
+<div id="credit"></div>
+<div id="roundbottom">
+<img style="display: none" class="corner" height="15" width="15" alt="" src="../skin/images/rc-b-l-15-1body-2menu-3menu.png"></div>
+<!--+
+  |alternative credits
+  +-->
+<div id="credit2"></div>
+</div>
+<!--+
+    |end Menu
+    +-->
+<!--+
+    |start content
+    +-->
+<div id="content">
+<div title="Portable Document Format" class="pdflink">
+<a class="dida" href="index.pdf"><img alt="PDF -icon" src="../skin/images/pdfdoc.gif" class="skin"><br>
+        PDF</a>
+</div>
+<h1>PDFBox - User Guide</h1>
+<div id="minitoc-area">
+<ul class="minitoc">
+<li>
+<a href="#Introduction">Introduction</a>
+</li>
+<li>
+<a href="#PDF+File+Format+Overview">PDF File Format Overview</a>
+</li>
+<li>
+<a href="#PD+Model">PD Model</a>
+</li>
+</ul>
+</div> 
+    
+<a name="N1000C"></a><a name="Introduction"></a>
+<h2 class="boxed">Introduction</h2>
+<div class="section">
+<p>
+        	This page will discuss the internals of PDF documents and those internal map to PDFBox classes.
+        	Users should reference the javadoc to see what classes and methods are available.  The 
+        	<a href="http://partners.adobe.com/public/developer/pdf/index_reference.html">Adobe PDF Reference</a> 
+        	can be used to determine detailed information about fields and their meanings.
+        </p>
+</div>
+    
+<a name="N1001A"></a><a name="PDF+File+Format+Overview"></a>
+<h2 class="boxed">PDF File Format Overview</h2>
+<div class="section">
+<p>
+      A PDF document is a stream of basic object types.  The low level objects are represented in PDFBox
+      in the <i>org.pdfbox.cos</i> package.  The basic types in a PDF are:
+      </p>
+<table class="ForrestTable" cellspacing="1" cellpadding="4">
+      	
+<tr>
+      		
+<th colspan="1" rowspan="1">PDF Type</th>
+      		<th colspan="1" rowspan="1">Description</th>
+      		<th colspan="1" rowspan="1">Example</th>
+      		<th colspan="1" rowspan="1">PDFBox class</th>
+      	
+</tr>
+      	
+<tr>
+      		
+<td colspan="1" rowspan="1">Array</td>
+      		<td colspan="1" rowspan="1">An ordered list of items</td>
+      		<td colspan="1" rowspan="1">[1 2 3]</td>
+      		<td colspan="1" rowspan="1">org.pdfbox.cos.COSArray</td>
+      	
+</tr>
+      	
+<tr>
+      		
+<td colspan="1" rowspan="1">Boolean</td>
+      		<td colspan="1" rowspan="1">Standard True/False values</td>
+      		<td colspan="1" rowspan="1">true</td>
+      		<td colspan="1" rowspan="1">org.pdfbox.cos.COSBoolean</td>
+      	
+</tr>
+      	
+<tr>
+      		
+<td colspan="1" rowspan="1">Dictionary</td>
+      		<td colspan="1" rowspan="1">A map of name value pairs</td>
+      		<td colspan="1" rowspan="1">&lt;&lt;<br>
+      		    /Type /XObject<br>
+      		    /Name (Name)<br>
+      		    /Size 1<br>
+      		    &gt;&gt;
+      		 </td>
+      		<td colspan="1" rowspan="1">org.pdfbox.cos.COSDictionary</td>
+      	
+</tr>
+      	
+<tr>
+      		
+<td colspan="1" rowspan="1">Number</td>
+      		<td colspan="1" rowspan="1">Integer and Floating point numbers</td>
+      		<td colspan="1" rowspan="1">1 2.3</td>
+      		<td colspan="1" rowspan="1">org.pdfbox.cos.COSFloat<br>org.pdfbox.cos.COSInteger</td>
+      	
+</tr>
+      	
+<tr>
+      		
+<td colspan="1" rowspan="1">Name</td>
+      		<td colspan="1" rowspan="1">A predefined value in a PDF document, typically used as a key in a dictionary</td>
+      		<td colspan="1" rowspan="1">/Type</td>
+      		<td colspan="1" rowspan="1">org.pdfbox.cos.COSName</td>
+      	
+</tr>
+      	
+<tr>
+      		
+<td colspan="1" rowspan="1">Object</td>
+      		<td colspan="1" rowspan="1">A wrapper to any of the other objects, this can be used to reference an object multiple times.
+      		  An object is referenced by using two numbers, an object number an a generation number.  Initially 
+      		  the generation number will be zero unless the object get replaced later in the stream.
+      		</td>
+      		<td colspan="1" rowspan="1">12 0 obj &lt;&lt; /Type /XObject &gt;&gt; endobj</td>
+      		<td colspan="1" rowspan="1">org.pdfbox.cos.COSObject</td>
+      	
+</tr>
+      	
+<tr>
+      		
+<td colspan="1" rowspan="1">Stream</td>
+      		<td colspan="1" rowspan="1">A stream of data, typically compressed.  This is used for page contents, images and 
+      		embedded font streams.
+      		</td>
+      		<td colspan="1" rowspan="1">12 0 obj &lt;&lt; /Type /XObject &gt;&gt; stream 030004040404040404 endstream</td>
+      		<td colspan="1" rowspan="1">org.pdfbox.cos.COSStream</td>
+      	
+</tr>
+      	
+<tr>
+      		
+<td colspan="1" rowspan="1">String</td>
+      		<td colspan="1" rowspan="1">A sequence of characters
+      		</td>
+      		<td colspan="1" rowspan="1">(This is a string)</td>
+      		<td colspan="1" rowspan="1">org.pdfbox.cos.COSString</td>
+      	
+</tr>
+      
+</table>
+<p>
+      A page in a pdf document is represented with a COSDictionary.  The entries that are available for 
+      a page can be seen in the PDF Reference and an example of a page looks like this:
+      </p>
+<table class="ForrestTable" cellspacing="1" cellpadding="4">
+      
+<tr>
+<td colspan="1" rowspan="1">
+      
+<pre>
+&lt;&lt;
+    /Type /Page
+    /MediaBox [0 0 612 915]
+    /Contents 56 0 R
+&gt;&gt;</pre>
+      
+</td>
+</tr>
+      
+</table>
+<p>Some Java code to access fields</p>
+<table class="ForrestTable" cellspacing="1" cellpadding="4">
+      
+<tr>
+<td colspan="1" rowspan="1">
+      
+<pre>COSDictionary page = ...;
+COSArray mediaBox = (COSArray)page.getDictionaryObject( "MediaBox" );
+System.out.println( "Width:" + mediaBox.get( 3 ) );
+</pre>
+      
+</td>
+</tr>
+      
+</table>
+</div>
+    
+<a name="N10121"></a><a name="PD+Model"></a>
+<h2 class="boxed">PD Model</h2>
+<div class="section">
+<p>The COS Model allows access to all aspects of a PDF document.  This type of programming is 
+    	tedious and error prone though because the user must know all of the names of the parameters
+    	and no helper methods are available.  The PD Model was created to help alleviate this problem.  
+    	Each type of object(page, font, image) has a set of defined attributes that can be available
+    	in the dictionary.  A PD Model class is available for each of these so that strongly typed
+    	methods are available to access the attributes.  The same code from above to get the page width
+    	can be rewritten to use PD Model classes.
+    	</p>
+<table class="ForrestTable" cellspacing="1" cellpadding="4">
+      
+<tr>
+<td colspan="1" rowspan="1">
+      
+<pre>PDPage page = ...;
+PDRectangle mediaBox = page.getMediaBox();
+System.out.println( "Width:" + mediaBox.getWidth() );</pre>
+      
+</td>
+</tr>
+      
+</table>
+<p>PD Model objects sit on top of COS model.  Typically, the classes in the PD Model 
+         will only store a COS object and all setter/getter methods will modify data that
+         is stored in the COS object.  For example, when you call PDPage.getLastModified() the method
+         will do a lookup in the COSDictionary with the key "LastModified", if it is found the value is
+         then converter to a java.util.Calendar.  When PDPage.setLastModified( Calendar ) is called
+         then the Calendar is converted to a string in the COSDictionary.
+      </p>
+<p>Here is a visual depiction of the COS Model and PD Model design.</p>
+<center>
+<img src="/images/cos-pdmodel diagram.png"></center>
+<p>
+      This design presents many advantages and disadvantages.<br>
+<br>
+      
+<b>Advantages:</b>
+</p>
+<ul>
+      	
+<li>Simple, easy to use API.</li>
+      	
+<li>Underlying document automatically gets updated when you update the PD Model</li>
+      	
+<li>Ability to easily access the COS Model from any PD Model object</li>
+      	
+<li>Easily add to and update existing PDF documents</li>
+      
+</ul>
+<p>
+<b>Disadvantages:</b>
+</p>
+<ul>
+      	
+<li>Object caching is not done in the PD Model classes
+      	    <div class="note">
+<div class="label">Note</div>
+<div class="content">For example, each call to PDPage.getMediaBox() will return a new PDRectangle
+      	    object, but will contain the same underlying COSArray.</div>
+</div>
+      	
+</li>
+      
+</ul>
+</div>
+  
+</div>
+<!--+
+    |end content
+    +-->
+<div class="clearboth">&nbsp;</div>
+</div>
+<div id="footer">
+<!--+
+    |start bottomstrip
+    +-->
+<div class="lastmodified">
+<script type="text/javascript"><!--
+document.write("Last Published: " + document.lastModified);
+//  --></script>
+</div>
+<div class="copyright">
+        Copyright &copy;
+         2002-2006 PDFBox.org</div>
+<div id="logos"></div>
+<div id="feedback">
+    Send feedback about the website to:
+  <a id="feedbackto" href="mailto:webmaster@pdfbox.org?subject=Feedback%C2%A0userguide/index.html">webmaster@pdfbox.org</a>
+</div>
+<!--+
+    |end bottomstrip
+    +-->
+</div>
+</body>
+</html>

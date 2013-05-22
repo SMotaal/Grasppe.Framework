@@ -6,7 +6,24 @@ function [ output_args ] = grasppe( input_args )
   
   disp('');
   addLibraryFolders();
+  % addJavaFolders();
+  
+  addPhotoshopFolders();
 end
+
+function addPhotoshopFolders()
+  addpath(genpath('/Applications/Adobe Photoshop CS5/MATLAB'));
+end
+
+% function addJavaFolders()
+%   baseFolders = {
+%     grasppeFolder('Java', '')
+%     };
+%   
+%   for m = 1:numel(baseFolders)
+%     addpath(baseFolders{m});
+%   end
+% end
 
 function addBaseFolders()
   baseFolders = {
@@ -77,9 +94,14 @@ function addLibraryFolders()
         debugStamp(err, 1);
       end
     end
-    GrasppeKit.Utilities.DisplayText('GRASPPE ~LIBRARY LOADER', [int2str(libCount) ' libraries have been included and initialized']);
+    Grasppe.Kit.Utilities.DisplayText('GRASPPE ~LIBRARY LOADER', [int2str(libCount) ' libraries have been included and initialized']);
   else
-    GrasppeKit.Utilities.DisplayText('GRASPPE ~LIBRARY LOADER', [int2str(libCount) ' libraries have been included but not initialized'], ...
+    for m = 1:numel(initializeScripts), 
+      try
+        initializeScripts{m} = sprintf('<a href="matlab: %s">%s</a>', initializeScripts{m}, initializeScripts{m}); %eval(initializeScripts{m});
+      end
+    end    
+    Grasppe.Kit.Utilities.DisplayText('GRASPPE ~LIBRARY LOADER', [int2str(libCount) ' libraries have been included but not initialized'], ...
       [strcat(initializeLibs(:)',':'), initializeScripts(:)']);
   end
     

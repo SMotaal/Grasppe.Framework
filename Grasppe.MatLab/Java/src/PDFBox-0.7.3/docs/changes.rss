@@ -1,0 +1,1525 @@
+<?xml version="1.0" encoding="ISO-8859-1"?><!DOCTYPE rss PUBLIC "-//Netscape Communications//DTD RSS 0.91//EN" "http://my.netscape.com/publish/formats/rss-0.91.dtd">
+<rss version="0.91"><channel><title> (0.7.3) Changes</title><link>changes.html</link><description> (0.7.3) Changes</description><language>en-us</language>
+
+  
+    
+    
+  
+  
+  
+    
+    
+    
+    
+    
+   
+
+    
+          
+  
+	
+        <item><title>code update</title><link>changes.html</link><description>code update
+        by
+        BJL
+        :
+        Upgraded to Checkstyle 4.2</description></item>
+        <item><title>code update</title><link>changes.html</link><description>code update
+        by
+        BJL
+        :
+        Upgraded to IKVM 0.30.0.0</description></item>
+	    <item><title>code update</title><link>changes.html</link><description>code update
+        by
+        BJL
+        :
+        [ 1546399 ] Use get/set functions for separators in PDFTextStripper</description></item>
+	    <item><title>code add</title><link>changes.html</link><description>code add
+        by
+        BJL
+        :
+        PDDocument.silentPrint() to print without prompting for a printer</description></item>
+	    <item><title>code fix</title><link>changes.html</link><description>code fix
+        by
+        BJL
+        :
+        [ 1544118 ] Bug in PDFont.getCodeFromArray</description></item>
+	    <item><title>code update</title><link>changes.html</link><description>code update
+        by
+        BJL
+        :
+        [ 1529835 ] Add COSFloat.setValue()</description></item>
+	    <item><title>code fix</title><link>changes.html</link><description>code fix
+        by
+        BJL
+        :
+        [ 1492555 ] PDChoiceField dead loop</description></item>
+	    <item><title>code fix</title><link>changes.html</link><description>code fix
+        by
+        BJL
+        :
+        [ 1499521 ] NPE PDAppearance.convertToMultiLine</description></item>
+	    <item><title>code fix</title><link>changes.html</link><description>code fix
+        by
+        BJL
+        :
+        [ 1522007 ] Error converting date</description></item>
+	    <item><title>code update</title><link>changes.html</link><description>code update
+        by
+        BJL
+        :
+        Upgraded to Lucene 2.0.0</description></item>
+	    <item><title>code fix</title><link>changes.html</link><description>code fix
+        by
+        BJL
+        :
+        [ 1451164 ] Problems filling combo and radio form fields</description></item>
+        <item><title>code update</title><link>changes.html</link><description>code update
+        by
+        BJL
+        :
+        Upgraded to lucene 1.9.1</description></item>
+        <item><title>code update</title><link>changes.html</link><description>code update
+        by
+        BJL
+        :
+        [ 1023133 ] Support PDF Functions</description></item>
+	    <item><title>code update</title><link>changes.html</link><description>code update
+        by
+        BJL
+        :
+        Added command line org.pdfbox.PDFMerger</description></item>
+	    <item><title>code update</title><link>changes.html</link><description>code update
+        by
+        BJL
+        :
+        ***API Change*** Promoted AppendDoc from example to util package, renamed to PDFMergerUtility.</description></item>
+	    <item><title>docs update</title><link>changes.html</link><description>docs update
+        by
+        BJL
+        :
+        Upgraded to Apache Forrest 0.8-dev</description></item>
+	    <item><title>code update</title><link>changes.html</link><description>code update
+        by
+        BJL
+        :
+        Upgraded to IKVM-0.24.0.1</description></item>
+	    <item><title>code fix</title><link>changes.html</link><description>code fix
+        by
+        BJL
+        :
+        [ 1391952 ] Problem extracting embedded attachments</description></item>
+	    <item><title>code fix</title><link>changes.html</link><description>code fix
+        by
+        BJL
+        :
+        [ 1249607 ] Fixed issue with broken PDFs that contain multiple endobj</description></item>
+	    <item><title>code add</title><link>changes.html</link><description>code add
+        by
+        BJL
+        :
+        [ 1153174 ] Added documentation for PDFHighlighter</description></item>
+	    <item><title>code update</title><link>changes.html</link><description>code update
+        by
+        BJL
+        :
+        Removed log4j dependency</description></item>
+		<item><title>code fix</title><link>changes.html</link><description>code fix
+        by
+        BJL
+        :
+        [ 974661 ] getKids() Null Pointer Exception when parsing pdf</description></item>
+	    <item><title>code add</title><link>changes.html</link><description>code add
+        by
+        BJL
+        :
+        Added better support for CJK encoding</description></item>
+	    <item><title>code update</title><link>changes.html</link><description>code update
+        by
+        BJL
+        :
+        Changed signature of PDFPageContentStream.drawImage to take float arguments instead of int</description></item>
+	    <item><title>code fix</title><link>changes.html</link><description>code fix
+        by
+        BJL
+        :
+        Fixed issue where form xobjects where not being drawn in the viewer</description></item>
+	    <item><title>code update</title><link>changes.html</link><description>code update
+        by
+        BJL
+        :
+        Changed signature to PDDocumentCatalog.OpenAction to be an PDDestinationOrAction instead of just action.</description></item>
+	    <item><title>code fix</title><link>changes.html</link><description>code fix
+        by
+        BJL
+        :
+        Added tolerance to text extraction sorting where text on a line was not at the same exact y coordinate but very close</description></item>
+	    <item><title>code add</title><link>changes.html</link><description>code add
+        by
+        BJL
+        :
+        [ 1327133 ] Printing with form data</description></item>
+	    <item><title>code fix</title><link>changes.html</link><description>code fix
+        by
+        BJL
+        :
+        Fixed issue with DateConverter that was trying to parse an empty string</description></item>
+	    <item><title>code fix</title><link>changes.html</link><description>code fix
+        by
+        BJL
+        :
+        [ 1324846 ] appending text to PDPageContentStream messes up fonts</description></item>
+    	<item><title>code add</title><link>changes.html</link><description>code add
+        by
+        BJL
+        :
+        Added new example ReplaceURLs to show how to replace a clickable URL in a PDF</description></item>
+	    <item><title>code add</title><link>changes.html</link><description>code add
+        by
+        BJL
+        :
+        Implemented annotation drawing</description></item>
+	    <item><title>code add</title><link>changes.html</link><description>code add
+        by
+        BJL
+        :
+        Implemented EndPath and StrokeAndClosePath operators</description></item>
+	    <item><title>code update</title><link>changes.html</link><description>code update
+        by
+        BJL
+        :
+        Move text extraction permission checking from PDFTextStripper to ExtractText</description></item>
+	    <item><title>code add</title><link>changes.html</link><description>code add
+        by
+        BJL
+        :
+        Added support for more annotations, thanks to a contribution from Paul King</description></item>
+	    <item><title>code update</title><link>changes.html</link><description>code update
+        by
+        BJL
+        :
+        Created new FontBox project to hold all font library code</description></item>
+	    <item><title>code fix</title><link>changes.html</link><description>code fix
+        by
+        BJL
+        :
+        Fixed issue where only the first page was sent to the printer</description></item>
+	    <item><title>code fix</title><link>changes.html</link><description>code fix
+        by
+        BJL
+        :
+        Now automatically sets the page orientation when printing</description></item>
+	
+    
+        <item><title>code update</title><link>changes.html</link><description>code update
+        by
+        BJL
+        :
+        Upgraded to IKVM-0.20.0.0</description></item>
+        <item><title>code add</title><link>changes.html</link><description>code add
+        by
+        BJL
+        :
+        Added support to get annotations from a page and to create a RubberStamp annotation</description></item>
+        <item><title>code add</title><link>changes.html</link><description>code add
+        by
+        BJL
+        :
+        Added PDDocument.print() to send the PDF to a printer.</description></item>
+        <item><title>code fix</title><link>changes.html</link><description>code fix
+        by
+        BJL
+        :
+        [ 1276623 ] NullPointerException in PageDrawer:241 when extractin images</description></item>
+        <item><title>code update</title><link>changes.html</link><description>code update
+        by
+        BJL
+        :
+        Allow creation of PDJpeg from a BufferedImage, thanks to contribution from Paul King</description></item>
+        <item><title>code add</title><link>changes.html</link><description>code add
+        by
+        BJL
+        :
+        Removed PDTiff in favor of PDCcitt</description></item>
+        <item><title>code add</title><link>changes.html</link><description>code add
+        by
+        BJL
+        :
+        PDFBox no longer requires log4j!!</description></item>
+        <item><title>code add</title><link>changes.html</link><description>code add
+        by
+        BJL
+        :
+        New class to allow you to specify 'named' regions where text is to be extracted.</description></item>
+        <item><title>code fix</title><link>changes.html</link><description>code fix
+        by
+        BJL
+        :
+        [ 1261555 ] Unexpected end of ZLIB input stream when stream has a zero length</description></item>
+        <item><title>code fix</title><link>changes.html</link><description>code fix
+        by
+        BJL
+        :
+        [ 1226665 ] ImportXFDF giving NPE error</description></item>
+        <item><title>code update</title><link>changes.html</link><description>code update
+        by
+        BJL
+        :
+        renamed COSDictionary.setItem( String, boolean ) to COSDictionary.setBoolean( String, boolean )</description></item>
+        <item><title>code update</title><link>changes.html</link><description>code update
+        by
+        BJL
+        :
+        Added sorting parameter to PDFTextStripper</description></item>
+        <item><title>code fix</title><link>changes.html</link><description>code fix
+        by
+        BJL
+        :
+        Fixed issues with PDF encryption</description></item>
+        <item><title>code update</title><link>changes.html</link><description>code update
+        by
+        BJL
+        :
+        Better date support, added support for PDFs that use non standard dates, support for time zone offsets</description></item>
+        <item><title>code update</title><link>changes.html</link><description>code update
+        by
+        BJL
+        :
+        FlateFilter-class now supports PNG-Predictors for decoding the imagedata, thanks to a contribution from Marcel Kammer</description></item>
+        <item><title>code add</title><link>changes.html</link><description>code add
+        by
+        BJL
+        :
+        Added support for extracting tiff images, thanks to a contribution from Marcel Kammer</description></item>
+        <item><title>code add</title><link>changes.html</link><description>code add
+        by
+        BJL
+        :
+        Added PDDocument.removePage to remove PDF pages</description></item>
+        <item><title>code add</title><link>changes.html</link><description>code add
+        by
+        BJL
+        :
+        Fixed issue when creating a COSString with a UTF 16 string</description></item>
+        <item><title>code add</title><link>changes.html</link><description>code add
+        by
+        BJL
+        :
+        Committed patch for type 1 PFB font parser(special thanks to Michael Niedermair)</description></item>
+        <item><title>code add</title><link>changes.html</link><description>code add
+        by
+        BJL
+        :
+        Committed patch for PNG predictors	(special thanks Erik Martino)</description></item>
+        <item><title>code fix</title><link>changes.html</link><description>code fix
+        by
+        BJL
+        :
+        [ 1227428 ] failure of getMediaBox</description></item>
+        <item><title>code fix</title><link>changes.html</link><description>code fix
+        by
+        BJL
+        :
+        [ 1227426 ] null pointer in PDFToImage(ColorModel is null)</description></item>
+        <item><title>code update</title><link>changes.html</link><description>code update
+        by
+        BJL
+        :
+        [ 1207113 ] Enhancement: runtime accessible version</description></item>
+        <item><title>code fix</title><link>changes.html</link><description>code fix
+        by
+        BJL
+        :
+        [ 1213320 ] setFfFlag() of PDField not working correctly</description></item>
+        <item><title>code fix</title><link>changes.html</link><description>code fix
+        by
+        BJL
+        :
+        [ 1215945 ] Error in COSString.writePDF() - fixed escape sequences</description></item>
+        <item><title>code fix</title><link>changes.html</link><description>code fix
+        by
+        BJL
+        :
+        [ 1198912 ] COSName with escaped characters not parsed correctly</description></item>
+        <item><title>code fix</title><link>changes.html</link><description>code fix
+        by
+        BJL
+        :
+        Fixed issue where resources were not being cleared in PDFStreamEngine</description></item>
+        <item><title>code fix</title><link>changes.html</link><description>code fix
+        by
+        BJL
+        :
+        [ 1165686 ] Expected int type parse error</description></item>
+        <item><title>code fix</title><link>changes.html</link><description>code fix
+        by
+        BJL
+        :
+        [ 1182825 ] Wrong handling of signed/unsigned byte/int in TTF parsing</description></item>
+        <item><title>code remove</title><link>changes.html</link><description>code remove
+        by
+        BJL
+        :
+        [ 1182892 ] PDFHighlight.setHighlightColor was removed because it is not implemented by adobe</description></item>
+	
+    
+        <item><title>code fix</title><link>changes.html</link><description>code fix
+        by
+        BJL
+        :
+        [ 1170068 ] text field is not found</description></item>
+        <item><title>code fix</title><link>changes.html</link><description>code fix
+        by
+        BJL
+        :
+        fixed NPE issue where an image did not have any applied filters</description></item>
+        <item><title>code fix</title><link>changes.html</link><description>code fix
+        by
+        BJL
+        :
+        Fixed issue where extra spaces were being added during text extraction for type3 fonts</description></item>
+        <item><title>code update</title><link>changes.html</link><description>code update
+        by
+        BJL
+        :
+        [ 1119420 ] Extract and Update the Meta-Information as XML</description></item>
+        <item><title>code update</title><link>changes.html</link><description>code update
+        by
+        BJL
+        :
+        [ 1119410 ] Extract text in/between bookmarks</description></item>
+        <item><title>code update</title><link>changes.html</link><description>code update
+        by
+        BJL
+        :
+        [ 1164476 ] XFDFImport should fail with non XFDF document</description></item>
+        <item><title>code add</title><link>changes.html</link><description>code add
+        by
+        BJL
+        :
+        [ 1119408 ] Support named target for Bookmark extraction.</description></item>
+        <item><title>code add</title><link>changes.html</link><description>code add
+        by
+        BJL
+        :
+        Created Resources/PDFBox_External_Fonts.properties to create a mapping for non-embedded fonts</description></item>
+        <item><title>code update</title><link>changes.html</link><description>code update
+        by
+        BJL
+        :
+        **API Change** Renamed PDField.getName() to PDField.getPartialName(), added method getFullyQualifiedName() </description></item>
+        <item><title>code update</title><link>changes.html</link><description>code update
+        by
+        BJL
+        :
+        **API Change** Renamed PDWidget to PDAnnotationWidget for naming consistency</description></item>
+        <item><title>code update</title><link>changes.html</link><description>code update
+        by
+        BJL
+        :
+        Text is now extracted from embedded form xobjects.</description></item>
+        <item><title>code update</title><link>changes.html</link><description>code update
+        by
+        BJL
+        :
+        Deployed site to new hosting vendor.</description></item>
+        <item><title>code update</title><link>changes.html</link><description>code update
+        by
+        BJL
+        :
+        committed code for PDFHighlighter to highlight words in a PDF document.</description></item>
+        <item><title>code update</title><link>changes.html</link><description>code update
+        by
+        BJL
+        :
+        Added command line application org.pdfbox.PDFToImage</description></item>
+        <item><title>code update</title><link>changes.html</link><description>code update
+        by
+        BJL
+        :
+        Implemented runlength decoding</description></item>
+        <item><title>code update</title><link>changes.html</link><description>code update
+        by
+        BJL
+        :
+        Added patch from Jorge Hernández Sellés to append content streams to existing page.</description></item>
+    	<item><title>code update</title><link>changes.html</link><description>code update
+        by
+        BJL
+        :
+        **API Change**renamed package from pdmodel.graphics.image to pdmodel.graphics.xobject</description></item>
+        <item><title>code update</title><link>changes.html</link><description>code update
+        by
+        BJL
+        :
+        **API Change**Removed PDRadioButton, should use PDCheckbox instead</description></item>    
+        <item><title>code update</title><link>changes.html</link><description>code update
+        by
+        BJL
+        :
+        **API Change**COSStream now extends COSDictionary instead of containing a dictionary</description></item>
+        <item><title>code update</title><link>changes.html</link><description>code update
+        by
+        BJL
+        :
+        [ 1021241 ] Text extraction should follow PDF article divisions</description></item>
+        <item><title>code add</title><link>changes.html</link><description>code add
+        by
+        BJL
+        :
+        Added implementation for PDF page articles</description></item>
+        <item><title>code add</title><link>changes.html</link><description>code add
+        by
+        BJL
+        :
+        Created TextToPDF command line application</description></item>
+        <item><title>code add</title><link>changes.html</link><description>code add
+        by
+        BJL
+        :
+        Created ImageToPDF example</description></item>
+        <item><title>code fix</title><link>changes.html</link><description>code fix
+        by
+        BJL
+        :
+        fixed parsing of header where a trailing % exists</description></item>
+        <item><title>code fix</title><link>changes.html</link><description>code fix
+        by
+        BJL
+        :
+        [ 1110029 ] Character "&gt;" not quoted in COSName::writePDF</description></item>
+	
+    
+        <item><title>code update</title><link>changes.html</link><description>code update
+        by
+        BJL
+        :
+        committed [ 1097913 ] Enhance LucenePDFDocument streams(thanks to Olivier Parent)</description></item>
+        <item><title>code add</title><link>changes.html</link><description>code add
+        by
+        BJL
+        :
+        Added implementation for PDF Bookmarks</description></item>
+        <item><title>code add</title><link>changes.html</link><description>code add
+        by
+        BJL
+        :
+        Added implementation for PDF Destinations</description></item>
+        <item><title>code update</title><link>changes.html</link><description>code update
+        by
+        BJL
+        :
+        Updated website for better format for documentation</description></item>
+        <item><title>code fix</title><link>changes.html</link><description>code fix
+        by
+        BJL
+        :
+        Now ExportFDF and ExportXFDF will default output files to pdfname.fdf and pdfname.xfdf</description></item>
+        <item><title>code fix</title><link>changes.html</link><description>code fix
+        by
+        BJL
+        :
+        [ 1046278 ] ClassCastException when doing FDF/XFDF</description></item>
+        <item><title>code fix</title><link>changes.html</link><description>code fix
+        by
+        BJL
+        :
+        ExtractText now allows you to extract text if you decrypt with the owner password</description></item>
+        <item><title>code fix</title><link>changes.html</link><description>code fix
+        by
+        BJL
+        :
+        Added PDF 1.5 Object Stream support</description></item>
+        <item><title>code fix</title><link>changes.html</link><description>code fix
+        by
+        BJL
+        :
+        Added pdmodel.common.PDStream to represent COSStream</description></item>
+        <item><title>code fix</title><link>changes.html</link><description>code fix
+        by
+        BJL
+        :
+        changed PDPage.getContents to use PDStream instead of COSStream</description></item>
+        <item><title>code fix</title><link>changes.html</link><description>code fix
+        by
+        BJL
+        :
+        Updated LucenePDFDocument Javadoc to tell which Lucene fields it populates</description></item>
+        <item><title>code fix</title><link>changes.html</link><description>code fix
+        by
+        BJL
+        :
+        moved HelloWorld example from persistence to pdmodel and updated to use new PD Model features</description></item>
+        <item><title>code fix</title><link>changes.html</link><description>code fix
+        by
+        BJL
+        :
+        Refactored PDFStreamEngine based on contributions from Christophe Huault</description></item>
+        <item><title>code fix</title><link>changes.html</link><description>code fix
+        by
+        BJL
+        :
+        This class no longer uses a gigantic if/else statement for all of the operators they are defined as properties when instantiating the class</description></item>
+        <item><title>code fix</title><link>changes.html</link><description>code fix
+        by
+        BJL
+        :
+        Updated AFM resources to be ones released on Adobe's site, include AFM license as well</description></item>
+        <item><title>code fix</title><link>changes.html</link><description>code fix
+        by
+        BJL
+        :
+        Added ability to embed TTF fonts, only WinAnsiEncoding is supported at this time</description></item>
+        <item><title>code fix</title><link>changes.html</link><description>code fix
+        by
+        BJL
+        :
+        Added ability to extract images, thanks to contributions by Brigitte Mathiak</description></item>
+        <item><title>code fix</title><link>changes.html</link><description>code fix
+        by
+        BJL
+        :
+        COSWriter now generates the document id if it does not already exist</description></item>
+        <item><title>code fix</title><link>changes.html</link><description>code fix
+        by
+        BJL
+        :
+        improved performance for text extraction</description></item>
+        <item><title>code fix</title><link>changes.html</link><description>code fix
+        by
+        BJL
+        :
+        [ 1058693 ] TextPosition does not take account of tz operator</description></item>
+        <item><title>code fix</title><link>changes.html</link><description>code fix
+        by
+        BJL
+        :
+        upgraded to log4j-1.2.9</description></item>
+        <item><title>code fix</title><link>changes.html</link><description>code fix
+        by
+        BJL
+        :
+        include package-list for javadocs</description></item>
+        <item><title>code fix</title><link>changes.html</link><description>code fix
+        by
+        BJL
+        :
+        [ 1037145 ] Infinite loop in PDFParser.parseObject</description></item>
+        <item><title>code fix</title><link>changes.html</link><description>code fix
+        by
+        BJL
+        :
+        fixed error where spaces before integers was causing parse errors</description></item>
+    
+    
+        <item><title>code fix</title><link>changes.html</link><description>code fix
+        by
+        BJL
+        :
+        Revamped the way character spacing and font information is obtained</description></item>
+        <item><title>code fix</title><link>changes.html</link><description>code fix
+        by
+        BJL
+        :
+        Improved location information about a character drawn on the screen.</description></item>
+        <item><title>code fix</title><link>changes.html</link><description>code fix
+        by
+        BJL
+        :
+        Changed the PDFStreamEngine.showString to showCharacter to support the newly improved location information. This will now only show one character at a time.</description></item>
+        <item><title>code fix</title><link>changes.html</link><description>code fix
+        by
+        BJL
+        :
+        Fixed bug in PDDocument.isOwnerPassword and isUserPassword that was using the wrong length for the encryption key</description></item>
+        <item><title>code fix</title><link>changes.html</link><description>code fix
+        by
+        BJL
+        :
+        Upgraded to ant 1.6.2</description></item>
+        <item><title>code fix</title><link>changes.html</link><description>code fix
+        by
+        BJL
+        :
+        Upgraded to checkstyle-3.4</description></item>
+        <item><title>code fix</title><link>changes.html</link><description>code fix
+        by
+        BJL
+        :
+        Upgraded to JUnit-3.8.1</description></item>
+        <item><title>code fix</title><link>changes.html</link><description>code fix
+        by
+        BJL
+        :
+        Upgraded to lucene-1.4.2</description></item>
+        <item><title>code fix</title><link>changes.html</link><description>code fix
+        by
+        BJL
+        :
+        Integrated patch(1016603) for issue 943319 to fix parsing of open office documents</description></item>
+        <item><title>code fix</title><link>changes.html</link><description>code fix
+        by
+        BJL
+        :
+        Patch:985347 No longer throw exception for "No 'ToUnicode' and no 'Encoding' for Font"</description></item>
+        <item><title>code fix</title><link>changes.html</link><description>code fix
+        by
+        BJL
+        :
+        Patch:996191 Fixed case statement with missing break</description></item>
+        <item><title>code fix</title><link>changes.html</link><description>code fix
+        by
+        BJL
+        :
+        Patch:996781 Fixed null pointer exception in acroform fields</description></item>
+        <item><title>code fix</title><link>changes.html</link><description>code fix
+        by
+        BJL
+        :
+        Renamed DecryptDocument to DocumentEncryption to support encryption and decryption</description></item>
+        <item><title>code fix</title><link>changes.html</link><description>code fix
+        by
+        BJL
+        :
+        Added load/save/encrypt/decrypt convenience methods on the PDDocument class</description></item>
+        <item><title>code fix</title><link>changes.html</link><description>code fix
+        by
+        BJL
+        :
+        COSWriter now attempts to keep object numbers from parsed documents and writes 'free' entries in the xref if necessary</description></item>
+        <item><title>code fix</title><link>changes.html</link><description>code fix
+        by
+        BJL
+        :
+        Added the ability to set the word separator on the PDFTextStripper</description></item>
+        <item><title>code fix</title><link>changes.html</link><description>code fix
+        by
+        BJL
+        :
+        Fixed issue where PDFBox would throw an IOException if a PDF was incorrectly missing an endobj tag</description></item>
+        <item><title>code fix</title><link>changes.html</link><description>code fix
+        by
+        BJL
+        :
+        Fixed 918220 where PDFBox would freeze when parsing certain cmap files</description></item>
+        <item><title>code fix</title><link>changes.html</link><description>code fix
+        by
+        BJL
+        :
+        Added initial colorspace support</description></item>
+        <item><title>code fix</title><link>changes.html</link><description>code fix
+        by
+        BJL
+        :
+        Fixed issue where AppendDoc was throwing ClassCastException</description></item>
+        <item><title>code fix</title><link>changes.html</link><description>code fix
+        by
+        BJL
+        :
+        Fixed 1013163 Can't parse filters that use filter abbreviation</description></item>
+        <item><title>code fix</title><link>changes.html</link><description>code fix
+        by
+        BJL
+        :
+        Fixed 1011244 Where encrypting then decrypting was causing a problem</description></item>
+        <item><title>code fix</title><link>changes.html</link><description>code fix
+        by
+        BJL
+        :
+        renamed TextPosition.getWidth to TextPosition.getCombinedHorizontalDisplacement to better reflect its actual value</description></item>
+        <item><title>code fix</title><link>changes.html</link><description>code fix
+        by
+        BJL
+        :
+        Fixed 919215 PDFBox now support stream replacement</description></item>
+        <item><title>code fix</title><link>changes.html</link><description>code fix
+        by
+        BJL
+        :
+        Fixed 955043 Added support for 'ETenms-B5-H' encoding</description></item>
+        <item><title>code fix</title><link>changes.html</link><description>code fix
+        by
+        BJL
+        :
+        Fixed 996050 Class Cast exception when importing</description></item>
+        <item><title>code fix</title><link>changes.html</link><description>code fix
+        by
+        BJL
+        :
+        Added support for Font descriptors</description></item>
+        <item><title>code fix</title><link>changes.html</link><description>code fix
+        by
+        BJL
+        :
+        Fixed spacing issues when doing textfield FDF import</description></item>
+        <item><title>code fix</title><link>changes.html</link><description>code fix
+        by
+        BJL
+        :
+        Fixed 1017175 Large number converted when re-written</description></item>
+        <item><title>code fix</title><link>changes.html</link><description>code fix
+        by
+        BJL
+        :
+        Fixed 1029873 PDFBox now allows for multiple xref sections</description></item>
+        <item><title>code fix</title><link>changes.html</link><description>code fix
+        by
+        BJL
+        :
+        Added support for document Viewer Preferences</description></item>
+        <item><title>code fix</title><link>changes.html</link><description>code fix
+        by
+        BJL
+        :
+        Made currentDocument and pdfDocument protected in util.Splitter to allow easier subclassing</description></item>
+        <item><title>code fix</title><link>changes.html</link><description>code fix
+        by
+        BJL
+        :
+        Fixed 1034427 After Splitting page orientation is lost</description></item>
+        <item><title>code add</title><link>changes.html</link><description>code add
+        by
+        BJL
+        :
+        Added the following command line applications
+            
+        </description></item>
+    
+    
+        <item><title>code fix</title><link>changes.html</link><description>code fix
+        by
+        BJL
+        :
+        Improved support for setting of checkbox fields(FDF import)</description></item>
+        <item><title>code fix</title><link>changes.html</link><description>code fix
+        by
+        BJL
+        :
+        Added the org.pdfbox.PDFSplit utility to split a single document into many documents</description></item>
+        <item><title>code fix</title><link>changes.html</link><description>code fix
+        by
+        BJL
+        :
+        PDFBox now ignore the Length field that is associated with a stream, it has been found to be wrong in some documents</description></item>
+        <item><title>code fix</title><link>changes.html</link><description>code fix
+        by
+        BJL
+        :
+        Fixed bug when writing out PDF documents and the document contained an non alphabetic character such as ( or )</description></item>
+        <item><title>code fix</title><link>changes.html</link><description>code fix
+        by
+        BJL
+        :
+        Fixed bug in PDFont where dictionary encodings where not being processed correctly</description></item>
+        <item><title>code fix</title><link>changes.html</link><description>code fix
+        by
+        BJL
+        :
+        Fixed bug in COSDocument.isEncrypted which was comparing COSNull to the wrong object</description></item>
+        <item><title>code fix</title><link>changes.html</link><description>code fix
+        by
+        BJL
+        :
+        Integrated patch for supporting multiple lines in the appearance stream</description></item>
+        <item><title>code fix</title><link>changes.html</link><description>code fix
+        by
+        BJL
+        :
+        Upgraded to lucene-1.4-final</description></item>
+        <item><title>code fix</title><link>changes.html</link><description>code fix
+        by
+        BJL
+        :
+        org.pdfbox.ExtractText now uses the system encoding as the default encoding instead of ISO-8859-1</description></item>
+    
+    
+        <item><title>code fix</title><link>changes.html</link><description>code fix
+        by
+        BJL
+        :
+        Fixed bug in revision 3 encryption algorithm</description></item>
+        <item><title>code fix</title><link>changes.html</link><description>code fix
+        by
+        BJL
+        :
+        added support for CIDFontType0 glyph widths, which fixed issue with spaces being during text extraction</description></item>
+        <item><title>code fix</title><link>changes.html</link><description>code fix
+        by
+        BJL
+        :
+        Fixed infinite loop when parsing a corrupt content stream</description></item>
+        <item><title>code fix</title><link>changes.html</link><description>code fix
+        by
+        BJL
+        :
+        Add characterspacing + wordspacing when determining the width of a space character</description></item>
+        <item><title>code fix</title><link>changes.html</link><description>code fix
+        by
+        BJL
+        :
+        Added support for more font types</description></item>
+        <item><title>code fix</title><link>changes.html</link><description>code fix
+        by
+        BJL
+        :
+        refactored the pdmodel.interactive package, form fields use object delegation instead of inheritance for the widget, see PDField.getWidget and PDField.getKids</description></item>
+        <item><title>code fix</title><link>changes.html</link><description>code fix
+        by
+        BJL
+        :
+        Fixed bug where an inheritable cropbox would cause stackoverflow exception</description></item>
+        <item><title>code fix</title><link>changes.html</link><description>code fix
+        by
+        BJL
+        :
+        Changed usage of PDField/PDWidget to look like object delegation instead of inheritance by adding a PDField.getWidget instead of extending PDWidget</description></item>
+        <item><title>code fix</title><link>changes.html</link><description>code fix
+        by
+        BJL
+        :
+        refactored interactive package, this will break any existing code that uses the PDField/PDAnnotation classes. You will need to adjust your package names!!</description></item>
+        <item><title>code fix</title><link>changes.html</link><description>code fix
+        by
+        BJL
+        :
+        Now uses StandardEncoding as the default encoding</description></item>
+        <item><title>code fix</title><link>changes.html</link><description>code fix
+        by
+        BJL
+        :
+        Bug in AppendDoc example that did not take into account groups of pages</description></item>
+        <item><title>code fix</title><link>changes.html</link><description>code fix
+        by
+        BJL
+        :
+        PDFont now also tries the bootstrap classloader when loading AFM resources</description></item>
+        <item><title>code fix</title><link>changes.html</link><description>code fix
+        by
+        BJL
+        :
+        added -startPage and -endPage command line options to org.pdfbox.ExtractText</description></item>
+        <item><title>code fix</title><link>changes.html</link><description>code fix
+        by
+        BJL
+        :
+        Added support for corrupt PDFs with garbage before the header</description></item>
+        <item><title>code fix</title><link>changes.html</link><description>code fix
+        by
+        BJL
+        :
+        Fixed bug where there was whitespace instead of garbage characters in front of the first object</description></item>
+        <item><title>code fix</title><link>changes.html</link><description>code fix
+        by
+        BJL
+        :
+        performance improvements for the Matrix implementation</description></item>
+        <item><title>code fix</title><link>changes.html</link><description>code fix
+        by
+        BJL
+        :
+        upgraded to lucene 1.3</description></item>
+        <item><title>code fix</title><link>changes.html</link><description>code fix
+        by
+        BJL
+        :
+        fixed bug in cmap parser for cmap files that all ended in 'def'</description></item>
+        <item><title>code fix</title><link>changes.html</link><description>code fix
+        by
+        BJL
+        :
+        Removed createObject method from COSDocument, COSWriter will handle all object references for you</description></item>
+        <item><title>code fix</title><link>changes.html</link><description>code fix
+        by
+        BJL
+        :
+        Updated AppendDoc to use PDDocument instead of COSDocument and a couple bug fixes</description></item>
+        <item><title>code fix</title><link>changes.html</link><description>code fix
+        by
+        BJL
+        :
+        PDFParser now closes the document if there were parse errors</description></item>
+        <item><title>code fix</title><link>changes.html</link><description>code fix
+        by
+        BJL
+        :
+        TextPosition now has the PDFont that is associated with the piece of text</description></item>
+        <item><title>code fix</title><link>changes.html</link><description>code fix
+        by
+        BJL
+        :
+        Added initial version of org.pdfbox.PDFViewer, a GUI application to view the internal structure of a PDF document. This can be used for debugging purposes at this time but may end up being a Adobe Reader like application if there is enough interest</description></item>
+        <item><title>code fix</title><link>changes.html</link><description>code fix
+        by
+        BJL
+        :
+        Changed COSNumber/COSInteger/COSFloat interface to have both intValue and longValue</description></item>
+        <item><title>code fix</title><link>changes.html</link><description>code fix
+        by
+        BJL
+        :
+        Added methods isUserPassword &amp; isOwnerPassword to PDDocument</description></item>
+        <item><title>code fix</title><link>changes.html</link><description>code fix
+        by
+        BJL
+        :
+        Added cmap files for CJK languages, please give me some feedback</description></item>
+    
+    
+        <item><title>code fix</title><link>changes.html</link><description>code fix
+        by
+        BJL
+        :
+        Fixed bug which caused infinite loop</description></item>
+        <item><title>code fix</title><link>changes.html</link><description>code fix
+        by
+        BJL
+        :
+        Fixed bug in encoding where DictionaryEncoding kept a reference instead of making a copy leading to encoding problems</description></item>
+        <item><title>code fix</title><link>changes.html</link><description>code fix
+        by
+        BJL
+        :
+        Added PDFTextStripper.(get|set)PageSeparator, which will allow the user to output a string after every page</description></item>
+        <item><title>code fix</title><link>changes.html</link><description>code fix
+        by
+        BJL
+        :
+        refactored text stripping code to separate the logic processing of PDF operators and the logic of extracting text</description></item>
+        <item><title>code fix</title><link>changes.html</link><description>code fix
+        by
+        BJL
+        :
+        ran findbugs on source code and fixed a couple minor issues</description></item>
+        <item><title>code fix</title><link>changes.html</link><description>code fix
+        by
+        BJL
+        :
+        Refactored font functionality to PDFont, some API methods are no longer available in COSObject</description></item>
+        <item><title>code fix</title><link>changes.html</link><description>code fix
+        by
+        BJL
+        :
+        changed name of org.pdfbox.Main to org.pdfbox.ExtractText</description></item>
+        <item><title>code fix</title><link>changes.html</link><description>code fix
+        by
+        BJL
+        :
+        added contribution of org.pdfbox.Overlay from Mario Ivankovits</description></item>
+        <item><title>code fix</title><link>changes.html</link><description>code fix
+        by
+        BJL
+        :
+        added log.isDebugEnabled checks to log4j calls</description></item>
+        <item><title>code fix</title><link>changes.html</link><description>code fix
+        by
+        BJL
+        :
+        added better escaping when writing COSNames</description></item>
+        <item><title>code fix</title><link>changes.html</link><description>code fix
+        by
+        BJL
+        :
+        fixed bug where encryption dictionary is sometimes set to COSNull instead of not being present</description></item>
+    
+    
+        <item><title>code fix</title><link>changes.html</link><description>code fix
+        by
+        BJL
+        :
+        Now contains the ability to import/set FDF data thanks to a contribution from Stefan Uldum Grinsted</description></item>
+        <item><title>code fix</title><link>changes.html</link><description>code fix
+        by
+        BJL
+        :
+        No longer throw an error when stream is not followed by 0A or 0D0A to allow more PDFs to be parsed</description></item>
+        <item><title>code fix</title><link>changes.html</link><description>code fix
+        by
+        BJL
+        :
+        Added -encoding argument to org.pdfbox.Main to control the encoding of the output</description></item>
+        <item><title>code fix</title><link>changes.html</link><description>code fix
+        by
+        BJL
+        :
+        Remove Prev entry from trailer if it exists because PDFBox automatically clears all old entries, only an issue when modifying/saving an existing PDF document</description></item>
+        <item><title>code fix</title><link>changes.html</link><description>code fix
+        by
+        BJL
+        :
+        Fixed bug in master password encryption algorithm for Revision 3 encrypted documents</description></item>
+        <item><title>code fix</title><link>changes.html</link><description>code fix
+        by
+        BJL
+        :
+        COSString no longer uses UTF-8 when encoding the byte array</description></item>
+        <item><title>code fix</title><link>changes.html</link><description>code fix
+        by
+        BJL
+        :
+        Added PDDocument.getPageCount()</description></item>
+        <item><title>code fix</title><link>changes.html</link><description>code fix
+        by
+        BJL
+        :
+        Fixed bug in PDFEncryption where</description></item>
+        <item><title>code fix</title><link>changes.html</link><description>code fix
+        by
+        BJL
+        :
+        Now enforces text extraction permissions</description></item>
+    
+    
+        <item><title>code fix</title><link>changes.html</link><description>code fix
+        by
+        BJL
+        :
+        Modified build so that build.properties settings are no longer required</description></item>
+        <item><title>code add</title><link>changes.html</link><description>code add
+        by
+        BJL
+        :
+        Added required libraries to CVS</description></item>
+        <item><title>code add</title><link>changes.html</link><description>code add
+        by
+        BJL
+        :
+        Added log4j logging</description></item>
+        <item><title>code update</title><link>changes.html</link><description>code update
+        by
+        BJL
+        :
+        Significant text extraction work</description></item>
+        <item><title>code fix</title><link>changes.html</link><description>code fix
+        by
+        BJL
+        :
+        Added automatic handling of files encrypted with the empty password</description></item>
+        <item><title>code add</title><link>changes.html</link><description>code add
+        by
+        BJL
+        :
+        Added automated tests and test data for text extraction</description></item>
+        <item><title>code fix</title><link>changes.html</link><description>code fix
+        by
+        BJL
+        :
+        Removed unimplemented decoders from filters test</description></item>
+        <item><title>code fix</title><link>changes.html</link><description>code fix
+        by
+        BJL
+        :
+        Fixed several LZW decode bugs introduced after 0.5.6</description></item>
+        <item><title>code fix</title><link>changes.html</link><description>code fix
+        by
+        BJL
+        :
+        Fixed bugs relating to processing out of spec PDF's with bad # escaping in the name ("java.io.IOException: Error: expected hex number" bug)</description></item>
+        <item><title>code fix</title><link>changes.html</link><description>code fix
+        by
+        BJL
+        :
+        Fixed Lucene UID generation bug</description></item>
+        <item><title>code fix</title><link>changes.html</link><description>code fix
+        by
+        BJL
+        :
+        Fixed GetFontWidths null pointer exception bug</description></item>
+    
+    
+        <item><title>code fix</title><link>changes.html</link><description>code fix
+        by
+        BJL
+        :
+        Fixed bug in parsing stream objects which led to "Unexpected end of ZLIB input stream"</description></item>
+        <item><title>code fix</title><link>changes.html</link><description>code fix
+        by
+        BJL
+        :
+        Changed license from LGPL to BSD to allow pdfbox to be used easily in Apache projects</description></item>
+    
+    
+        <item><title>code fix</title><link>changes.html</link><description>code fix
+        by
+        BJL
+        :
+        Massive improvements to memory footprint</description></item>
+        <item><title>code fix</title><link>changes.html</link><description>code fix
+        by
+        BJL
+        :
+        Must call close() on the COSDocument(LucenePDFDocument does this for you)</description></item>
+        <item><title>code fix</title><link>changes.html</link><description>code fix
+        by
+        BJL
+        :
+        Really fixed the bug where small documents were not being indexed</description></item>
+        <item><title>code fix</title><link>changes.html</link><description>code fix
+        by
+        BJL
+        :
+        Fixed bug where no whitespace existed between obj and start of object. Exception in thread "main" java.io.IOException: expected='obj' actual='obj&lt;&lt;/Pro</description></item>
+        <item><title>code fix</title><link>changes.html</link><description>code fix
+        by
+        BJL
+        :
+        Fixed issue with spacing where textLineMatrix was not being copied properly</description></item>
+        <item><title>code fix</title><link>changes.html</link><description>code fix
+        by
+        BJL
+        :
+        Fixed 'bug' where parsing would fail with some pdfs with double endobj definitions</description></item>
+        <item><title>code add</title><link>changes.html</link><description>code add
+        by
+        BJL
+        :
+        Added PDF document summary fields to the lucene document</description></item>
+    
+    
+        <item><title>code add</title><link>changes.html</link><description>code add
+        by
+        BJL
+        :
+        Fixed bug in LucenePDFDocument where stream was not being closed and small documents were not being indexed </description></item>
+        <item><title>code add</title><link>changes.html</link><description>code add
+        by
+        BJL
+        :
+        Fixed a spacing issue for some PDF documents </description></item>
+        <item><title>code add</title><link>changes.html</link><description>code add
+        by
+        BJL
+        :
+        Fixed error while parsing the version number </description></item>
+        <item><title>code add</title><link>changes.html</link><description>code add
+        by
+        BJL
+        :
+        Fixed NullPointer in persistence example </description></item>
+        <item><title>code add</title><link>changes.html</link><description>code add
+        by
+        BJL
+        :
+        Create example lucene IndexFiles class which models the demo from lucene </description></item>
+        <item><title>code add</title><link>changes.html</link><description>code add
+        by
+        BJL
+        :
+        Fixed bug where garbage at the end of file caused an infinite loop </description></item>
+        <item><title>code add</title><link>changes.html</link><description>code add
+        by
+        BJL
+        :
+        Fixed bug in parsing boolean values with stuff at the end like "true&gt;&gt;" </description></item>
+    
+    
+      <item><title>code add</title><link>changes.html</link><description>code add
+        by
+        BJL
+        :
+        Added example of printing document signature</description></item>
+      <item><title>code add</title><link>changes.html</link><description>code add
+        by
+        BJL
+        :
+        Added example to print out form fields values</description></item>
+      <item><title>code fix</title><link>changes.html</link><description>code fix
+        by
+        BJL
+        :
+        Fixed bug when appending documents</description></item>
+      <item><title>code fix</title><link>changes.html</link><description>code fix
+        by
+        BJL
+        :
+        Various other bug fixes</description></item>
+    
+    
+      <item><title>code fix</title><link>changes.html</link><description>code fix
+        by
+        BJL
+        :
+        Fixed bug in text output where '?' instead of the proper character</description></item>
+      <item><title>code fix</title><link>changes.html</link><description>code fix
+        by
+        BJL
+        :
+        Fixed bug where sections of text were not being output at all</description></item>
+    
+    
+      <item><title>code fix</title><link>changes.html</link><description>code fix
+        by
+        BJL
+        :
+        Fixed bug in 128 bit encryption</description></item>
+    
+    
+      <item><title>code fix</title><link>changes.html</link><description>code fix
+        by
+        BJL
+        :
+        Fixed bug where FDF documents could not be appended to PDF Documents</description></item>
+      <item><title>code update</title><link>changes.html</link><description>code update
+        by
+        BJL
+        :
+        Catch all NumberFormatExceptions and wrap them with IOExceptions</description></item>
+    
+    
+      <item><title>code add</title><link>changes.html</link><description>code add
+        by
+        BJL
+        :
+        Now supports unicode for the document summary</description></item>
+      <item><title>code update</title><link>changes.html</link><description>code update
+        by
+        BJL
+        :
+        Better support for Type0 fonts</description></item>
+      <item><title>code fix</title><link>changes.html</link><description>code fix
+        by
+        BJL
+        :
+        Fixed bug with an empty LZW stream</description></item>
+      <item><title>code fix</title><link>changes.html</link><description>code fix
+        by
+        BJL
+        :
+        Fixed parsing error for ID operator</description></item>
+    
+    
+      <item><title>code add</title><link>changes.html</link><description>code add
+        by
+        BJL
+        :
+        Now supports unicode for the document summary</description></item>
+      <item><title>code update</title><link>changes.html</link><description>code update
+        by
+        BJL
+        :
+        Better support for Type0 fonts</description></item>
+      <item><title>code fix</title><link>changes.html</link><description>code fix
+        by
+        BJL
+        :
+        Fixed bug with an empty LZW stream</description></item>
+      <item><title>code fix</title><link>changes.html</link><description>code fix
+        by
+        BJL
+        :
+        Fixed parsing error for ID operator</description></item>
+    
+    
+      <item><title>code fix</title><link>changes.html</link><description>code fix
+        by
+        BJL
+        :
+        Fixed bug where .notdef was being output as document text</description></item>
+    
+    
+      <item><title>code add</title><link>changes.html</link><description>code add
+        by
+        BJL
+        :
+        Added extract text ant task</description></item>
+      <item><title>code add</title><link>changes.html</link><description>code add
+        by
+        BJL
+        :
+        Implemented AFM(Adobe Font Metrics) resource loading</description></item>
+      <item><title>code fix</title><link>changes.html</link><description>code fix
+        by
+        BJL
+        :
+        Fixed numerous bugs submitted by users</description></item>
+      <item><title>code update</title><link>changes.html</link><description>code update
+        by
+        BJL
+        :
+        Changed project from pdfparser to pdfbox to better reflect future needs</description></item>
+    
+    
+      <item><title>code add</title><link>changes.html</link><description>code add
+        by
+        BJL
+        :
+        Added indexer for the lucene project</description></item>
+      <item><title>code fix</title><link>changes.html</link><description>code fix
+        by
+        BJL
+        :
+        Initial implementation of PDF encryption(not working yet)</description></item>
+    
+    
+      <item><title>code add</title><link>changes.html</link><description>code add
+        by
+        BJL
+        :
+        Added support for the various encodings</description></item>
+      <item><title>code fix</title><link>changes.html</link><description>code fix
+        by
+        BJL
+        :
+        Improved the accuracy of the text output</description></item>
+    
+    
+      <item><title>code add</title><link>changes.html</link><description>code add
+        by
+        BJL
+        :
+        Initial Version</description></item>
+    
+  
+  
+
+<item><title>code update</title><link>changes.html</link><description>code update
+        by
+        BJL
+        :
+        Upgraded to Checkstyle 4.2</description></item><item><title>code update</title><link>changes.html</link><description>code update
+        by
+        BJL
+        :
+        Upgraded to IKVM 0.30.0.0</description></item><item><title>code update</title><link>changes.html</link><description>code update
+        by
+        BJL
+        :
+        [ 1546399 ] Use get/set functions for separators in PDFTextStripper</description></item><item><title>code add</title><link>changes.html</link><description>code add
+        by
+        BJL
+        :
+        PDDocument.silentPrint() to print without prompting for a printer</description></item><item><title>code fix</title><link>changes.html</link><description>code fix
+        by
+        BJL
+        :
+        [ 1544118 ] Bug in PDFont.getCodeFromArray</description></item><item><title>code update</title><link>changes.html</link><description>code update
+        by
+        BJL
+        :
+        [ 1529835 ] Add COSFloat.setValue()</description></item><item><title>code fix</title><link>changes.html</link><description>code fix
+        by
+        BJL
+        :
+        [ 1492555 ] PDChoiceField dead loop</description></item><item><title>code fix</title><link>changes.html</link><description>code fix
+        by
+        BJL
+        :
+        [ 1499521 ] NPE PDAppearance.convertToMultiLine</description></item><item><title>code fix</title><link>changes.html</link><description>code fix
+        by
+        BJL
+        :
+        [ 1522007 ] Error converting date</description></item><item><title>code update</title><link>changes.html</link><description>code update
+        by
+        BJL
+        :
+        Upgraded to Lucene 2.0.0</description></item><item><title>code fix</title><link>changes.html</link><description>code fix
+        by
+        BJL
+        :
+        [ 1451164 ] Problems filling combo and radio form fields</description></item><item><title>code update</title><link>changes.html</link><description>code update
+        by
+        BJL
+        :
+        Upgraded to lucene 1.9.1</description></item><item><title>code update</title><link>changes.html</link><description>code update
+        by
+        BJL
+        :
+        [ 1023133 ] Support PDF Functions</description></item><item><title>code update</title><link>changes.html</link><description>code update
+        by
+        BJL
+        :
+        Added command line org.pdfbox.PDFMerger</description></item><item><title>code update</title><link>changes.html</link><description>code update
+        by
+        BJL
+        :
+        ***API Change*** Promoted AppendDoc from example to util package, renamed to PDFMergerUtility.</description></item><item><title>docs update</title><link>changes.html</link><description>docs update
+        by
+        BJL
+        :
+        Upgraded to Apache Forrest 0.8-dev</description></item><item><title>code update</title><link>changes.html</link><description>code update
+        by
+        BJL
+        :
+        Upgraded to IKVM-0.24.0.1</description></item><item><title>code fix</title><link>changes.html</link><description>code fix
+        by
+        BJL
+        :
+        [ 1391952 ] Problem extracting embedded attachments</description></item><item><title>code fix</title><link>changes.html</link><description>code fix
+        by
+        BJL
+        :
+        [ 1249607 ] Fixed issue with broken PDFs that contain multiple endobj</description></item><item><title>code add</title><link>changes.html</link><description>code add
+        by
+        BJL
+        :
+        [ 1153174 ] Added documentation for PDFHighlighter</description></item><item><title>code update</title><link>changes.html</link><description>code update
+        by
+        BJL
+        :
+        Removed log4j dependency</description></item><item><title>code fix</title><link>changes.html</link><description>code fix
+        by
+        BJL
+        :
+        [ 974661 ] getKids() Null Pointer Exception when parsing pdf</description></item><item><title>code add</title><link>changes.html</link><description>code add
+        by
+        BJL
+        :
+        Added better support for CJK encoding</description></item><item><title>code update</title><link>changes.html</link><description>code update
+        by
+        BJL
+        :
+        Changed signature of PDFPageContentStream.drawImage to take float arguments instead of int</description></item><item><title>code fix</title><link>changes.html</link><description>code fix
+        by
+        BJL
+        :
+        Fixed issue where form xobjects where not being drawn in the viewer</description></item><item><title>code update</title><link>changes.html</link><description>code update
+        by
+        BJL
+        :
+        Changed signature to PDDocumentCatalog.OpenAction to be an PDDestinationOrAction instead of just action.</description></item><item><title>code fix</title><link>changes.html</link><description>code fix
+        by
+        BJL
+        :
+        Added tolerance to text extraction sorting where text on a line was not at the same exact y coordinate but very close</description></item><item><title>code add</title><link>changes.html</link><description>code add
+        by
+        BJL
+        :
+        [ 1327133 ] Printing with form data</description></item><item><title>code fix</title><link>changes.html</link><description>code fix
+        by
+        BJL
+        :
+        Fixed issue with DateConverter that was trying to parse an empty string</description></item><item><title>code fix</title><link>changes.html</link><description>code fix
+        by
+        BJL
+        :
+        [ 1324846 ] appending text to PDPageContentStream messes up fonts</description></item><item><title>code add</title><link>changes.html</link><description>code add
+        by
+        BJL
+        :
+        Added new example ReplaceURLs to show how to replace a clickable URL in a PDF</description></item><item><title>code add</title><link>changes.html</link><description>code add
+        by
+        BJL
+        :
+        Implemented annotation drawing</description></item><item><title>code add</title><link>changes.html</link><description>code add
+        by
+        BJL
+        :
+        Implemented EndPath and StrokeAndClosePath operators</description></item><item><title>code update</title><link>changes.html</link><description>code update
+        by
+        BJL
+        :
+        Move text extraction permission checking from PDFTextStripper to ExtractText</description></item><item><title>code add</title><link>changes.html</link><description>code add
+        by
+        BJL
+        :
+        Added support for more annotations, thanks to a contribution from Paul King</description></item><item><title>code update</title><link>changes.html</link><description>code update
+        by
+        BJL
+        :
+        Created new FontBox project to hold all font library code</description></item><item><title>code fix</title><link>changes.html</link><description>code fix
+        by
+        BJL
+        :
+        Fixed issue where only the first page was sent to the printer</description></item><item><title>code fix</title><link>changes.html</link><description>code fix
+        by
+        BJL
+        :
+        Now automatically sets the page orientation when printing</description></item></channel></rss>

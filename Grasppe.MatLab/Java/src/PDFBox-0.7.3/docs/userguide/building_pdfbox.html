@@ -1,0 +1,357 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<head>
+<META http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<meta content="Apache Forrest" name="Generator">
+<meta name="Forrest-version" content="0.8-dev">
+<meta name="Forrest-skin-name" content="pelt">
+<title>PDFBox - How to build PDFBox</title>
+<link type="text/css" href="../skin/basic.css" rel="stylesheet">
+<link media="screen" type="text/css" href="../skin/screen.css" rel="stylesheet">
+<link media="print" type="text/css" href="../skin/print.css" rel="stylesheet">
+<link type="text/css" href="../skin/profile.css" rel="stylesheet">
+<script src="../skin/getBlank.js" language="javascript" type="text/javascript"></script><script src="../skin/getMenu.js" language="javascript" type="text/javascript"></script><script src="../skin/fontsize.js" language="javascript" type="text/javascript"></script>
+<link rel="shortcut icon" href="../">
+</head>
+<body onload="init()">
+<script type="text/javascript">ndeSetTextSize();</script>
+<div id="top">
+<!--+
+    |header
+    +-->
+<div class="header">
+<!--+
+    |start group logo
+    +-->
+<div class="grouplogo">
+<a href="http://www.pdfbox.org"><img class="logoImage" alt="" src="../images/Logo.gif" title="PDFBox: Java PDF Library"></a>
+</div>
+<!--+
+    |end group logo
+    +-->
+<!--+
+    |start Project Logo
+    +-->
+<div class="projectlogoA1">
+<a href=""></a>
+</div>
+<!--+
+    |end Project Logo
+    +-->
+<!--+
+    |start Tabs
+    +-->
+<ul id="tabs">
+<li class="current">
+<a class="base-selected" href=".././index.html">Home</a>
+</li>
+</ul>
+<!--+
+    |end Tabs
+    +-->
+</div>
+</div>
+<div id="main">
+<div id="publishedStrip">
+<!--+
+    |start Subtabs
+    +-->
+<div id="level2tabs"></div>
+<!--+
+    |end Endtabs
+    +-->
+<script type="text/javascript"><!--
+document.write("Last Published: " + document.lastModified);
+//  --></script>
+</div>
+<!--+
+    |breadtrail
+    +-->
+<div class="breadtrail">
+             
+             &nbsp;
+           </div>
+<!--+
+    |start Menu, mainarea
+    +-->
+<!--+
+    |start Menu
+    +-->
+<div id="menu">
+<div onclick="SwitchMenu('menu_1.1', '../skin/')" id="menu_1.1Title" class="menutitle">About</div>
+<div id="menu_1.1" class="menuitemgroup">
+<div class="menuitem">
+<a href="../index.html" title="Welcome to PDFBox">Index</a>
+</div>
+<div class="menuitem">
+<a href="http://sourceforge.net/project/showfiles.php?group_id=78314" title="Download PDFBox">Download</a>
+</div>
+<div class="menuitem">
+<a href="http://www.pdfbox.org/dist/" title="Download a nightly release of PDFBox">Nightly Build</a>
+</div>
+<div class="menuitem">
+<a href="http://sourceforge.net/forum/?group_id=78314" title="Discuss PDFBox">Forums</a>
+</div>
+<div class="menuitem">
+<a href="http://sourceforge.net/tracker/?group_id=78314&atid=552832" title="Submit an issue">Issues</a>
+</div>
+<div class="menuitem">
+<a href="http://www.sf.net/projects/pdfbox" title="SourceForge Site">SourceForge</a>
+</div>
+<div class="menuitem">
+<a href="../references.html" title="References">References</a>
+</div>
+<div class="menuitem">
+<a href="../donations.html" title="Donations">Donations</a>
+</div>
+<div class="menuitem">
+<a href="../changes.html" title="Release Notes">Release Notes</a>
+</div>
+</div>
+<div onclick="SwitchMenu('menu_1.2', '../skin/')" id="menu_1.2Title" class="menutitle">Command Line Utilities</div>
+<div id="menu_1.2" class="menuitemgroup">
+<div class="menuitem">
+<a href="../commandlineutilities/index.html" title="Index">Index</a>
+</div>
+<div class="menuitem">
+<a href="../commandlineutilities/Decrypt.html" title="Decrypt">Decrypt</a>
+</div>
+<div class="menuitem">
+<a href="../commandlineutilities/Encrypt.html" title="Encrypt">Encrypt</a>
+</div>
+<div class="menuitem">
+<a href="../commandlineutilities/ExtractText.html" title="ExtractText">ExtractText</a>
+</div>
+<div class="menuitem">
+<a href="../commandlineutilities/PDFToImage.html" title="PDFToImage">PDFToImage</a>
+</div>
+<div class="menuitem">
+<a href="../commandlineutilities/PrintPDF.html" title="PrintPDF">PrintPDF</a>
+</div>
+<div class="menuitem">
+<a href="../commandlineutilities/ConvertColorspace.html" title="Convert PDF colorspace, ie RGB to CMYK">ConvertColorspace</a>
+</div>
+<div class="menuitem">
+<a href="../commandlineutilities/TextToPDF.html" title="TextToPDF">TextToPDF</a>
+</div>
+</div>
+<div onclick="SwitchMenu('menu_selected_1.3', '../skin/')" id="menu_selected_1.3Title" class="menutitle" style="background-image: url('../skin/images/chapter_open.gif');">Developers Guide</div>
+<div id="menu_selected_1.3" class="selectedmenuitemgroup" style="display: block;">
+<div class="menuitem">
+<a href="../userguide/index.html" title="A note on the docs">Index</a>
+</div>
+<div class="menuitem">
+<a href="../userguide/bookmarks.html" title="PDF Bookmarks">Bookmarks</a>
+</div>
+<div class="menupage">
+<div class="menupagetitle">Building PDFBox</div>
+</div>
+<div class="menuitem">
+<a href="../userguide/faq.html" title="Answers to Questions about PDFBox">FAQ</a>
+</div>
+<div class="menuitem">
+<a href="../userguide/file_references.html" title="Documentation on embedded and externally referenced files">File References</a>
+</div>
+<div class="menuitem">
+<a href="../userguide/fonts.html" title="Fonts in PDFBox">Fonts</a>
+</div>
+<div class="menuitem">
+<a href="../userguide/highlighting.html" title="Highlighting text in a PDF">Highlighting</a>
+</div>
+<div class="menuitem">
+<a href=".././javadoc/index.html" title="Javadoc API">Javadoc</a>
+</div>
+<div class="menuitem">
+<a href="../userguide/metadata.html" title="XMP Metadata">Metadata</a>
+</div>
+<div class="menuitem">
+<a href="../userguide/dot_net.html" title=".NET Version">.NET Version</a>
+</div>
+<div class="menuitem">
+<a href="../userguide/text_extraction.html" title="PDF Text Extraction">Text Extraction</a>
+</div>
+</div>
+<div id="credit"></div>
+<div id="roundbottom">
+<img style="display: none" class="corner" height="15" width="15" alt="" src="../skin/images/rc-b-l-15-1body-2menu-3menu.png"></div>
+<!--+
+  |alternative credits
+  +-->
+<div id="credit2"></div>
+</div>
+<!--+
+    |end Menu
+    +-->
+<!--+
+    |start content
+    +-->
+<div id="content">
+<div title="Portable Document Format" class="pdflink">
+<a class="dida" href="building_pdfbox.pdf"><img alt="PDF -icon" src="../skin/images/pdfdoc.gif" class="skin"><br>
+        PDF</a>
+</div>
+<h1>PDFBox - How to build PDFBox</h1>
+<div id="minitoc-area">
+<ul class="minitoc">
+<li>
+<a href="#Building+PDFBox">Building PDFBox</a>
+</li>
+<li>
+<a href="#Running%2FDebugging+PDFBox+in+Eclipse">Running/Debugging PDFBox in Eclipse</a>
+</li>
+</ul>
+</div> 
+    
+<a name="N1000C"></a><a name="Building+PDFBox"></a>
+<h2 class="boxed">Building PDFBox</h2>
+<div class="section">
+<p>
+      	This page will describe how to build PDFBox.  Most users should find the binary releases adequate, but 
+      	if you are contributing to PDFBox then you will need to know how to properly build the project.
+      </p>
+<p>
+      	You can obtain the latest source of PDFBox from CVS, see the 
+      	<a href="http://sourceforge.net/cvs/?group_id=78314">SourceForge</a> site for information
+      	about how to connect to CVS.  The below instructions should also work for a released/nightly distribution.
+      </p>
+<p>
+      	
+<ol>
+      		
+<li>Install <a href="http://ant.apache.org/">ANT</a>, PDFBox currently uses 1.6.2 but other
+      		    versions probably work as well.</li>
+      		
+<li>(Optional)Setup Apache Forrest, Forrest is used for
+      		    PDFBox documentation but is not required to compile PDFBox.
+      			<ol>
+      				
+<li>Install <a href="http://forrest.apache.org/">Forrest</a>
+</li>
+      				
+<li>In the build.properties, set the forrest.home property
+      				<br>
+<br>
+      				
+<table class="ForrestTable" cellspacing="1" cellpadding="4">
+				  	
+<tr>
+<td colspan="1" rowspan="1">
+				  	forrest.home=c:\\javalib\\apache-forrest-0.6\\src\\core
+					</td>
+</tr>
+				  
+</table>
+<br>
+      				
+</li>
+      			
+</ol>
+      		
+</li>
+      		
+<li>(Optional)Place the junit.jar file in the ANT_HOME\lib directory.  This is required
+      		    to run the junit tests but not to compile PDFBox.</li>
+      		
+<li>(Optional)Setup IKVM, if you want to build the .NET DLL version of PDFBox.
+      		
+      			<ol>
+      				
+<li>
+<a href="http://www.ikvm.net/">IKVM</a> binaries</li>
+      				
+<li>In the build.properties, set the ikvm.dir property
+      				<br>
+<br>
+      				
+<table class="ForrestTable" cellspacing="1" cellpadding="4">
+				  	
+<tr>
+<td colspan="1" rowspan="1">
+				  	ikvm.dir=C:\\javalib\\ikvm-12-07-2004\\ikvm
+					</td>
+</tr>
+				  
+</table>
+<br>
+      				
+</li>
+      			
+</ol>
+      		
+</li>
+      		
+<li>Run 'ant' from the root PDFBox directory.  This will create the .zip package
+      		    distribution.  See the build file for other ant targets.</li>
+      		
+      	
+</ol>
+      	
+<div class="note">
+<div class="label">Note</div>
+<div class="content">If you want to run PDFBox from an IDE them you will need to add the 'Resources' directory
+      	      to the project classpath in your IDE.
+      	 </div>
+</div>
+      
+</p>
+</div>
+    
+<a name="N1006B"></a><a name="Running%2FDebugging+PDFBox+in+Eclipse"></a>
+<h2 class="boxed">Running/Debugging PDFBox in Eclipse</h2>
+<div class="section">
+<p>
+    		In order to run PDFBox from within eclipse there is a couple things that need to be setup.  Certain
+    		pieces of functionality require access to the Resources folder.  Here is an example of what you need
+    		to do to run the ExtractText command line application.
+    		<ol>
+    			
+<li>In eclise click on "run..." or "debug..."</li>
+    			
+<li>In the tree on the left select "Java Application" and click "New"</li>
+    			
+<li>Name it, select the correct project, and the main class</li>
+    			
+<li>Select the "Arguments" tab and enter the command line arguments to the app</li>
+    			
+<li>Select the "Classpath" tab, the pdfbox project and jars should already be added in the "User Entries"</li>
+    			
+<li>Select the "User Entries" item and click the "Advanced" button</li>
+    			
+<li>The "Add Folder" radio button should be selected, press ok</li>
+    			
+<li>Select the root of the pdfbox project, this will make the "Resources" folder available on the classpath.</li>
+    		
+</ol>
+    		
+    	
+</p>
+</div>
+  
+</div>
+<!--+
+    |end content
+    +-->
+<div class="clearboth">&nbsp;</div>
+</div>
+<div id="footer">
+<!--+
+    |start bottomstrip
+    +-->
+<div class="lastmodified">
+<script type="text/javascript"><!--
+document.write("Last Published: " + document.lastModified);
+//  --></script>
+</div>
+<div class="copyright">
+        Copyright &copy;
+         2002-2006 PDFBox.org</div>
+<div id="feedback">
+    Send feedback about the website to:
+  <a id="feedbackto" href="mailto:webmaster@pdfbox.org?subject=Feedback%C2%A0userguide/building_pdfbox.html">webmaster@pdfbox.org</a>
+</div>
+<!--+
+    |end bottomstrip
+    +-->
+</div>
+</body>
+</html>

@@ -290,7 +290,7 @@ classdef DynamicDelegator < handle
         
         return;
       catch err
-        GrasppeKit.Utilities.DisplayError(obj, 1, err);
+        Grasppe.Kit.Utilities.DisplayError(obj, 1, err);
         rethrow(err);
       end
       
@@ -367,7 +367,7 @@ classdef DynamicDelegator < handle
           end
         end
       catch err
-        GrasppeKit.Utilities.DisplayError(obj, 3, err);
+        Grasppe.Kit.Utilities.DisplayError(obj, 3, err);
         rethrow(err);
       end
     end

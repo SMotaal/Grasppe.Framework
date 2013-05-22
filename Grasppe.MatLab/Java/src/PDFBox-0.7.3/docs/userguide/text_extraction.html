@@ -1,0 +1,396 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<head>
+<META http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<meta content="Apache Forrest" name="Generator">
+<meta name="Forrest-version" content="0.8-dev">
+<meta name="Forrest-skin-name" content="pelt">
+<meta name="keywords" content="Java PDF Library, pdftotext, PDF to text, java pdf text extraction">
+<title>PDFBox - PDF Text Extraction</title>
+<link type="text/css" href="../skin/basic.css" rel="stylesheet">
+<link media="screen" type="text/css" href="../skin/screen.css" rel="stylesheet">
+<link media="print" type="text/css" href="../skin/print.css" rel="stylesheet">
+<link type="text/css" href="../skin/profile.css" rel="stylesheet">
+<script src="../skin/getBlank.js" language="javascript" type="text/javascript"></script><script src="../skin/getMenu.js" language="javascript" type="text/javascript"></script><script src="../skin/fontsize.js" language="javascript" type="text/javascript"></script>
+<link rel="shortcut icon" href="../">
+</head>
+<body onload="init()">
+<script type="text/javascript">ndeSetTextSize();</script>
+<div id="top">
+<!--+
+    |header
+    +-->
+<div class="header">
+<!--+
+    |start group logo
+    +-->
+<div class="grouplogo">
+<a href="http://www.pdfbox.org"><img class="logoImage" alt="" src="../images/Logo.gif" title="PDFBox: Java PDF Library"></a>
+</div>
+<!--+
+    |end group logo
+    +-->
+<!--+
+    |start Project Logo
+    +-->
+<div class="projectlogoA1">
+<a href=""></a>
+</div>
+<!--+
+    |end Project Logo
+    +-->
+<!--+
+    |start Tabs
+    +-->
+<ul id="tabs">
+<li class="current">
+<a class="base-selected" href=".././index.html">Home</a>
+</li>
+</ul>
+<!--+
+    |end Tabs
+    +-->
+</div>
+</div>
+<div id="main">
+<div id="publishedStrip">
+<!--+
+    |start Subtabs
+    +-->
+<div id="level2tabs"></div>
+<!--+
+    |end Endtabs
+    +-->
+<script type="text/javascript"><!--
+document.write("Last Published: " + document.lastModified);
+//  --></script>
+</div>
+<!--+
+    |breadtrail
+    +-->
+<div class="breadtrail">
+             
+             &nbsp;
+           </div>
+<!--+
+    |start Menu, mainarea
+    +-->
+<!--+
+    |start Menu
+    +-->
+<div id="menu">
+<div onclick="SwitchMenu('menu_1.1', '../skin/')" id="menu_1.1Title" class="menutitle">About</div>
+<div id="menu_1.1" class="menuitemgroup">
+<div class="menuitem">
+<a href="../index.html" title="Welcome to PDFBox">Index</a>
+</div>
+<div class="menuitem">
+<a href="http://sourceforge.net/project/showfiles.php?group_id=78314" title="Download PDFBox">Download</a>
+</div>
+<div class="menuitem">
+<a href="http://www.pdfbox.org/dist/" title="Download a nightly release of PDFBox">Nightly Build</a>
+</div>
+<div class="menuitem">
+<a href="http://sourceforge.net/forum/?group_id=78314" title="Discuss PDFBox">Forums</a>
+</div>
+<div class="menuitem">
+<a href="http://sourceforge.net/tracker/?group_id=78314&atid=552832" title="Submit an issue">Issues</a>
+</div>
+<div class="menuitem">
+<a href="http://www.sf.net/projects/pdfbox" title="SourceForge Site">SourceForge</a>
+</div>
+<div class="menuitem">
+<a href="../references.html" title="References">References</a>
+</div>
+<div class="menuitem">
+<a href="../donations.html" title="Donations">Donations</a>
+</div>
+<div class="menuitem">
+<a href="../changes.html" title="Release Notes">Release Notes</a>
+</div>
+</div>
+<div onclick="SwitchMenu('menu_1.2', '../skin/')" id="menu_1.2Title" class="menutitle">Command Line Utilities</div>
+<div id="menu_1.2" class="menuitemgroup">
+<div class="menuitem">
+<a href="../commandlineutilities/index.html" title="Index">Index</a>
+</div>
+<div class="menuitem">
+<a href="../commandlineutilities/Decrypt.html" title="Decrypt">Decrypt</a>
+</div>
+<div class="menuitem">
+<a href="../commandlineutilities/Encrypt.html" title="Encrypt">Encrypt</a>
+</div>
+<div class="menuitem">
+<a href="../commandlineutilities/ExtractText.html" title="ExtractText">ExtractText</a>
+</div>
+<div class="menuitem">
+<a href="../commandlineutilities/PDFToImage.html" title="PDFToImage">PDFToImage</a>
+</div>
+<div class="menuitem">
+<a href="../commandlineutilities/PrintPDF.html" title="PrintPDF">PrintPDF</a>
+</div>
+<div class="menuitem">
+<a href="../commandlineutilities/ConvertColorspace.html" title="Convert PDF colorspace, ie RGB to CMYK">ConvertColorspace</a>
+</div>
+<div class="menuitem">
+<a href="../commandlineutilities/TextToPDF.html" title="TextToPDF">TextToPDF</a>
+</div>
+</div>
+<div onclick="SwitchMenu('menu_selected_1.3', '../skin/')" id="menu_selected_1.3Title" class="menutitle" style="background-image: url('../skin/images/chapter_open.gif');">Developers Guide</div>
+<div id="menu_selected_1.3" class="selectedmenuitemgroup" style="display: block;">
+<div class="menuitem">
+<a href="../userguide/index.html" title="A note on the docs">Index</a>
+</div>
+<div class="menuitem">
+<a href="../userguide/bookmarks.html" title="PDF Bookmarks">Bookmarks</a>
+</div>
+<div class="menuitem">
+<a href="../userguide/building_pdfbox.html" title="Building PDFBox">Building PDFBox</a>
+</div>
+<div class="menuitem">
+<a href="../userguide/faq.html" title="Answers to Questions about PDFBox">FAQ</a>
+</div>
+<div class="menuitem">
+<a href="../userguide/file_references.html" title="Documentation on embedded and externally referenced files">File References</a>
+</div>
+<div class="menuitem">
+<a href="../userguide/fonts.html" title="Fonts in PDFBox">Fonts</a>
+</div>
+<div class="menuitem">
+<a href="../userguide/highlighting.html" title="Highlighting text in a PDF">Highlighting</a>
+</div>
+<div class="menuitem">
+<a href=".././javadoc/index.html" title="Javadoc API">Javadoc</a>
+</div>
+<div class="menuitem">
+<a href="../userguide/metadata.html" title="XMP Metadata">Metadata</a>
+</div>
+<div class="menuitem">
+<a href="../userguide/dot_net.html" title=".NET Version">.NET Version</a>
+</div>
+<div class="menupage">
+<div class="menupagetitle">Text Extraction</div>
+</div>
+</div>
+<div id="credit"></div>
+<div id="roundbottom">
+<img style="display: none" class="corner" height="15" width="15" alt="" src="../skin/images/rc-b-l-15-1body-2menu-3menu.png"></div>
+<!--+
+  |alternative credits
+  +-->
+<div id="credit2"></div>
+</div>
+<!--+
+    |end Menu
+    +-->
+<!--+
+    |start content
+    +-->
+<div id="content">
+<div title="Portable Document Format" class="pdflink">
+<a class="dida" href="text_extraction.pdf"><img alt="PDF -icon" src="../skin/images/pdfdoc.gif" class="skin"><br>
+        PDF</a>
+</div>
+<h1>PDFBox - PDF Text Extraction</h1>
+<div id="minitoc-area">
+<ul class="minitoc">
+<li>
+<a href="#Extracting+Text">Extracting Text</a>
+<ul class="minitoc">
+<li>
+<a href="#Lucene+Integration">Lucene Integration</a>
+</li>
+<li>
+<a href="#Advanced+Text+Extraction">Advanced Text Extraction</a>
+<ul class="minitoc">
+<li>
+<a href="#Limiting+The+Extracted+Text">Limiting The Extracted Text</a>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</div> 
+    
+<a name="N10010"></a><a name="Extracting+Text"></a>
+<h2 class="boxed">Extracting Text</h2>
+<div class="section">
+<p>
+            See class:<a href="../javadoc/org/pdfbox/util/PDFTextStripper.html">org.pdfbox.util.PDFTextStripper</a> 
+<br>
+            See class:<a href="../javadoc/org/pdfbox/searchengine/lucene/LucenePDFDocument.html">org.pdfbox.searchengine.lucene.LucenePDFDocument</a> 
+<br>
+            See command line app:<a href="../commandlineutilities/ExtractText.html">ExtractText</a> 
+<br>
+        
+</p>
+<p>
+            One of the main features of PDFBox is its ability to quickly and accurately extract text from a variety of PDF documents.
+            This functionality is encapsulated in the <a href="../javadoc/org/pdfbox/util/PDFTextStripper.html">org.pdfbox.util.PDFTextStripper</a> and
+            can be easily executed on the command line with <a href="../javadoc/org/pdfbox/ExtractText.html">org.pdfbox.ExtractText</a>.
+        </p>
+<a name="N10036"></a><a name="Lucene+Integration"></a>
+<h3 class="boxed">Lucene Integration</h3>
+<p>
+<a href="http://lucene.apache.org/java/docs/index.html">Lucene</a> is an open source text search library from the Apache Jakarta Project.
+          In order for Lucene to be able to index a PDF document it must first be converted to text.  PDFBox provides a simple approach for adding
+          PDF documents into a Lucene index.</p>
+<pre class="code">
+          Document luceneDocument = LucenePDFDocument.getDocument( ... );
+          </pre>
+<p>
+          Now that you hava a Lucene Document object, you can add it to the Lucene index just like you would if it had been 
+          created from a text or HTML file.
+          The <a href="../javadoc/org/pdfbox/searchengine/lucene/LucenePDFDocument.html">LucenePDFDocument</a> automatically extracts
+          a variety of metadata fields from the PDF to be added to the index, the javadoc shows details on those fields.
+          This approach is very simple and should be sufficient for most users, if not then you can use some of the advanced text extraction
+          techniques described in the next section.
+          </p>
+<a name="N1004E"></a><a name="Advanced+Text+Extraction"></a>
+<h3 class="boxed">Advanced Text Extraction</h3>
+<p>Some applications will have complex text extraction requiments and neither the command line application nor the LucenePDFDocument
+            will be able to fulfill those requirements.  It is possible for users to utilize or extend the 
+            <a href="../javadoc/org/pdfbox/util/PDFTextStripper.html">PDFTextStripper</a> class to meet some of these requirements.</p>
+<a name="N1005B"></a><a name="Limiting+The+Extracted+Text"></a>
+<h4>Limiting The Extracted Text</h4>
+<p>
+                There are several ways that we can limit the text that is extracted during the extraction process.  The simplest is to 
+                specify the range of pages that you want to be extracted.  For example, to only extract text from the second and third pages
+                of the PDF document you could do this:
+                </p>
+<pre class="code">
+            PDFTextStripper stripper = new PDFTextStripper();
+            stripper.setStartPage( 2 );
+            stripper.setEndPage( 3 );
+            stripper.writeText( ... );
+        </pre>
+<div class="note">
+<div class="label">Note</div>
+<div class="content">The startPage and endPage properties of PDFTextStripper are 1 based and inclusive.</div>
+</div>
+<p>If you wanted to start on page 2 and extract to the end of the document then you would just set the startPage property.  
+                By default all pages in the pdf document are extracted.</p>
+<p>It is also possible to limit the extracted text to be between two bookmarks in the page.  If you are not familiar with
+                how to use bookmarks in PDFBox then you should review the <a href="bookmarks.html">Bookmarks</a> page.  Similar to the startPage/endPage
+                properties, PDFTextStripper also has startBookmark/endBookmark properties.  There are some caveats to be aware of when using this 
+                feature of the PDFTextStripper.  Not all bookmarks point to a page in the current PDF document.  The possible states of a bookmark are:</p>
+<ul>
+                    
+<li>null - The property was not set, this is the default.</li>
+                    
+<li>Points to page in the PDF - The property was set and points to a valid page in the PDF</li>
+                    
+<li>Bookmark does not point to anything - The property was set but the bookmark does not point to any page</li>
+                    
+<li>Bookmark points to external action - The property was set, but it points to a page in a different PDF or performs an action when activated</li>
+                
+</ul>
+<p>The table below will describe how PDFBox behaves in the various scenarios:</p>
+<table class="ForrestTable" cellspacing="1" cellpadding="4">
+                    
+<tr>
+                        
+<th colspan="1" rowspan="1">Start Bookmark</th>
+                        <th colspan="1" rowspan="1">End Bookmark</th>
+                        <th colspan="1" rowspan="1">Result</th>
+                    
+</tr>
+                    
+<tr>
+                        
+<td colspan="1" rowspan="1">null</td>
+                        <td colspan="1" rowspan="1">null</td>
+                        <td colspan="1" rowspan="1">This is the default, the properties have no effect on the text extraction.</td>
+                    
+</tr>
+                    
+<tr>
+                        
+<td colspan="1" rowspan="1">Points page in the PDF</td>
+                        <td colspan="1" rowspan="1">null</td>
+                        <td colspan="1" rowspan="1">Text extraction will begin on the page that this bookmark points to and go until the end of the document.</td>
+                    
+</tr>
+                    
+<tr>
+                        
+<td colspan="1" rowspan="1">null</td>
+                        <td colspan="1" rowspan="1">Points page in the PDF</td>
+                        <td colspan="1" rowspan="1">Text extraction will begin on the first page and stop at the end of the page that this bookmark points to.</td>
+                    
+</tr>
+                    
+<tr>
+                        
+<td colspan="1" rowspan="1">Bookmark does not point to anything</td>
+                        <td colspan="1" rowspan="1">null</td>
+                        <td colspan="1" rowspan="1">Because the PDFTextStripper cannot determine a start page based on the bookmark, it will start on the first page and go until 
+                            the end of the document.</td>
+                    
+</tr>
+                    
+<tr>
+                        
+<td colspan="1" rowspan="1">null</td>
+                        <td colspan="1" rowspan="1">Bookmark does not point to anything</td>
+                        <td colspan="1" rowspan="1">Because the PDFTextStripper cannot determine a end page based on the bookmark, it will start on the first page and go until
+                            the end of the document.</td>
+                    
+</tr>
+                    
+<tr>
+                        
+<td colspan="1" rowspan="1">Bookmark does not point to anything</td>
+                        <td colspan="1" rowspan="1">Bookmark does not point to anything</td>
+                        <td colspan="1" rowspan="1">This is a special case!  If the startBookmark and endBookmark are exactly the same then no text will be extracted.  If 
+                            they are different then it is not possible for the PDFTextStripper to determine that pages so it will include the
+                            entire document.</td>
+                    
+</tr>
+                    
+<tr>
+                        
+<td colspan="1" rowspan="1">Bookmark points to external action</td>
+                        <td colspan="1" rowspan="1">Bookmark points to external action</td>
+                        <td colspan="1" rowspan="1">If either the startBookmark or the endBookmark refer to an external page or execute an action then an OutlineNotLocalException
+                        will be thrown to indicate to the user that the bookmark is not valid.</td>
+                    
+</tr>
+                
+</table>
+<div class="note">
+<div class="label">Note</div>
+<div class="content">PDFTextStripper will check both the startPage/endPage and the startBookmark/endBookmark to determine if text should
+                      be extracted from the current page.</div>
+</div>
+</div>
+  
+</div>
+<!--+
+    |end content
+    +-->
+<div class="clearboth">&nbsp;</div>
+</div>
+<div id="footer">
+<!--+
+    |start bottomstrip
+    +-->
+<div class="lastmodified">
+<script type="text/javascript"><!--
+document.write("Last Published: " + document.lastModified);
+//  --></script>
+</div>
+<div class="copyright">
+        Copyright &copy;
+         2002-2006 PDFBox.org</div>
+<div id="feedback">
+    Send feedback about the website to:
+  <a id="feedbackto" href="mailto:webmaster@pdfbox.org?subject=Feedback%C2%A0userguide/text_extraction.html">webmaster@pdfbox.org</a>
+</div>
+<!--+
+    |end bottomstrip
+    +-->
+</div>
+</body>
+</html>

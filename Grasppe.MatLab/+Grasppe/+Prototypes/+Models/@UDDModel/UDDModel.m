@@ -50,6 +50,8 @@ classdef (ConstructOnLoad) UDDModel < Grasppe.Prototypes.Components.Model
   methods
     
     function obj = UDDModel(varargin)
+      global debugConstructing;
+      
       initializeSchema        = true;
       % sObj                    = [];
       
@@ -64,7 +66,7 @@ classdef (ConstructOnLoad) UDDModel < Grasppe.Prototypes.Components.Model
       
       obj                     = obj@Grasppe.Prototypes.Components.Model(options{:});
       
-      debugStamp('Constructing', 1, obj);
+      if isequal(debugConstructing, true), debugStamp('Constructing', 1, obj); end
       
       if loadingObject %isstruct(sObj) % && isfield(sObj, {'ID', 'Class', 'Schema', 'Model'})
         try
@@ -73,7 +75,7 @@ classdef (ConstructOnLoad) UDDModel < Grasppe.Prototypes.Components.Model
           end
           initializeSchema    = false;
         catch err
-          GrasppeKit.Utilities.DisplayError(obj, 1, err);
+          Grasppe.Kit.Utilities.DisplayError(obj, 1, err);
         end
       end
       
@@ -92,7 +94,7 @@ classdef (ConstructOnLoad) UDDModel < Grasppe.Prototypes.Components.Model
         % if numel(
         
       catch err
-        GrasppeKit.Utilities.DisplayError(obj, 1, err);
+        Grasppe.Kit.Utilities.DisplayError(obj, 1, err);
         beep;
       end
       
@@ -130,7 +132,7 @@ classdef (ConstructOnLoad) UDDModel < Grasppe.Prototypes.Components.Model
           %             end
           %           end
         catch err
-          GrasppeKit.Utilities.DisplayError(obj, 1, err);
+          Grasppe.Kit.Utilities.DisplayError(obj, 1, err);
         end
       end
       
@@ -143,7 +145,7 @@ classdef (ConstructOnLoad) UDDModel < Grasppe.Prototypes.Components.Model
       %           end
       %           %set(obj.ModelData, sObj.Model{:});
       %         catch err
-      %           GrasppeKit.Utilities.DisplayError(obj, 1, err);
+      %           Grasppe.Kit.Utilities.DisplayError(obj, 1, err);
       %         end
       %       else
       %       end
@@ -181,7 +183,7 @@ classdef (ConstructOnLoad) UDDModel < Grasppe.Prototypes.Components.Model
       try
         obj = Grasppe.Prototypes.Models.UDDModel.UDDModel2Struct(obj);
       catch err
-        GrasppeKit.Utilities.DisplayError(obj, 1, err);end
+        Grasppe.Kit.Utilities.DisplayError(obj, 1, err);end
       return;
       
     end
@@ -299,7 +301,7 @@ classdef (ConstructOnLoad) UDDModel < Grasppe.Prototypes.Components.Model
         end
         
       catch err
-        GrasppeKit.Utilities.DisplayError(obj, 1, err);
+        Grasppe.Kit.Utilities.DisplayError(obj, 1, err);
         beep;
       end
       

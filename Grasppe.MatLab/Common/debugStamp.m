@@ -210,7 +210,7 @@ function wait(suspend)
     
     set(getCommandWindowHandle, 'KeyPressedCallback', @commandKeyPress);
     
-    % t = GrasppeKit.Utilities.DelayedCall(@(s, e)resume(), 5, 'start');
+    % t = Grasppe.Kit.Utilities.DelayedCall(@(s, e)resume(), 5, 'start');
     commandwindow;
     try 
       %for m = 1:2
@@ -252,7 +252,7 @@ end
 %     try delete(t); end
 %   else
 %     try delete(t); end
-%     t = GrasppeKit.Utilities.DelayedCall(@(s, e)resume(), 5, 'start');
+%     t = Grasppe.Kit.Utilities.DelayedCall(@(s, e)resume(), 5, 'start');
 %   end
 % end
 

@@ -1,12 +1,14 @@
 function finish()
-  GrasppeKit.Utilities.SafeExit(@onQuit);
+  try
+    Grasppe.Kit.Utilities.SafeExit(@onQuit);
+  end
 end
 
 function onQuit()
   disp('Grasppe was here!');
 end
 %   persistent T M
-%   %t = GrasppeKit.Utilities.DelayedCall(@(s, e)forceQuit,5,'start');
+%   %t = Grasppe.Kit.Utilities.DelayedCall(@(s, e)forceQuit,5,'start');
 %   
 %   % Yes = getString(message('MATLAB:finishdlg:Yes'));
 %   % No = getString(message('MATLAB:finishdlg:No'));
@@ -28,9 +30,9 @@ end
 %     M = 1;
 %     %     fprintf(2, '\b\n\n     GRASPPE EXIT STRATEGY:');
 %     %     fprintf(1, '\tPress CMD+Q once again in the next 3 seconds to quit.\n\n');
-%     GrasppeKit.Utilities.DisplayText('GRASPPE SAFE EXIT', 'Press CMD+Q again once in the next 3 seconds to quit.');
+%     Grasppe.Kit.Utilities.DisplayText('GRASPPE SAFE EXIT', 'Press CMD+Q again once in the next 3 seconds to quit.');
 %     isQuitting(true);
-%     GrasppeKit.Utilities.DelayedCall(@(s, e)abort(),4,'start');
+%     Grasppe.Kit.Utilities.DelayedCall(@(s, e)abort(),4,'start');
 %     pause(0.1);
 %     cancel();
 %     return;
@@ -38,8 +40,8 @@ end
 %     if M==1
 %       % fprintf(2, '\b\n     GRASPPE EXIT STRATEGY:');
 %       % fprintf(1, '\tPress CMD+Q once again to force quit.\n\n');
-%       GrasppeKit.Utilities.DisplayText('GRASPPE SAFE EXIT', 'Press CMD+Q again once to force quit.');
-%       %GrasppeKit.Utilities.DelayedCall(@(s, e)terminate,[],'start');
+%       Grasppe.Kit.Utilities.DisplayText('GRASPPE SAFE EXIT', 'Press CMD+Q again once to force quit.');
+%       %Grasppe.Kit.Utilities.DelayedCall(@(s, e)terminate,[],'start');
 %       pause(0.1);
 %       terminate();
 %       M = 2;
@@ -51,7 +53,7 @@ end
 % 
 % function abort()
 %   isQuitting(false);
-%   GrasppeKit.Utilities.DisplayText('GRASPPE SAFE EXIT', 'Termination is aborted. To quit, you must press CMD+Q twice within 3 seconds.');
+%   Grasppe.Kit.Utilities.DisplayText('GRASPPE SAFE EXIT', 'Termination is aborted. To quit, you must press CMD+Q twice within 3 seconds.');
 %   % fprintf(2, '\b\n\tQuit:');
 %   % fprintf(1, '\tTermination is aborted. To quit, you must press CMD+Q twice within three seconds.\n\n');
 % end

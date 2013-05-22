@@ -132,7 +132,7 @@ classdef Handle < Grasppe.Prototypes.Prototype & dynamicprops
         try
           value             = feval(methodNames{methodIndex}, obj);
         catch err
-          GrasppeKit.Utilities.DisplayError(obj, 1, err);
+          Grasppe.Kit.Utilities.DisplayError(obj, 1, err);
           rethrow(err);
         end
       end
@@ -148,7 +148,7 @@ classdef Handle < Grasppe.Prototypes.Prototype & dynamicprops
         try assert(any(methodIndex), 'Grasppe:PropertySetter:NotDefined', 'No property setter is defined for %s', char(field));
           feval(methodNames{methodIndex}, obj, value);
         catch err
-          GrasppeKit.Utilities.DisplayError(obj, 1, err);
+          Grasppe.Kit.Utilities.DisplayError(obj, 1, err);
           rethrow(err);
         end
       end

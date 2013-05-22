@@ -19,10 +19,12 @@ classdef Component < Grasppe.Prototypes.Instance
   methods
     
     function obj = Component(varargin)
+      global debugConstructing;
+      
       obj     = obj@Grasppe.Prototypes.Instance(varargin{:});
       
       obj.notify('Initializing');
-      % debugStamp('Constructing', 1, obj);
+      if isequal(debugConstructing, true), debugStamp('Constructing', 1, obj); end
       % if isequal(mfilename, obj.ClassName), obj.initialize(); end
     end
     
@@ -79,7 +81,7 @@ classdef Component < Grasppe.Prototypes.Instance
             p           = addprop(obj, moduleProperties{m});
             p.GetMethod = @(obj)obj.Module.(moduleProperties{m});
           catch err
-            GrasppeKit.Utilities.DisplayError(obj, 1, err);
+            Grasppe.Kit.Utilities.DisplayError(obj, 1, err);
           end
         end
       end
@@ -104,7 +106,7 @@ classdef Component < Grasppe.Prototypes.Instance
         
         
       catch err
-        GrasppeKit.Utilities.DisplayError(obj, 1, err);
+        Grasppe.Kit.Utilities.DisplayError(obj, 1, err);
       end
       
     end

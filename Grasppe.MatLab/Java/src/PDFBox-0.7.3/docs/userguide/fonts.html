@@ -1,0 +1,337 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<head>
+<META http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<meta content="Apache Forrest" name="Generator">
+<meta name="Forrest-version" content="0.8-dev">
+<meta name="Forrest-skin-name" content="pelt">
+<title>PDFBox - PDF Fonts</title>
+<link type="text/css" href="../skin/basic.css" rel="stylesheet">
+<link media="screen" type="text/css" href="../skin/screen.css" rel="stylesheet">
+<link media="print" type="text/css" href="../skin/print.css" rel="stylesheet">
+<link type="text/css" href="../skin/profile.css" rel="stylesheet">
+<script src="../skin/getBlank.js" language="javascript" type="text/javascript"></script><script src="../skin/getMenu.js" language="javascript" type="text/javascript"></script><script src="../skin/fontsize.js" language="javascript" type="text/javascript"></script>
+<link rel="shortcut icon" href="../">
+</head>
+<body onload="init()">
+<script type="text/javascript">ndeSetTextSize();</script>
+<div id="top">
+<!--+
+    |header
+    +-->
+<div class="header">
+<!--+
+    |start group logo
+    +-->
+<div class="grouplogo">
+<a href="http://www.pdfbox.org"><img class="logoImage" alt="" src="../images/Logo.gif" title="PDFBox: Java PDF Library"></a>
+</div>
+<!--+
+    |end group logo
+    +-->
+<!--+
+    |start Project Logo
+    +-->
+<div class="projectlogoA1">
+<a href=""></a>
+</div>
+<!--+
+    |end Project Logo
+    +-->
+<!--+
+    |start Tabs
+    +-->
+<ul id="tabs">
+<li class="current">
+<a class="base-selected" href=".././index.html">Home</a>
+</li>
+</ul>
+<!--+
+    |end Tabs
+    +-->
+</div>
+</div>
+<div id="main">
+<div id="publishedStrip">
+<!--+
+    |start Subtabs
+    +-->
+<div id="level2tabs"></div>
+<!--+
+    |end Endtabs
+    +-->
+<script type="text/javascript"><!--
+document.write("Last Published: " + document.lastModified);
+//  --></script>
+</div>
+<!--+
+    |breadtrail
+    +-->
+<div class="breadtrail">
+             
+             &nbsp;
+           </div>
+<!--+
+    |start Menu, mainarea
+    +-->
+<!--+
+    |start Menu
+    +-->
+<div id="menu">
+<div onclick="SwitchMenu('menu_1.1', '../skin/')" id="menu_1.1Title" class="menutitle">About</div>
+<div id="menu_1.1" class="menuitemgroup">
+<div class="menuitem">
+<a href="../index.html" title="Welcome to PDFBox">Index</a>
+</div>
+<div class="menuitem">
+<a href="http://sourceforge.net/project/showfiles.php?group_id=78314" title="Download PDFBox">Download</a>
+</div>
+<div class="menuitem">
+<a href="http://www.pdfbox.org/dist/" title="Download a nightly release of PDFBox">Nightly Build</a>
+</div>
+<div class="menuitem">
+<a href="http://sourceforge.net/forum/?group_id=78314" title="Discuss PDFBox">Forums</a>
+</div>
+<div class="menuitem">
+<a href="http://sourceforge.net/tracker/?group_id=78314&atid=552832" title="Submit an issue">Issues</a>
+</div>
+<div class="menuitem">
+<a href="http://www.sf.net/projects/pdfbox" title="SourceForge Site">SourceForge</a>
+</div>
+<div class="menuitem">
+<a href="../references.html" title="References">References</a>
+</div>
+<div class="menuitem">
+<a href="../donations.html" title="Donations">Donations</a>
+</div>
+<div class="menuitem">
+<a href="../changes.html" title="Release Notes">Release Notes</a>
+</div>
+</div>
+<div onclick="SwitchMenu('menu_1.2', '../skin/')" id="menu_1.2Title" class="menutitle">Command Line Utilities</div>
+<div id="menu_1.2" class="menuitemgroup">
+<div class="menuitem">
+<a href="../commandlineutilities/index.html" title="Index">Index</a>
+</div>
+<div class="menuitem">
+<a href="../commandlineutilities/Decrypt.html" title="Decrypt">Decrypt</a>
+</div>
+<div class="menuitem">
+<a href="../commandlineutilities/Encrypt.html" title="Encrypt">Encrypt</a>
+</div>
+<div class="menuitem">
+<a href="../commandlineutilities/ExtractText.html" title="ExtractText">ExtractText</a>
+</div>
+<div class="menuitem">
+<a href="../commandlineutilities/PDFToImage.html" title="PDFToImage">PDFToImage</a>
+</div>
+<div class="menuitem">
+<a href="../commandlineutilities/PrintPDF.html" title="PrintPDF">PrintPDF</a>
+</div>
+<div class="menuitem">
+<a href="../commandlineutilities/ConvertColorspace.html" title="Convert PDF colorspace, ie RGB to CMYK">ConvertColorspace</a>
+</div>
+<div class="menuitem">
+<a href="../commandlineutilities/TextToPDF.html" title="TextToPDF">TextToPDF</a>
+</div>
+</div>
+<div onclick="SwitchMenu('menu_selected_1.3', '../skin/')" id="menu_selected_1.3Title" class="menutitle" style="background-image: url('../skin/images/chapter_open.gif');">Developers Guide</div>
+<div id="menu_selected_1.3" class="selectedmenuitemgroup" style="display: block;">
+<div class="menuitem">
+<a href="../userguide/index.html" title="A note on the docs">Index</a>
+</div>
+<div class="menuitem">
+<a href="../userguide/bookmarks.html" title="PDF Bookmarks">Bookmarks</a>
+</div>
+<div class="menuitem">
+<a href="../userguide/building_pdfbox.html" title="Building PDFBox">Building PDFBox</a>
+</div>
+<div class="menuitem">
+<a href="../userguide/faq.html" title="Answers to Questions about PDFBox">FAQ</a>
+</div>
+<div class="menuitem">
+<a href="../userguide/file_references.html" title="Documentation on embedded and externally referenced files">File References</a>
+</div>
+<div class="menupage">
+<div class="menupagetitle">Fonts</div>
+</div>
+<div class="menuitem">
+<a href="../userguide/highlighting.html" title="Highlighting text in a PDF">Highlighting</a>
+</div>
+<div class="menuitem">
+<a href=".././javadoc/index.html" title="Javadoc API">Javadoc</a>
+</div>
+<div class="menuitem">
+<a href="../userguide/metadata.html" title="XMP Metadata">Metadata</a>
+</div>
+<div class="menuitem">
+<a href="../userguide/dot_net.html" title=".NET Version">.NET Version</a>
+</div>
+<div class="menuitem">
+<a href="../userguide/text_extraction.html" title="PDF Text Extraction">Text Extraction</a>
+</div>
+</div>
+<div id="credit"></div>
+<div id="roundbottom">
+<img style="display: none" class="corner" height="15" width="15" alt="" src="../skin/images/rc-b-l-15-1body-2menu-3menu.png"></div>
+<!--+
+  |alternative credits
+  +-->
+<div id="credit2"></div>
+</div>
+<!--+
+    |end Menu
+    +-->
+<!--+
+    |start content
+    +-->
+<div id="content">
+<div title="Portable Document Format" class="pdflink">
+<a class="dida" href="fonts.pdf"><img alt="PDF -icon" src="../skin/images/pdfdoc.gif" class="skin"><br>
+        PDF</a>
+</div>
+<h1>PDFBox - PDF Fonts</h1>
+<div id="minitoc-area">
+<ul class="minitoc">
+<li>
+<a href="#Standard+14+Fonts">Standard 14 Fonts</a>
+</li>
+<li>
+<a href="#TrueType+Fonts">TrueType Fonts</a>
+<ul class="minitoc">
+<li>
+<a href="#Embedding+TrueType+Fonts">Embedding TrueType Fonts</a>
+</li>
+<li>
+<a href="#External+TrueType+Fonts">External TrueType Fonts</a>
+</li>
+</ul>
+</li>
+</ul>
+</div> 
+  	
+<a name="N1000C"></a><a name="Standard+14+Fonts"></a>
+<h2 class="boxed">Standard 14 Fonts</h2>
+<div class="section">
+<p>
+  		The PDF specification states that a standard set of 14 fonts will always be available when consuming
+  		PDF documents.  In PDFBox these are defined as constants in the PDType1Font class.
+  		</p>
+<table class="ForrestTable" cellspacing="1" cellpadding="4">
+  			
+<tr>
+<th colspan="1" rowspan="1">Standard Font</th>
+</tr>
+  			
+<tr>
+<td colspan="1" rowspan="1">PDType1Font.TIMES_ROMAN</td>
+</tr>
+  			
+<tr>
+<td colspan="1" rowspan="1">PDType1Font.TIMES_BOLD</td>
+</tr>
+  			
+<tr>
+<td colspan="1" rowspan="1">PDType1Font.TIMES_ITALIC</td>
+</tr>
+  			
+<tr>
+<td colspan="1" rowspan="1">PDType1Font.TIMES_BOLD_ITALIC</td>
+</tr>
+  			
+<tr>
+<td colspan="1" rowspan="1">PDType1Font.HELVETICA</td>
+</tr>
+  			
+<tr>
+<td colspan="1" rowspan="1">PDType1Font.HELVETICA_BOLD</td>
+</tr>
+  			
+<tr>
+<td colspan="1" rowspan="1">PDType1Font.HELVETICA_OBLIQUE</td>
+</tr>
+  			
+<tr>
+<td colspan="1" rowspan="1">PDType1Font.HELVETICA_BOLD_OBLIQUE</td>
+</tr>
+  			
+<tr>
+<td colspan="1" rowspan="1">PDType1Font.COURIER</td>
+</tr>
+  			
+<tr>
+<td colspan="1" rowspan="1">PDType1Font.COURIER_BOLD</td>
+</tr>
+  			
+<tr>
+<td colspan="1" rowspan="1">PDType1Font.COURIER_OBLIQUE</td>
+</tr>
+  			
+<tr>
+<td colspan="1" rowspan="1">PDType1Font.COURIER_BOLD_OBLIQUE</td>
+</tr>
+  			
+<tr>
+<td colspan="1" rowspan="1">PDType1Font.SYMBOL</td>
+</tr>
+  			
+<tr>
+<td colspan="1" rowspan="1">PDType1Font.ZAPF_DINGBATS</td>
+</tr>
+  		
+</table>
+</div>
+    
+<a name="N10073"></a><a name="TrueType+Fonts"></a>
+<h2 class="boxed">TrueType Fonts</h2>
+<div class="section">
+<a name="N10079"></a><a name="Embedding+TrueType+Fonts"></a>
+<h3 class="boxed">Embedding TrueType Fonts</h3>
+<p>
+      	PDFBox supports embedding TrueType fonts.  Loading a new font is easy.
+      	</p>
+<pre class="code">
+      PDDocument doc = PDDocument.load( ... );
+      PDFont font = PDTrueTypeFont.loadTTF( doc, new File( "SpecialFont.ttf" ) );</pre>
+<a name="N10087"></a><a name="External+TrueType+Fonts"></a>
+<h3 class="boxed">External TrueType Fonts</h3>
+<p>
+      	While it is recommended to embed all fonts for greatest portability not all PDF producer applications
+      	will do this.  When displaying a PDF it is necessary to find an external font to use.  
+      	PDFBox will look for a mapping file to use when substituting fonts.<br>
+      	
+<br>
+      	PDFBox will load <i>Resources/PDFBox_External_Fonts.properties</i> off of the classpath to map
+      	font names to TTF font files.  The <i>UNKNOWN_FONT</i> property in that file will tell PDFBox which font
+      	to use when no mapping exists.
+      	</p>
+</div>
+  
+</div>
+<!--+
+    |end content
+    +-->
+<div class="clearboth">&nbsp;</div>
+</div>
+<div id="footer">
+<!--+
+    |start bottomstrip
+    +-->
+<div class="lastmodified">
+<script type="text/javascript"><!--
+document.write("Last Published: " + document.lastModified);
+//  --></script>
+</div>
+<div class="copyright">
+        Copyright &copy;
+         2002-2006 PDFBox.org</div>
+<div id="feedback">
+    Send feedback about the website to:
+  <a id="feedbackto" href="mailto:webmaster@pdfbox.org?subject=Feedback%C2%A0userguide/fonts.html">webmaster@pdfbox.org</a>
+</div>
+<!--+
+    |end bottomstrip
+    +-->
+</div>
+</body>
+</html>

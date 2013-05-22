@@ -51,6 +51,7 @@ classdef Figure < Grasppe.Graphics.GraphicsHandle
   
   methods (Access=protected)
     function obj = Figure(primitive, varargin) %(object, parent,
+      global debugConstructing;
       
       figureDefaults              = {'NumberTitle', 'off', 'ToolBar', 'none', 'Renderer', 'opengl', 'PaperOrientation', 'landscape'};
       
@@ -60,7 +61,7 @@ classdef Figure < Grasppe.Graphics.GraphicsHandle
       
       obj                         = obj@Grasppe.Graphics.GraphicsHandle(primitive, figureDefaults{:}, varargin{:}); % object, parent,
       
-      debugStamp('Constructing', 5, obj);
+      if isequal(debugConstructing, true), debugStamp('Constructing', 5, obj); end
       
       % if isequal(mfilename('class'), obj.ClassName), obj.initialize(); end
       
@@ -163,7 +164,7 @@ classdef Figure < Grasppe.Graphics.GraphicsHandle
     function onWindowScrollWheel(obj, src, evt)
       obj.GestureComponent.setVisible(true);
       
-      GrasppeKit.Utilities.DelayedCall(@(s, e)obj.GestureComponent.setVisible(false), 1,'start');
+      Grasppe.Kit.Utilities.DelayedCall(@(s, e)obj.GestureComponent.setVisible(false), 1,'start');
       
     end
     
@@ -216,6 +217,8 @@ classdef Figure < Grasppe.Graphics.GraphicsHandle
   methods (Static, Hidden)
     
     function obj = CreateTestFigure()
+      global debugConstructing;
+      
       figureOptions         = {'Visible', 'on', 'Name', 'Figure with Gesture Control'}; % 'ToolBar', 'none',
       
       obj                   = feval(mfilename('class'), [], figureOptions{:});
@@ -228,7 +231,7 @@ classdef Figure < Grasppe.Graphics.GraphicsHandle
         ezplot3(['s/' mStr], [mStr '*s'], ['s^' mStr]); % ezplot3('s/2','2*s','s^2', 'LineSmoothing', 'on')
       end
       
-      debugStamp('Constructing', 1, obj);
+      if isequal(debugConstructing, true), debugStamp('Constructing', 1, obj); end
       if isequal(mfilename, obj.ClassName), obj.initialize(); end
     end
     

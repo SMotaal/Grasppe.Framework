@@ -42,7 +42,7 @@ classdef TaskGroup < Grasppe.Prototypes.Task
         if ~any(task==obj.Tasks), obj.Tasks(end+1) = task; end
         task.addEventListener('ProgressChange', obj);
       catch err
-        GrasppeKit.Utilities.DisplayError(obj, 1, err);
+        Grasppe.Kit.Utilities.DisplayError(obj, 1, err);
         return;
       end
     end

@@ -170,7 +170,8 @@ function [ data ] = dataSources( sourceName, varargin )
           hasChanged = true;
         else
           spaceSources.(inputParams.name) = [];
-          saveSpaceData(space, inputParams.name, []);
+          % saveSpaceData(space, inputParams.name, []);
+          delete(getDataFilename(space, inputParams.name)); 
           spaceSources = rmfield(spaceSources, inputParams.name);
           hasChanged = true;
         end
@@ -277,64 +278,76 @@ function [ data ] = dataSources( sourceName, varargin )
 end
 
 function name = getSpaceFilename(space)
-  name = FS.dataDir('Sources', [space '.mat']);
+  name    = FS.dataDir('Sources', [space '.mat']);
+end
+
+function folder = getSpaceFolder(space)
+  folder  = FS.dataDir('Sources', space);
+  
+  FS.mkDir(folder);
+end
+
+function filename = getDataFilename(space, name)
+  filename = fullfile(getSpaceFolder(space), [name '.mat']);
 end
 
 function data = loadSpaceData(space, name)
   
   data = [];
-  spaceFilename = getSpaceFilename(space);
-  s = warning('off', 'MATLAB:load:variableNotFound');
+
+  dataFile                  = getDataFilename(space, name); 
+  
+  statusbar(0, sprintf('Retrieving %s:%s.', space, name));
+  s                         = warning('off', 'MATLAB:load:variableNotFound');
   try
-    loadStruct = load(spaceFilename, '-mat', name);
-    data = loadStruct.(name);
-    if ~isempty(data)
-        statusbar(0, sprintf('Loading %s:%s.', space, name));
-    end
+    loadStruct              = load(dataFile, '-mat', 'data');
+    data                    = loadStruct.data;
   end
   warning(s);
+  statusbar(0, '');
+
+  
+  %   spaceFilename = getSpaceFilename(space);
+  %   s = warning('off', 'MATLAB:load:variableNotFound');
+  %   try
+  %     loadStruct = load(spaceFilename, '-mat', name);
+  %     data = loadStruct.(name);
+  %     if ~isempty(data)
+  %         statusbar(0, sprintf('Loading %s:%s.', space, name));
+  %     end
+  %   end
+  %   warning(s);
   
 end
 
 function saveSpaceData(space, name, data)
   
-  saveStruct.(name) = data;
+  dataFile                  = getDataFilename(space, name);
   
-  spaceFilename = getSpaceFilename(space);
-  %   dispf('Saving %s:%s.', space, name);
-  try
-    save(spaceFilename, '-append', '-struct', 'saveStruct', name);
-    statusbar(0, sprintf('Appending %s:%s.', space, name));
-    
-    queueRecycleSpace(space) % recycleSpace(space);
-  catch
-    try
-      save(spaceFilename, '-struct', 'saveStruct', name);
-      statusbar(0, sprintf('Saving %s:%s.', space, name));
-      % queueRecycleSpace(space) % recycleSpace(space);
-    catch err
-      if ~isequal(err.identifier, 'MATLAB:save:permissionDenied')
-        halt(err, 'Data.dataSources');
-      end
-    end
-  end
-%   
-%   %if isstruct(recycleTimers) && isfield(recycleTimers, space)
+  statusbar(0, sprintf('Storing %s:%s.', space, name));
+  save(dataFile, 'data');
+  statusbar(0, '');
+  
+%   saveStruct.(name)       = data;
+%   spaceFilename = getSpaceFilename(space);
+%   %   dispf('Saving %s:%s.', space, name);
 %   try
-%     stop(recycleTimers.(space));
-%   catch err
-%     recycleTimers.(space) = GrasppeKit.Utilities.DelayedCall(@(s, e) recycleSpace(space), 5, 'hold');
-%   end
-%   
-%   try
-%     dispf('Will recycle %s...', space);
-%     start(recycleTimers.(space));
-%     disp(recycleTimers.(space));
-%   catch err
-%     recycleSpace(space);
-%   end
-%   %end
+%     save(spaceFilename, '-append', '-struct', 'saveStruct', name);
+%     statusbar(0, sprintf('Appending %s:%s.', space, name));
 %     
+%     queueRecycleSpace(space) % recycleSpace(space);
+%   catch
+%     try
+%       save(spaceFilename, '-struct', 'saveStruct', name);
+%       statusbar(0, sprintf('Saving %s:%s.', space, name));
+%       % queueRecycleSpace(space) % recycleSpace(space);
+%     catch err
+%       if ~isequal(err.identifier, 'MATLAB:save:permissionDenied')
+%         halt(err, 'Data.dataSources');
+%       end
+%     end
+%   end
+     
 end
 
 function queueRecycleSpace(space)
@@ -344,7 +357,7 @@ function queueRecycleSpace(space)
   
   try stop(recycleTimers.(space)); end
   try delete(recycleTimers.(space)); end
-  try recycleTimers.(space) = GrasppeKit.Utilities.DelayedCall(@(s, e) recycleSpace(space), 30, 'start');
+  try recycleTimers.(space) = GrasppeKit.Utilities.DelayedCall(@(s, e) recycleSpace(space), 120, 'start');
   catch err, recycleSpace(space); end  
 end
 

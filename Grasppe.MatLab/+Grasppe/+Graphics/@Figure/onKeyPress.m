@@ -38,7 +38,7 @@ function onKeyPress(obj, src, evt)
             % try obj.Object.CurrentAxes = overobj('axes'); end
         end
       catch err
-        GrasppeKit.Utilities.DisplayError(obj, 1, err);
+        Grasppe.Kit.Utilities.DisplayError(obj, 1, err);
       end
       
       Grasppe.Prototypes.Utilities.StampEvent(obj, struct('Name', evt.Key), evt);

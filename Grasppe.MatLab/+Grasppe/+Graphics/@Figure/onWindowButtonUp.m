@@ -9,7 +9,7 @@ function onWindowButtonUp(obj, src, evt)
   switch(lower(obj.Object.SelectionType))
     case 'normal'     % Click left mouse button
       try delete(clickTimer); end;
-      clickTimer = GrasppeKit.Utilities.DelayedCall(@(s, e)obj.notify('Click', evt.addField('Button', 'Primary')), 0.20,'start');
+      clickTimer = Grasppe.Kit.Utilities.DelayedCall(@(s, e)obj.notify('Click', evt.addField('Button', 'Primary')), 0.20,'start');
       lastButton = 1;
     case 'open'       % Double-click any mouse button
       if ~isequal(lastButton, 1)

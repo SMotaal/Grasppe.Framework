@@ -1,0 +1,321 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<head>
+<META http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<meta content="Apache Forrest" name="Generator">
+<meta name="Forrest-version" content="0.8-dev">
+<meta name="Forrest-skin-name" content="pelt">
+<meta name="keywords" content="Java PDF Library, highlight, highlight pdf, highlight pdf text, java">
+<title>PDFBox - PDF Highlighting</title>
+<link type="text/css" href="../skin/basic.css" rel="stylesheet">
+<link media="screen" type="text/css" href="../skin/screen.css" rel="stylesheet">
+<link media="print" type="text/css" href="../skin/print.css" rel="stylesheet">
+<link type="text/css" href="../skin/profile.css" rel="stylesheet">
+<script src="../skin/getBlank.js" language="javascript" type="text/javascript"></script><script src="../skin/getMenu.js" language="javascript" type="text/javascript"></script><script src="../skin/fontsize.js" language="javascript" type="text/javascript"></script>
+<link rel="shortcut icon" href="../">
+</head>
+<body onload="init()">
+<script type="text/javascript">ndeSetTextSize();</script>
+<div id="top">
+<!--+
+    |header
+    +-->
+<div class="header">
+<!--+
+    |start group logo
+    +-->
+<div class="grouplogo">
+<a href="http://www.pdfbox.org"><img class="logoImage" alt="" src="../images/Logo.gif" title="PDFBox: Java PDF Library"></a>
+</div>
+<!--+
+    |end group logo
+    +-->
+<!--+
+    |start Project Logo
+    +-->
+<div class="projectlogoA1">
+<a href=""></a>
+</div>
+<!--+
+    |end Project Logo
+    +-->
+<!--+
+    |start Tabs
+    +-->
+<ul id="tabs">
+<li class="current">
+<a class="base-selected" href=".././index.html">Home</a>
+</li>
+</ul>
+<!--+
+    |end Tabs
+    +-->
+</div>
+</div>
+<div id="main">
+<div id="publishedStrip">
+<!--+
+    |start Subtabs
+    +-->
+<div id="level2tabs"></div>
+<!--+
+    |end Endtabs
+    +-->
+<script type="text/javascript"><!--
+document.write("Last Published: " + document.lastModified);
+//  --></script>
+</div>
+<!--+
+    |breadtrail
+    +-->
+<div class="breadtrail">
+             
+             &nbsp;
+           </div>
+<!--+
+    |start Menu, mainarea
+    +-->
+<!--+
+    |start Menu
+    +-->
+<div id="menu">
+<div onclick="SwitchMenu('menu_1.1', '../skin/')" id="menu_1.1Title" class="menutitle">About</div>
+<div id="menu_1.1" class="menuitemgroup">
+<div class="menuitem">
+<a href="../index.html" title="Welcome to PDFBox">Index</a>
+</div>
+<div class="menuitem">
+<a href="http://sourceforge.net/project/showfiles.php?group_id=78314" title="Download PDFBox">Download</a>
+</div>
+<div class="menuitem">
+<a href="http://www.pdfbox.org/dist/" title="Download a nightly release of PDFBox">Nightly Build</a>
+</div>
+<div class="menuitem">
+<a href="http://sourceforge.net/forum/?group_id=78314" title="Discuss PDFBox">Forums</a>
+</div>
+<div class="menuitem">
+<a href="http://sourceforge.net/tracker/?group_id=78314&atid=552832" title="Submit an issue">Issues</a>
+</div>
+<div class="menuitem">
+<a href="http://www.sf.net/projects/pdfbox" title="SourceForge Site">SourceForge</a>
+</div>
+<div class="menuitem">
+<a href="../references.html" title="References">References</a>
+</div>
+<div class="menuitem">
+<a href="../donations.html" title="Donations">Donations</a>
+</div>
+<div class="menuitem">
+<a href="../changes.html" title="Release Notes">Release Notes</a>
+</div>
+</div>
+<div onclick="SwitchMenu('menu_1.2', '../skin/')" id="menu_1.2Title" class="menutitle">Command Line Utilities</div>
+<div id="menu_1.2" class="menuitemgroup">
+<div class="menuitem">
+<a href="../commandlineutilities/index.html" title="Index">Index</a>
+</div>
+<div class="menuitem">
+<a href="../commandlineutilities/Decrypt.html" title="Decrypt">Decrypt</a>
+</div>
+<div class="menuitem">
+<a href="../commandlineutilities/Encrypt.html" title="Encrypt">Encrypt</a>
+</div>
+<div class="menuitem">
+<a href="../commandlineutilities/ExtractText.html" title="ExtractText">ExtractText</a>
+</div>
+<div class="menuitem">
+<a href="../commandlineutilities/PDFToImage.html" title="PDFToImage">PDFToImage</a>
+</div>
+<div class="menuitem">
+<a href="../commandlineutilities/PrintPDF.html" title="PrintPDF">PrintPDF</a>
+</div>
+<div class="menuitem">
+<a href="../commandlineutilities/ConvertColorspace.html" title="Convert PDF colorspace, ie RGB to CMYK">ConvertColorspace</a>
+</div>
+<div class="menuitem">
+<a href="../commandlineutilities/TextToPDF.html" title="TextToPDF">TextToPDF</a>
+</div>
+</div>
+<div onclick="SwitchMenu('menu_selected_1.3', '../skin/')" id="menu_selected_1.3Title" class="menutitle" style="background-image: url('../skin/images/chapter_open.gif');">Developers Guide</div>
+<div id="menu_selected_1.3" class="selectedmenuitemgroup" style="display: block;">
+<div class="menuitem">
+<a href="../userguide/index.html" title="A note on the docs">Index</a>
+</div>
+<div class="menuitem">
+<a href="../userguide/bookmarks.html" title="PDF Bookmarks">Bookmarks</a>
+</div>
+<div class="menuitem">
+<a href="../userguide/building_pdfbox.html" title="Building PDFBox">Building PDFBox</a>
+</div>
+<div class="menuitem">
+<a href="../userguide/faq.html" title="Answers to Questions about PDFBox">FAQ</a>
+</div>
+<div class="menuitem">
+<a href="../userguide/file_references.html" title="Documentation on embedded and externally referenced files">File References</a>
+</div>
+<div class="menuitem">
+<a href="../userguide/fonts.html" title="Fonts in PDFBox">Fonts</a>
+</div>
+<div class="menupage">
+<div class="menupagetitle">Highlighting</div>
+</div>
+<div class="menuitem">
+<a href=".././javadoc/index.html" title="Javadoc API">Javadoc</a>
+</div>
+<div class="menuitem">
+<a href="../userguide/metadata.html" title="XMP Metadata">Metadata</a>
+</div>
+<div class="menuitem">
+<a href="../userguide/dot_net.html" title=".NET Version">.NET Version</a>
+</div>
+<div class="menuitem">
+<a href="../userguide/text_extraction.html" title="PDF Text Extraction">Text Extraction</a>
+</div>
+</div>
+<div id="credit"></div>
+<div id="roundbottom">
+<img style="display: none" class="corner" height="15" width="15" alt="" src="../skin/images/rc-b-l-15-1body-2menu-3menu.png"></div>
+<!--+
+  |alternative credits
+  +-->
+<div id="credit2"></div>
+</div>
+<!--+
+    |end Menu
+    +-->
+<!--+
+    |start content
+    +-->
+<div id="content">
+<div title="Portable Document Format" class="pdflink">
+<a class="dida" href="highlighting.pdf"><img alt="PDF -icon" src="../skin/images/pdfdoc.gif" class="skin"><br>
+        PDF</a>
+</div>
+<h1>PDFBox - PDF Highlighting</h1>
+<div id="minitoc-area">
+<ul class="minitoc">
+<li>
+<a href="#Highlighting+text+in+a+PDF">Highlighting text in a PDF</a>
+<ul class="minitoc">
+<li>
+<a href="#1.+Use+the+%27search%27+open+parameter">1. Use the 'search' open parameter</a>
+</li>
+<li>
+<a href="#2.+Generate+a+highlight+XML+document">2. Generate a highlight XML document</a>
+</li>
+<li>
+<a href="#3.+Alter+pdf+contents+to+highlight+specific+text">3. Alter pdf contents to highlight specific text</a>
+</li>
+</ul>
+</li>
+</ul>
+</div> 
+    
+<a name="N10010"></a><a name="Highlighting+text+in+a+PDF"></a>
+<h2 class="boxed">Highlighting text in a PDF</h2>
+<div class="section">
+<p>
+            There are cases when you might want to highlight text in a PDF document.  For example, if the PDF is the result
+            of a search request you might want to highlight the word in the resulting PDF document.  There are several ways
+            this can be achieved, each method varying in complexity and flexibility.
+        </p>
+<a name="N10019"></a><a name="1.+Use+the+%27search%27+open+parameter"></a>
+<h3 class="boxed">1. Use the 'search' open parameter</h3>
+<p>
+          Acrobat supports passing is various parameters that tell it what to do once the PDF is open.  
+          See <a href="http://partners.adobe.com/public/developer/en/acrobat/PDFOpenParameters.pdf" target="_blank">PDF Open Parameters</a> for 
+          documentation on all the open parameters.  One of the parameters is the 'search' parameter, this will automatically run the search
+          functionality inside of Acrobat once the PDF is open.  For example: <a href="http://www.pdfbox.org/userguide/text_extraction.pdf#search=%22check%22" target="_blank">http://www.pdfbox.org/userguide/text_extraction.pdf#search="check"</a>
+<br>
+          
+<br>
+          
+<div class="note">
+<div class="label">Note</div>
+<div class="content">The words must be enclosed in quotes and separated by spaces; for example:#search="pdfbox rocks"</div>
+</div>
+          This is a great solution because of its simplicity!  It doesn't require PDFBox at all, but it is a potential solution that
+          many developers are not aware of.
+          </p>
+<a name="N10033"></a><a name="2.+Generate+a+highlight+XML+document"></a>
+<h3 class="boxed">2. Generate a highlight XML document</h3>
+<p>
+          Acrobat also allows you to tell it to highlight specific words in the PDF document.  It does this by passing an XML document to 
+          Acrobat when opening the PDF.  
+          See the <a href="http://partners.adobe.com/public/developer/en/pdf/HighlightFileFormat.pdf" target="_blank">PDF Highlight File Format</a> 
+          for more detailed documentation.  <br>
+          
+<br>
+          Basically the document allows you to tell it the characters to highlight in the PDF by using character
+          offsets on a page.  As this is just an XML document, there are many ways you could create it but PDFBox does have a utility to make it
+          easier.  Take a look at the javadoc for the <a href="/javadoc/org/pdfbox/util/PDFHighlighter.html">PDFHighlighter</a> class.  This will
+          allow you specify a set of words that you want have highlighted and generate the XML document for you.  <br>
+          
+<br>
+          PDFBox also ships with a complete
+          web application example of using this class, take a look at the pdfbox.war directory in your PDFBox installation.
+          <br>
+          You pass the xml to acrobat through a URL (or command line) parameter like this: 
+          <a href="http://www.pdfbox.org/userguide/text_extraction.pdf#xml=http://www.pdfbox.org/highlight.xml" target="_blank">http://www.pdfbox.org/userguide/text_extraction.pdf#xml=http://www.pdfbox.org/highlight.xml</a>
+          
+<br>
+          
+<div class="note">
+<div class="label">Note</div>
+<div class="content">The value of the xml parameter must be a full URL to the XML document.  <br>
+          http://www.pdfbox.org/userguide/text_extraction.pdf#xml=highlight.xml will not work<br>
+          http://www.pdfbox.org/userguide/text_extraction.pdf#xml=http://www.pdfbox.org/highlight.xml is correct!</div>
+</div>
+          
+<br>The one drawback to this solution is that you must parse the PDF and then generate an XML document, which is a time consuming operation.
+          </p>
+<a name="N10060"></a><a name="3.+Alter+pdf+contents+to+highlight+specific+text"></a>
+<h3 class="boxed">3. Alter pdf contents to highlight specific text</h3>
+<p>
+          Using PDFBox it is possible to regenerate the appearance stream to add highlighting to specific areas.  While this is possible, 
+          it will require recreating a new PDF for every search request.  There is nothing prebuilt in PDFBox to do this automatically for you
+          and will require a significant coding effort.<br>
+          
+<br>
+          You would need to 
+          <ol>
+            
+<li>Find all locations of the text, determine x/y coordinates, width/height</li>
+            
+<li>Regenerate the PDF appearance stream and draw a highlighted box behind the text.  Yellow would be easiest, if you want an inverted black/white, then you would need to change the color of the text to be white and draw a black box.</li>
+            
+<li>Stream the PDF back to the user</li>
+          
+</ol>
+          This is the most flexible but is also the most work to implement and is also more resource intensive.
+          </p>
+</div>
+  
+</div>
+<!--+
+    |end content
+    +-->
+<div class="clearboth">&nbsp;</div>
+</div>
+<div id="footer">
+<!--+
+    |start bottomstrip
+    +-->
+<div class="lastmodified">
+<script type="text/javascript"><!--
+document.write("Last Published: " + document.lastModified);
+//  --></script>
+</div>
+<div class="copyright">
+        Copyright &copy;
+         2002-2006 PDFBox.org</div>
+<div id="feedback">
+    Send feedback about the website to:
+  <a id="feedbackto" href="mailto:webmaster@pdfbox.org?subject=Feedback%C2%A0userguide/highlighting.html">webmaster@pdfbox.org</a>
+</div>
+<!--+
+    |end bottomstrip
+    +-->
+</div>
+</body>
+</html>

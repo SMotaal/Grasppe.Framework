@@ -19,10 +19,12 @@ function [ Output ] = grasppeScreen3( imagePath, ppi, spi, lpi, angle, printing,
   outputRaster    = false; %true;
     
   %% Screening Settings
-  DEFAULT = {2450, 175, 37.5};      % {2400, 150};  
+  DEFAULT = {2450, 175, [75, 15, 0, 45]};      % {2400, 150};  
+  
+  VERSION         = '5f';
   
   if ~exist('ppi', 'var') || ~isscalar(ppi) || ~isnumeric(ppi)
-    ppi = 600;
+    ppi = 300;
   end
   
   if ~exist('spi', 'var') || ~isscalar(spi) || ~isnumeric(spi)
@@ -74,12 +76,16 @@ function [ Output ] = grasppeScreen3( imagePath, ppi, spi, lpi, angle, printing,
   else
     
     if ~exist('imagePath', 'var') || exist(imagePath, 'file')==0
-      imagePath = '../screening/Test Targets/BSW.tif';
+      imagePath       = '../screening/Test Targets/BSW.tif';
+      grayImage       = imread(imagePath);
+      contone     = cat(3, grayImage, grayImage, grayImage, grayImage);
+
+    else
+      contone = imread(imagePath);
     end
     
     [filepath prefix suffix] = fileparts(imagePath);
     
-    contone = imread(imagePath);
     
   end
 
@@ -93,11 +99,8 @@ function [ Output ] = grasppeScreen3( imagePath, ppi, spi, lpi, angle, printing,
     prefix    = 'htout'; %'output';
   end
   
-  sequence  = 1;
-  suffix    = '.tif';
-  
-  fileno    = 1;
-  filename  = [prefix int2str(fileno) suffix];
+  sequence                      = 1;
+  suffix                        = [' (' VERSION '-' int2str(round(SPI)) '-' int2str(round(LPI)) ').tif'];
   
   try
     outpath  = @(x) fullfile('./Output', outputFolder, x);
@@ -107,6 +110,14 @@ function [ Output ] = grasppeScreen3( imagePath, ppi, spi, lpi, angle, printing,
     outpath  = @(x) fullfile('./Output/', x);
   end
   
+  fileno                        = 1;
+  filename                      = [prefix suffix];
+  
+  while exist(outpath(filename),'file') > 0
+    fileno                      = fileno+1;
+    filename                    = [prefix int2str(fileno) suffix];
+  end  
+  
   imdisc = imagePath;
   try
     [impath imname imext] = fileparts(imagePath);
@@ -114,35 +125,34 @@ function [ Output ] = grasppeScreen3( imagePath, ppi, spi, lpi, angle, printing,
     imlpi     = LPI;
     imspi     = SPI;
     imangles  = sprintf('%dº ', ANGLE);
-    mstamp    = [mfilename ' (' num2str(MX.stackRev) ')'];
-    imdisc    = sprintf('%s %1.1f dpi screened using %s at %1.1f lpi / %1.1f spi', ...
-      imname, imdpi, mstamp, imlpi, imspi);
+    mstamp    = ['Sigg-Screen-' VERSION '-' num2str(MX.stackRev)];
+    mname     = mfilename;
+    mname     = [upper(mname(1)) mname(2:end)];
+    imdisc    = sprintf('%s - %s - %1d/%1d/%1d %s', ...
+      imname, mname, round(imdpi), round(imlpi), round(imspi), mstamp);
   end
   
   %[halftone raster screen contone] = screenImage(contone, PPI, SPI, LPI, ANGLE, DP, NP, BP, BS);
   
-  curve = createToneCurve(SPI, LPI, ANGLE, DP, NP, BP, BS);
   
-  for m = 1:size(contone,3)
-    curvedtone(:,:,m) = appleToneCurves(contone(:,:,m), curve);
-  end
+%   for m = 1:size(contone,3)
+%     curve             = createToneCurve(SPI, LPI, ANGLE(m), DP, NP, BP, BS);
+%     curvedtone(:,:,m) = appleToneCurves(contone(:,:,m), curve);
+%   end
+%   
+  curvedtone                = contone;
   
   if outputScreen || outputRaster
-    [halftone raster screen] = screenImage(curvedtone, PPI, SPI, LPI, ANGLE, DP, NP, BP, BS);
+    [halftone raster screen] = screenImage4(curvedtone, PPI, SPI, LPI, ANGLE, DP, NP, BP, BS);
   else
-    halftone = screenImage(curvedtone, PPI, SPI, LPI, ANGLE, DP, NP, BP, BS);
+    halftone = screenImage4(curvedtone, PPI, SPI, LPI, ANGLE, DP, NP, BP, BS);
   end
   
   FS.mkDir(outpath(''));
     
   if outputRaster %numel(raster)>1
     for m = 1:numel(raster)
-      
-      while exist(outpath(filename),'file') > 0
-        fileno = fileno+1;
-        filename = [prefix int2str(fileno) suffix];
-      end
-      
+            
       imwrite(raster{m}, outpath(filename), 'Resolution', SPI, 'Description', imdisc);
       
     end
@@ -159,8 +169,13 @@ function [ Output ] = grasppeScreen3( imagePath, ppi, spi, lpi, angle, printing,
   
   Output = halftone;
   
-  imwrite(halftone, outpath([prefix suffix]), ...
-    'Resolution', SPI, 'Compression', 'lzw', 'Description', imdisc);
+  if size(halftone,3)==4 % CMYK
+    imwrite(1-halftone, outpath([prefix suffix]), ...
+      'Resolution', SPI, 'Compression', 'lzw', 'Description', imdisc);
+  else
+    imwrite(halftone, outpath([prefix suffix]), ...
+      'Resolution', SPI, 'Compression', 'lzw', 'Description', imdisc);    
+  end
   
   
   if nargout > 0
@@ -174,7 +189,9 @@ end
 
 function curve = createToneCurve(spi, lpi, angle, gain, noise, blur, radius) % screenID)
   
-  screenID      = generateScreenID(spi, lpi, angle, gain, noise, blur, radius);
+  forceCurveGeneration = true;
+  
+  screenID      = generateScreenID(spi, lpi, 0, gain, noise, blur, radius);
   curvePath     = curvesPath(screenID);
   
   outputLinear  = false;
@@ -184,7 +201,7 @@ function curve = createToneCurve(spi, lpi, angle, gain, noise, blur, radius) % s
     FS.mkDir(linearPath);
   end
   
-  if ~(exist(curvePath, 'file')==2)
+  if forceCurveGeneration || ~(exist(curvePath, 'file')==2)
     
     steps       = 101;
     
@@ -194,8 +211,8 @@ function curve = createToneCurve(spi, lpi, angle, gain, noise, blur, radius) % s
     %% Create Curves
     for m = 1:numel(in)
       contone   = ones(15, 15) .* in(m)/100;
-      halftone  = screenImage(contone, lpi, spi, lpi, angle, gain, noise, blur, radius);
-      meantone  = mean(halftone(:));
+      halftone  = screenImage4(contone, lpi, spi, lpi, 0, gain, noise, blur, radius);
+      meantone  = round(mean(halftone(:))*1000)/1000;
       
       out(m)    = meantone*100;
 
@@ -224,6 +241,9 @@ function curve = createToneCurve(spi, lpi, angle, gain, noise, blur, radius) % s
 end
 
 function image = appleToneCurves(image, curve)
+  
+  return;
+  
   in    = curve(:,1)/100;
   out   = curve(:,2)/100;
   
@@ -281,8 +301,138 @@ function id = generateScreenID(spi, lpi, angle, gain, noise, blur, radius)
   id  = regexprep(id, '\W+', '-');
 end
 
+function [halftones raster screen contone] = screenImage4(contone, PPI, SPI, LPI, ANGLE, DP, NP, BP, BS)
+  import Tests.Supercell.*;
+  
+  PPS                       = PPI/SPI;
+  
+  imageHeight               = size(contone,1);
+  imageWidth                = size(contone,2);
+  imageChannels             = size(contone,3);
+  
+  imageX                    = interp1(1:imageWidth,1:PPS:imageWidth, 'nearest');
+  imageY                    = interp1(1:imageHeight,1:PPS:imageHeight, 'nearest');
+  
+  screenWidth               = numel(imageX);
+  screenHeight              = numel(imageY);
+  
+  halftones                 = zeros(screenHeight, screenWidth, imageChannels); % false
+   
+  SPEC                      = SiggScreen.optimizeScreenMetrics(SPI, LPI, 45);
+  
+  SPL                       = (SPI/SPEC(2)); % * cos(pi/4);
+  
+  for m=1:imageChannels
+    
+    %% Prepare Image
+    % imageData               = 100-im2double(contone(:,:,m)).*100;
+    
+    %% Prepeare Screening Specification
+    % spec                    = SiggScreen.optimizeScreenMetrics(refSpec(1), refSpec(2), mod(90-ANGLE(m), 90)); % refSpec(3)); %SPI, LPI, ANGLE(m));
+    
+    % spi                     = spec(1);
+    % lpi                     = spec(2);
+    degrees                 = mod(90-ANGLE(m),90); % spec(3); % 
+    % cells                   = spec(4);
+    
+    % SPL                     = (spi/lpi); % * cos(pi/4);
+    theta                   = degrees*pi()/180;
+    
+    lineFrequency           = pi/SPL; %pi/((SPL^2)/2)^0.5; % pi/SPL; % cos(4/pi)
+    lineAngle               = pi/4 - theta;
+    
+    % cellSize                  = SPL*cells;
+    % screenSize                = ceil([120 120] /cells)*cellSize;
+    
+    
+    
+    % [screenX screenY]       = meshgrid((1:screenWidth)*lineFrequency*pi(), (1:screenHeight)*lineFrequency*pi());
+    
+    % screen                  = ...
+    %   cos(cos(lineAngle)*screenX*lineFrequency*pi() - sin(lineAngle)*screenY*lineFrequency*pi()) .* ...
+    %   cos(sin(lineAngle)*screenX*lineFrequency*pi() + cos(lineAngle)*screenY*lineFrequency*pi());
+    
+    
+    %% Apply Screen
+    
+    % halftone                = screen>((imageData(imageY, imageX)-50).*0.02);
+    
+    % halftone                = ...
+    %   (cos(cos(lineAngle)*screenX*lineFrequency*pi() - sin(lineAngle)*screenY*lineFrequency*pi()) ...
+    %    .* cos(sin(lineAngle)*screenX*lineFrequency*pi() + cos(lineAngle)*screenY*lineFrequency*pi())) ...
+    %   >((imageData(imageY, imageX)-50).*0.02);
 
-function [halftone raster screen contone] = screenImage(contone, PPI, SPI, LPI, ANGLE, DP, NP, BP, BS)
+    %     halftone                = ...
+    %       (cos(cos(lineAngle)*screenX - sin(lineAngle)*screenY) .* cos(sin(lineAngle)*screenX + cos(lineAngle)*screenY)) ...
+    %       >((imageData(imageY, imageX)-50).*0.02);
+    %
+    %     halftone(imageData(imageY, imageX)>100-1)   = 0;
+    %     halftone(imageData(imageY, imageX)<1)       = 1;
+    %
+    %     halftones(:,:,m)        = halftone;
+    
+    tile = 1024;
+    
+    tilesX                      = round(screenWidth/tile);
+    tilesY                      = round(screenHeight/tile);
+    tiles                       = tilesX*tilesY;
+    
+    stepString                  = @(m, n)       sprintf('%d of %d', m, n);
+    progressString              = @(s)          ['Screening: Channel ' int2str(m) ' Tile ' s];
+    progressValue               = @(x, y, z)    min(1, (max(0,x-1)+y)/z);
+    
+    % if localProgress
+    progressUpdate              = @(x, y, z) GrasppeKit.Utilities.ProgressUpdate(progressValue(x, y, z), progressString(stepString(x,z))); %  ['Processing ' progressString(s)]);
+    
+    
+    for c = 1:tilesX
+      for r = 1:tilesY
+        
+        progressUpdate(r+(c-1)*tilesY, 0, tiles);
+        
+        tileX                   = ((c-1)*tile +1):min(c*tile, screenWidth);
+        tileY                   = ((r-1)*tile +1):min(r*tile, screenHeight);
+        
+        [screenX screenY]       = meshgrid(tileX*(lineFrequency), tileY*(lineFrequency)); % *pi()
+        
+        contoneY                = round((tileY-1)*PPS + 1);
+        contoneX                = round((tileX-1)*PPS + 1);
+        tileData                = 100-im2double(contone(contoneY, contoneX, m)).*100;
+        
+        progressUpdate(r+(c-1)*tilesY, 0.25, tiles);
+        
+        halftone                = 0 + ...
+          (cos(cos(lineAngle)*screenX - sin(lineAngle)*screenY) .* cos(sin(lineAngle)*screenX + cos(lineAngle)*screenY)) ...
+          >((tileData-50).*0.02);
+        
+        progressUpdate(r+(c-1)*tilesY, 0.50, tiles);
+        
+        halftone(tileData>99)   = 0; % false;
+        halftone(tileData<1)    = 1; % true;
+        
+        progressUpdate(r+(c-1)*tilesY, 0.75, tiles);
+        
+        halftones(tileY, tileX, m) = double(halftone);
+        
+        progressUpdate(r+(c-1)*tilesY, 1, tiles);
+      end
+    end
+    
+    
+    
+    % mzf = 1;
+    % mz(mvs(mry, mrx)>100-mzf) = 0;
+    % mz(mvs(mry, mrx)<mzf)     = mzf;
+
+  end
+  
+  GrasppeKit.Utilities.ProgressUpdate();
+
+  %halftones                     = im2double(halftones);
+  
+end
+
+function [halftone raster screen contone] = screenImage3(contone, PPI, SPI, LPI, ANGLE, DP, NP, BP, BS)
   
   persistent screenGrid screenFrequency screenSize screens;
   
@@ -299,7 +449,7 @@ function [halftone raster screen contone] = screenImage(contone, PPI, SPI, LPI, 
   SPL     = SPI/LPI;
   DPI     = 2*LPI;
   ANGLE   = 45+ANGLE;
-  ID      = generateScreenID(SPI, LPI, ANGLE, DP, NP, BP, BS);
+  % ID      = generateScreenID(SPI, LPI, ANGLE, DP, NP, BP, BS);
   
   outputRaster = nargout > 1;
   outputScreen = nargout > 2;

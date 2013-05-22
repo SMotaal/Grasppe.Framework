@@ -112,7 +112,7 @@ classdef GraphicsHandle < Grasppe.Prototypes.Instance & ...
         obj.initialize();
         
       catch err
-        GrasppeKit.Utilities.DisplayError(obj, 1, err);
+        Grasppe.Kit.Utilities.DisplayError(obj, 1, err);
         rethrow(err);
       end
       
@@ -206,7 +206,7 @@ classdef GraphicsHandle < Grasppe.Prototypes.Instance & ...
         if ~any(componentIndex),  obj.childComponents(end+1) = childComponent; end
         
       catch err
-        GrasppeKit.Utilities.DisplayError(obj, 1, err);
+        Grasppe.Kit.Utilities.DisplayError(obj, 1, err);
       end
     end
     
@@ -225,7 +225,7 @@ classdef GraphicsHandle < Grasppe.Prototypes.Instance & ...
         obj.childComponents   = obj.childComponents(childComponent~=obj.childComponents);
         
       catch err
-        GrasppeKit.Utilities.DisplayError(obj, 1, err);
+        Grasppe.Kit.Utilities.DisplayError(obj, 1, err);
       end
     end
     
@@ -247,7 +247,7 @@ classdef GraphicsHandle < Grasppe.Prototypes.Instance & ...
         
         obj.parentComponent   = parentComponent;
       catch err
-        GrasppeKit.Utilities.DisplayError(obj, 1, err);
+        Grasppe.Kit.Utilities.DisplayError(obj, 1, err);
       end
     end
     
@@ -426,7 +426,7 @@ classdef GraphicsHandle < Grasppe.Prototypes.Instance & ...
 %         end
 %         
 %       catch err
-%         GrasppeKit.Utilities.DisplayError(obj, 1, err);
+%         Grasppe.Kit.Utilities.DisplayError(obj, 1, err);
 %         rethrow(err);
 %       end
 %     end
@@ -478,7 +478,7 @@ classdef GraphicsHandle < Grasppe.Prototypes.Instance & ...
         
         
       catch err
-        GrasppeKit.Utilities.DisplayError(obj, 1, err);
+        Grasppe.Kit.Utilities.DisplayError(obj, 1, err);
       end
     end
     
@@ -538,7 +538,7 @@ classdef GraphicsHandle < Grasppe.Prototypes.Instance & ...
           
           thisObject.deleteRecursively(thisObject.ChildComponents);
         catch err
-          GrasppeKit.Utilities.DisplayError(thisObject, 1, err);
+          Grasppe.Kit.Utilities.DisplayError(thisObject, 1, err);
         end
       end
     end

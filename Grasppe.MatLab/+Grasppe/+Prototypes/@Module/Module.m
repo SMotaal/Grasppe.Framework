@@ -28,9 +28,11 @@ classdef Module < Grasppe.Prototypes.Components.Controller & Grasppe.Prototypes.
   
   methods
     function obj = Module(name, path, varargin)
+      global debugConstructing;
+      
       obj           = obj@Grasppe.Prototypes.Components.Controller(varargin{:});
       
-      % debugStamp('Constructing', 1, obj);
+      if isequal(debugConstructing, true), debugStamp('Constructing', 1, obj); end
       
       %% Set the Name and Path
       % Assuming path to Parent Folder, @Class or @Class/...
@@ -140,7 +142,7 @@ classdef Module < Grasppe.Prototypes.Components.Controller & Grasppe.Prototypes.
             obj.([char(m) 'Class']) = [obj.ClassName char(m)];
           end
         catch err
-          GrasppeKit.Utilities.DisplayError(obj, 1, err);
+          Grasppe.Kit.Utilities.DisplayError(obj, 1, err);
         end
       end
       
@@ -164,7 +166,7 @@ classdef Module < Grasppe.Prototypes.Components.Controller & Grasppe.Prototypes.
         end
         
       catch err
-        GrasppeKit.Utilities.DisplayError(obj, 1, err);
+        Grasppe.Kit.Utilities.DisplayError(obj, 1, err);
         rethrow(err);
       end
       %obj.Controller.setView  = obj.initializeComponent('View',   'Controller', obj.Controller); %,   'Model', obj.Model);
@@ -207,7 +209,7 @@ classdef Module < Grasppe.Prototypes.Components.Controller & Grasppe.Prototypes.
           %   feval(obj.(mProperty));
           % end
         catch err
-          GrasppeKit.Utilities.DisplayError(obj, 1, err);
+          Grasppe.Kit.Utilities.DisplayError(obj, 1, err);
         end
       end      
     end

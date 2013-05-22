@@ -25,9 +25,11 @@ classdef Application < Grasppe.Prototypes.Module
   
   methods
     function obj = Application(name, varargin)
+      global debugConstructing;
+      
       obj                 = obj@Grasppe.Prototypes.Module(name, [], varargin{:});
       
-      % debugStamp('Constructing', 1, obj);
+      if isequal(debugConstructing, true), debugStamp('Constructing', 1, obj); end
       % if isequal(mfilename, obj.ClassName), obj.initialize(); end
     end
     

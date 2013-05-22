@@ -43,7 +43,7 @@ function obj = CreateGraphicsPrototype(primitive, parent, varargin)
         obj(end+1)          = createGraphicsHandle(handle(primitive(m)), varargin{:});
       end
     catch err
-      GrasppeKit.Utilities.DisplayError(obj, 1, err);
+      Grasppe.Kit.Utilities.DisplayError(obj, 1, err);
     end
   end
   

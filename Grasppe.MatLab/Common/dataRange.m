@@ -4,7 +4,7 @@ function [ range length dataMin dataMax ] = dataRange( data )
   dataMin = nanmin(data(:));
   dataMax = nanmax(data(:));
   length  = 1+dataMax-dataMin;
-  range = dataMax:dataMin;
+  range = dataMin:dataMax;
   
 end
 

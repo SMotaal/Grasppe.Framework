@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE document PUBLIC "-//APACHE//DTD Documentation V2.0//EN" "http://forrest.apache.org/dtd/document-v20.dtd">
+<document> 
+  <header> 
+    <title>PDFBox - Java PDF Library</title>
+    <meta name="keywords">Java PDF Library, pdfbox, pdftotext, print pdf</meta>
+  </header> 
+  <body>
+    <!--<note>
+		<b>Sponsor new PDFBox functionality!</b><br/>
+		PDFBox is looking for a company to sponsor a Software Engineering senior project at <a href="http://www.se.rit.edu/">RIT</a>.  If you 
+		are planning to use PDFBox in a new project or need new functionality to be implemented in PDFBox then this may be a great opportunity 
+		for you.<br/>
+		<br/>
+		Projects last for 20 weeks with teams of 4-6 seniors each working ~15 hours a week.<br/>
+		<br/>
+		I would act as the main contact for the project so requirements on your time would be minimal.  As a sponsor your requirements would be
+		<ul>
+		    <li>Help define the requirements for the project</li>
+		    <li>Pay for project expenses and/or make a donation to the Senior Scholarship Fund.</li>
+		</ul>
+		<br/>
+		If you have questions or are interested in sponsoring a team then please email <a href="mailto:ben@benlitchfield.com">me</a> ASAP.  
+		More information can be found <a href="http://www.se.rit.edu/srsponsorship.php">here</a>.
+    </note>-->
+    <section>
+      <title>Introduction</title>
+      <p>PDFBox is an open source Java PDF library for working with PDF documents. This project allows creation of new 
+      PDF documents, manipulation of existing documents and the ability to extract content from documents.  PDFBox 
+      also includes several command line utilities.</p>
+    </section>
+    <section>
+      <title>Features</title>
+      <ul>
+        <li>PDF to text extraction</li>
+        <li>Merge PDF Documents</li>
+        <li>PDF Document Encryption/Decryption</li>
+        <li>Lucene Search Engine Integration</li>
+        <li>Fill in form data FDF and XFDF</li>
+        <li>Create a PDF from a text file</li>
+        <li>Create images from PDF pages</li>
+        <li>Print a PDF</li>
+      </ul>
+    </section>
+  </body>
+</document>

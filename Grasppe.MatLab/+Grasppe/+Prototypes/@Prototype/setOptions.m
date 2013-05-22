@@ -12,7 +12,7 @@ function [names values] = setOptions(obj, varargin)
         if ~strcontains(err.identifier, 'noSetMethod')
           try debugStamp(obj.InstanceID, 5); end
           disp(['Could not set ' names{i} ' for ' class(obj) '. ' err.message]);
-          try GrasppeKit.Utilities.DisplayError(obj, 1, err); end
+          try Grasppe.Kit.Utilities.DisplayError(obj, 1, err); end
         end
       end
     end
