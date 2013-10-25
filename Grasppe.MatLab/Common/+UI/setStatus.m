@@ -39,7 +39,7 @@ function sb = setStatus( t, h, p )
     drawnow update;
     
   catch err
-    debugStamp();
+    % debugStamp();
   end
   
   

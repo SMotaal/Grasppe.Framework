@@ -2,13 +2,15 @@ function [ output_args ] = grasppe( input_args )
   %GRASPPE Summary of this function goes here
   %   Detailed explanation goes here
   
-  addBaseFolders();
+  %% Features
+  feature('DefaultCharacterSet', 'UTF8');
   
-  disp('');
+  %% Folders
+  addBaseFolders();         disp('');
   addLibraryFolders();
   % addJavaFolders();
-  
   addPhotoshopFolders();
+  
 end
 
 function addPhotoshopFolders()
@@ -26,8 +28,13 @@ end
 % end
 
 function addBaseFolders()
+  
+  addpath('Grasppe.MatLab');
+  addpath('Components');
+  addpath('Frameworks');
+  
   baseFolders = {
-    grasppeFolder('Common')
+    grasppeFolder('Common');
     };
   
   for m = 1:numel(baseFolders)
