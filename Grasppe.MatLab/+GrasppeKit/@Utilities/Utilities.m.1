@@ -3,7 +3,7 @@ classdef (Sealed) Utilities
   %   Detailed explanation goes here
   
   properties (Constant)
-    % Root                    = GrasppeKit.Graphics.GetRoot;
+    % Root                    = Grasppe.Kit.Graphics.GetRoot;
   end
   
   methods(Access=private)
@@ -12,15 +12,14 @@ classdef (Sealed) Utilities
   end
   
   methods (Static)
-    SafeExit(terminateCallback, abortCallback, forceCallback, cancelCallback);
+    ProgressUpdate(progress, varargin)
+    SafeExit(terminateCallback, abortCallback, forceCallback, cancelCallback)
+    
     message                     = DisplayText(ProductID, varargin);
     message                     = DisplayError(varargin);
     
     delayTimer                  = DelayedCall(callback, delay, mode)
     [names values paired pairs] = ParseOptions(varargin)
-    
-    
-    ProgressUpdate(progress, varargin)
   end
   
 end
